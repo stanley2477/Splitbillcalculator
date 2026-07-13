@@ -168,7 +168,6 @@
                 return;
             }
 
-            // High-fidelity standard exchange rates relative baseline metrics
             const rates = {
                 USD: 1.00,
                 NGN: 1450.00,
@@ -187,4 +186,7 @@
                 KES: 'KSh', ZAR: 'R', INR: '₹', CAD: 'C$', AUD: 'A$'
             };
 
-            // Convert input source back to baseline USD anchor value, then scale out to destination currency targets
+            const amountInUSD = amount / rates[from];
+            const convertedAmount = amountInUSD * rates[to];
+
+            document.getElementById('convertContent').innerHTML = `
