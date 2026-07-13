@@ -47,7 +47,6 @@
 <body>
 
     <div class="container">
-        <!-- HEADER -->
         <header>
             <h1>Split Bill Calculator</h1>
             <p>Smart, simple calculation tools designed for daily finance.</p>
@@ -136,12 +135,10 @@
         </section>
     </div>
 
-    <!-- FOOTER -->
     <footer>
         <p>© 2026 Split Bill Calculator | <a href="privacy.html">Privacy Policy</a></p>
     </footer>
 
-    <!-- INTERACTIVE LOGIC ENGINE -->
     <script>
         function calculateSplit() {
             const bill = parseFloat(document.getElementById('totalBill').value);
@@ -171,7 +168,6 @@
                 return;
             }
 
-            // Real-world representative baseline benchmarks relative to USD standard metrics
             const rates = {
                 USD: 1.00,
                 NGN: 1450.00,
@@ -190,3 +186,7 @@
                 KES: 'KSh', ZAR: 'R', INR: '₹', CAD: 'C$', AUD: 'A$'
             };
 
+            const amountInUSD = amount / rates[from];
+            const convertedAmount = amountInUSD * rates[to];
+
+            document.getElementById('convertContent').innerHTML = `
