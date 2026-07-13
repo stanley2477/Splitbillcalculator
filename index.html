@@ -35,13 +35,11 @@
         button.action-btn:hover { background-color: var(--primary-hover); }
         
         .result-box { display: none; margin-top: 20px; background: var(--success-bg); border: 1px solid var(--success-border); padding: 20px; border-radius: 16px; text-align: left; }
-        .result-box h3 { color: var(--success-text); margin-bottom: 14px; font-size: 15px; text-transform: uppercase; text-align: center; border-bottom: 1px dashed rgba(16, 185, 129, 0.3); padding-bottom: 6px; }
+        .result-box h3 { color: var(--success-text); margin-bottom: 14px; font-size: 15px; text-transform: uppercase; text-align: center; border-bottom: 1px dashed rgba(16,185,129,0.3); padding-bottom: 6px; }
         .result-item { display: flex; justify-content: space-between; margin-bottom: 10px; color: var(--success-text); font-size: 15px; }
         .result-total { font-size: 22px; font-weight: 800; border-top: 1px dashed #10b981; padding-top: 12px; margin-top: 12px; color: #064e3b; }
         
         footer { margin-top: auto; padding: 24px 0 10px 0; font-size: 13px; color: #64748b; text-align: center; }
-        footer a { color: var(--primary); text-decoration: none; font-weight: 600; }
-        footer a:hover { text-decoration: underline; }
     </style>
 </head>
 <body>
@@ -52,11 +50,11 @@
             <p>Smart, simple calculation tools designed for daily finance.</p>
         </header>
 
-        <!-- TOOL 1: BILL SPLITTER -->
+        <!-- TOOL 1: BILL SPLITTER (ALWAYS VISIBLE) -->
         <section>
             <h2>👥 Bill Splitter Tool</h2>
             <div class="form-group">
-                <label for="currencySelect">Select Your Local Currency</label>
+                <label>Select Your Local Currency</label>
                 <select id="currencySelect">
                     <option value="$">🇺🇸 USD - Dollar ($)</option>
                     <option value="₦">🇳🇬 NGN - Naira (₦)</option>
@@ -71,11 +69,11 @@
                 </select>
             </div>
             <div class="form-group">
-                <label for="totalBill">Total Bill Amount</label>
+                <label>Total Bill Amount</label>
                 <input type="number" id="totalBill" placeholder="Example: 150">
             </div>
             <div class="form-group">
-                <label for="peopleCount">Number of People</label>
+                <label>Number of People</label>
                 <input type="number" id="peopleCount" placeholder="Example: 4">
             </div>
             <button class="action-btn" onclick="calculateSplit()">Calculate Split Amount</button>
@@ -89,11 +87,11 @@
         <!-- VISUAL SECTION DIVIDER -->
         <div class="section-divider"></div>
 
-        <!-- TOOL 2: INCOME TAX TOOL -->
+        <!-- TOOL 2: INCOME TAX TOOL (ALWAYS VISIBLE) -->
         <section>
             <h2>💰 Income Tax Tool</h2>
             <div class="form-group">
-                <label for="taxCurrency">Select Your Local Currency</label>
+                <label>Select Your Local Currency</label>
                 <select id="taxCurrency">
                     <option value="$">🇺🇸 USD - Dollar ($)</option>
                     <option value="₦">🇳🇬 NGN - Naira (₦)</option>
@@ -108,11 +106,11 @@
                 </select>
             </div>
             <div class="form-group">
-                <label for="taxIncome">Enter Income Amount</label>
+                <label>Enter Income Amount</label>
                 <input type="number" id="taxIncome" placeholder="Example: 5000">
             </div>
             <div class="form-group">
-                <label for="taxPeriod">Pay Period</label>
+                <label>Pay Period</label>
                 <select id="taxPeriod">
                     <option value="Hourly">Hourly</option>
                     <option value="Weekly">Weekly</option>
@@ -130,7 +128,7 @@
     </div>
 
     <footer>
-        <p>© 2026 Split Bill Calculator | <a href="privacy.html">Privacy Policy</a></p>
+        <p>© 2026 Split Bill Calculator</p>
     </footer>
 
     <script>
@@ -162,26 +160,27 @@
                 return;
             }
 
-            // Standardize income base to calculate matching tax bands
             let annualEstimate = 0;
             if (period === 'Hourly') annualEstimate = income * 40 * 52;
             else if (period === 'Weekly') annualEstimate = income * 52;
             else if (period === 'Monthly') annualEstimate = income * 12;
             else annualEstimate = income;
 
-            let rate = 0.10; 
-            
-            // Custom country specific progressive calculations
-            if (currency === '₦') {
-                if (annualEstimate > 3200000) rate = 0.24;
-                else if (annualEstimate > 1600000) rate = 0.21;
-                else if (annualEstimate > 1100000) rate = 0.19;
-                else if (annualEstimate > 600000) rate = 0.15;
-                else if (annualEstimate > 300000) rate = 0.11;
-                else rate = 0.07;
-            } else if (currency === '₵') {
-                if (annualEstimate > 600000) rate = 0.35;
-                else if (annualEstimate > 240000) rate = 0.30;
-                else if (annualEstimate > 40000) rate = 0.25;
-                else if (annualEstimate > 20000) rate = 0.175;
-                else if (annualEstimate > 4800) rate = 0.10;
+            let rate = 0.10;
+            if (annualEstimate > 100000) rate = 0.30;
+            else if (annualEstimate > 50000) rate = 0.20;
+            else if (annualEstimate > 15000) rate = 0.15;
+
+            const gross = income;
+            const tax = gross * rate;
+            const net = gross - tax;
+
+            document.getElementById('taxContent').innerHTML = `
+                <div class="result-item"><span>Gross Pay Input:</span><span>${currency}${gross.toFixed(2)}</span></div>
+                <div class="result-item"><span>Est. Tax Rate (${(rate * 100)}%):</span><span>${currency}${tax.toFixed(2)}</span></div>
+                <div class="result-item result-total"><span>Net Take-Home Pay:</span><span>${currency}${net.toFixed(2)}</span></div>`;
+            document.getElementById('tax-results').style.display = "block";
+        }
+    </script>
+</body>
+</html>
