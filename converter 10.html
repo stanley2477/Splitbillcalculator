@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Split Bill Calculator</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --bg-main: #f8fafc;
+            --card-bg: #ffffff;
+            --text-title: #0f172a;
+            --text-body: #334155;
+            --border: #e2e8f0;
+            --success-bg: #f0fdf4;
+            --success-border: #10b981;
+            --success-text: #166534;
+        }
+
+        * { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; margin: 0; padding: 0; }
+        body { background-color: var(--bg-main); color: var(--text-body); padding: 20px 15px; display: flex; flex-direction: column; min-height: 100vh; }
+        .container { max-width: 520px; width: 100%; margin: 20px auto; background: var(--card-bg); padding: 30px 24px; border-radius: 24px; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05); }
+        header h1 { color: var(--text-title); font-size: 26px; font-weight: 800; margin-bottom: 6px; text-align: center; }
+        header p { color: #64748b; font-size: 14px; margin-bottom: 28px; text-align: center; }
+        
+        .tab-box { display: flex; background: #f1f5f9; padding: 6px; border-radius: 14px; margin-bottom: 28px; gap: 4px; }
+        .tab { background: none; border: none; padding: 12px 8px; font-weight: 600; font-size: 14px; color: #64748b; cursor: pointer; width: 50%; border-radius: 10px; transition: all 0.2s ease; }
+        .active-tab { background: var(--card-bg); color: var(--primary); box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+        
+        .calc-panel { display: none; text-align: left; }
+        .active-panel { display: block; }
+        .form-group { margin-bottom: 18px; }
+        label { display: block; font-weight: 600; margin-bottom: 8px; color: #475569; font-size: 13px; text-transform: uppercase; }
+        input, select { padding: 14px 16px; font-size: 16px; border-radius: 12px; border: 1px solid var(--border); width: 100%; box-sizing: border-box; background: #fff; color: var(--text-title); }
+        
+        button.action-btn { padding: 16px; font-size: 16px; border-radius: 12px; border: none; width: 100%; font-weight: 700; cursor: pointer; background-color: var(--primary); color: white; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2); transition: background 0.2s; }
+        button.action-btn:hover { background-color: var(--primary-hover); }
+        
+        .result-box { display: none; margin-top: 28px; background: var(--success-bg); border: 1px solid var(--success-border); padding: 20px; border-radius: 16px; }
+        .result-box h3 { color: var(--success-text); margin-bottom: 14px; font-size: 15px; text-transform: uppercase; text-align: center; border-bottom: 1px dashed rgba(16,185,129,0.3); padding-bottom: 6px; }
+        .result-item { display: flex; justify-content: space-between; margin-bottom: 10px; color: var(--success-text); font-size: 15px; }
+        .result-total { font-size: 22px; font-weight: 800; border-top: 1px dashed #10b981; padding-top: 12px; margin-top: 12px; color: #064e3b; }
+        
+        footer { margin-top: auto; padding: 24px 0 10px 0; font-size: 13px; color: #64748b; text-align: center; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>Split Bill Calculator</h1>
+            <p>Smart, simple calculation tools designed for daily finance.</p>
+        </header>
+
+        <!-- New Simplified Two-Option Tab Bar -->
+        <div class="tab-box">
+            <button id="tab1" class="tab active-tab" onclick="switchTab('split')">👥 Bill Splitter</button>
+            <button id="tab2" class="tab" onclick="switchTab('tax')">💰 Income Tax Tool</button>
+        </div>
+
+        <!-- Panel 1: Bill Splitter Panel -->
+        <div id="split-panel" class="calc-panel active-panel">
+            <div class="form-group">
+                <label>Select Your Local Currency</label>
+                <select id="currencySelect">
+                    <option value="$">🇺🇸 USD - Dollar ($)</option>
+                    <option value="₦">🇳🇬 NGN - Naira (₦)</option>
+                    <option value="₵">🇬🇭 GHS - Cedi (₵)</option>
+                    <option value="£">🇬🇧 GBP - Pound (£)</option>
+                    <option value="€">🇪🇺 EUR - Euro (€)</option>
+                    <option value="KSh">🇰🇪 KES - Shilling (KSh)</option>
+                    <option value="R">🇿🇦 ZAR - Rand (R)</option>
+                    <option value="₹">🇮🇳 INR - Rupee (₹)</option>
+                    <option value="C$">🇨🇦 CAD - Canadian Dollar (C$)</option>
+                    <option value="A$">🇦🇺 AUD - Australian Dollar (A$)</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Total Bill Amount</label>
+                <input type="number" id="totalBill" placeholder="Example: 150">
+            </div>
+            <div class="form-group">
+                <label>Number of People</label>
+                <input type="number" id="peopleCount" placeholder="Example: 4">
+            </div>
+            <button class="action-btn" onclick="calculateSplit()">Calculate Split Amount</button>
+        </div>
+
+        <!-- Panel 2: Wage Tax Tool Panel -->
+        <div id="tax-panel" class="calc-panel">
+            <div class="form-group">
+                <label>Select Your Local Currency</label>
+                <select id="taxCurrency">
+                    <option value="$">🇺🇸 USD - Dollar ($)</option>
+                    <option value="₦">🇳🇬 NGN - Naira (₦)</option>
+                    <option value="₵">🇬🇭 GHS - Cedi (₵)</option>
+                    <option value="£">🇬🇧 GBP - Pound (£)</option>
+                    <option value="€">🇪🇺 EUR - Euro (€)</option>
+                    <option value="KSh">🇰🇪 KES - Shilling (KSh)</option>
+                    <option value="R">🇿🇦 ZAR - Rand (R)</option>
+                    <option value="₹">🇮🇳 INR - Rupee (₹)</option>
+                    <option value="C$">🇨🇦 CAD - Canadian Dollar (C$)</option>
+                    <option value="A$">🇦🇺 AUD - Australian Dollar (A$)</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Enter Income Amount</label>
+                <input type="number" id="taxIncome" placeholder="Example: 5000">
+            </div>
+            <div class="form-group">
+                <label>Pay Period</label>
+                <select id="taxPeriod">
+                    <option value="Hourly">Hourly</option>
+                    <option value="Weekly">Weekly</option>
+                    <option value="Monthly">Monthly</option>
+                    <option value="Yearly">Yearly</option>
+                </select>
+            </div>
+            <button class="action-btn" onclick="calculateTax()">Calculate Income & Tax</button>
+        </div>
+
+        <!-- Output Metric Containers -->
+        <div id="split-results" class="result-box">
+            <h3>Calculated Split Breakdown</h3>
+            <div id="splitContent"></div>
+        </div>
+        
+        <div id="tax-results" class="result-box">
+            <h3>Tax Calculation Breakdown</h3>
+            <div id="taxContent"></div>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2026 Split Bill Calculator</p>
+    </footer>
+
+    <script>
+        // Highly Stable Two-Panel Switch Algorithm
+        function switchTab(mode) {
+            // Instantly clear out both response displays to prevent UI freezing
+            document.getElementById('split-results').style.display = "none";
+            document.getElementById('tax-results').style.display = "none";
+            
+            if (mode === 'split') {
+                document.getElementById('split-panel').classList.add('active-panel');
+                document.getElementById('tax-panel').classList.remove('active-panel');
+                document.getElementById('tab1').classList.add('active-tab');
+                document.getElementById('tab2').classList.remove('active-tab');
+            } else {
+                document.getElementById('tax-panel').classList.add('active-panel');
+                document.getElementById('split-panel').classList.remove('active-panel');
+                document.getElementById('tab2').classList.add('active-tab');
+                document.getElementById('tab1').classList.remove('active-tab');
+            }
+        }
+
+        function calculateSplit() {
+            const bill = parseFloat(document.getElementById('totalBill').value);
+            const people = parseInt(document.getElementById('peopleCount').value);
+            const currency = document.getElementById('currencySelect').value;
+
+            if (isNaN(bill) || isNaN(people) || people <= 0) {
+                alert("Please enter valid amounts and total number of people.");
+                return;
+            }
+
+            const share = (bill / people).toFixed(2);
+            document.getElementById('splitContent').innerHTML = `
+                <div class="result-item"><span>Total Bill Pool:</span><span>${currency}${bill.toFixed(2)}</span></div>
+                <div class="result-item"><span>Total Splitters:</span><span>${people} People</span></div>
+                <div class="result-item result-total"><span>Each Person Pays:</span><span>${currency}${share}</span></div>`;
+            document.getElementById('split-results').style.display = "block";
+        }
+
+        function calculateTax() {
+            const currency = document.getElementById('taxCurrency').value;
+            const income = parseFloat(document.getElementById('taxIncome').value);
+            const period = document.getElementById('taxPeriod').value;
+
+            if (isNaN(income) || income < 0) {
+                alert("Please enter a valid financial income parameter.");
