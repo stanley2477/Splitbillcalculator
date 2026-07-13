@@ -40,8 +40,6 @@
         .result-total { font-size: 22px; font-weight: 800; border-top: 1px dashed #10b981; padding-top: 12px; margin-top: 12px; color: #064e3b; }
         
         footer { margin-top: auto; padding: 24px 0 10px 0; font-size: 13px; color: #64748b; text-align: center; }
-        footer a { color: var(--primary); text-decoration: none; font-weight: 600; }
-        footer a:hover { text-decoration: underline; }
     </style>
 </head>
 <body>
@@ -136,7 +134,7 @@
     </div>
 
     <footer>
-        <p>© 2026 Split Bill Calculator | <a href="privacy.html">Privacy Policy</a></p>
+        <p>© 2026 Split Bill Calculator</p>
     </footer>
 
     <script>
@@ -190,3 +188,4 @@
             const convertedAmount = amountInUSD * rates[to];
 
             document.getElementById('convertContent').innerHTML = `
+                <div class="result-item"><span>Original Value:</span><span>${symbols[from]}${amount.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span></div>
