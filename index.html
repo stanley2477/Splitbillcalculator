@@ -54,13 +54,15 @@
         .result-total { font-size: 22px; font-weight: 800; border-top: 1px dashed #10b981; padding-top: 12px; margin-top: 12px; color: #064e3b; display: flex; justify-content: space-between; }
         
         footer { margin-top: auto; padding: 24px 0 10px 0; font-size: 13px; color: #64748b; text-align: center; }
+        footer a { color: var(--primary); text-decoration: none; font-weight: 600; }
+        footer a:hover { text-decoration: underline; }
     </style>
 </head>
 <body>
 
     <div class="container">
         <header>
-            <h1>Financial Utility Suite</h1>
+            <h1>Split Bill Calculator</h1>
             <p>Smart, simple calculation tools designed for daily finance.</p>
         </header>
 
@@ -183,9 +185,3 @@
             <button class="action-btn" onclick="calculateConversion()">Convert Currency</button>
             
             <div id="convert-results" class="result-box">
-                <h3>Conversion Results</h3>
-                <div id="convertContent"></div>
-            </div>
-        </section>
-
-        <footer>
