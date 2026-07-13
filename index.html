@@ -35,11 +35,13 @@
         button.action-btn:hover { background-color: var(--primary-hover); }
         
         .result-box { display: none; margin-top: 20px; background: var(--success-bg); border: 1px solid var(--success-border); padding: 20px; border-radius: 16px; text-align: left; }
-        .result-box h3 { color: var(--success-text); margin-bottom: 14px; font-size: 15px; text-transform: uppercase; text-align: center; border-bottom: 1px dashed rgba(16,185,129,0.3); padding-bottom: 6px; }
+        .result-box h3 { color: var(--success-text); margin-bottom: 14px; font-size: 15px; text-transform: uppercase; text-align: center; border-bottom: 1px dashed rgba(16, 185, 129, 0.3); padding-bottom: 6px; }
         .result-item { display: flex; justify-content: space-between; margin-bottom: 10px; color: var(--success-text); font-size: 15px; }
         .result-total { font-size: 22px; font-weight: 800; border-top: 1px dashed #10b981; padding-top: 12px; margin-top: 12px; color: #064e3b; }
         
         footer { margin-top: auto; padding: 24px 0 10px 0; font-size: 13px; color: #64748b; text-align: center; }
+        footer a { color: var(--primary); text-decoration: none; font-weight: 600; }
+        footer a:hover { text-decoration: underline; }
     </style>
 </head>
 <body>
@@ -50,7 +52,7 @@
             <p>Smart, simple calculation tools designed for daily finance.</p>
         </header>
 
-        <!-- TOOL 1: BILL SPLITTER (ALWAYS VISIBLE) -->
+        <!-- TOOL 1: BILL SPLITTER -->
         <section>
             <h2>👥 Bill Splitter Tool</h2>
             <div class="form-group">
@@ -87,7 +89,7 @@
         <!-- VISUAL SECTION DIVIDER -->
         <div class="section-divider"></div>
 
-        <!-- TOOL 2: INCOME TAX TOOL (ALWAYS VISIBLE) -->
+        <!-- TOOL 2: INCOME TAX TOOL -->
         <section>
             <h2>💰 Income Tax Tool</h2>
             <div class="form-group">
@@ -128,7 +130,7 @@
     </div>
 
     <footer>
-        <p>© 2026 Split Bill Calculator</p>
+        <p>© 2026 Split Bill Calculator | <a href="privacy.html">Privacy Policy</a></p>
     </footer>
 
     <script>
@@ -160,27 +162,27 @@
                 return;
             }
 
+            // Estimate annual earnings parameters
             let annualEstimate = 0;
             if (period === 'Hourly') annualEstimate = income * 40 * 52;
             else if (period === 'Weekly') annualEstimate = income * 52;
             else if (period === 'Monthly') annualEstimate = income * 12;
             else annualEstimate = income;
 
-            let rate = 0.10;
-            if (annualEstimate > 100000) rate = 0.30;
-            else if (annualEstimate > 50000) rate = 0.20;
-            else if (annualEstimate > 15000) rate = 0.15;
-
-            const gross = income;
-            const tax = gross * rate;
-            const net = gross - tax;
-
-            document.getElementById('taxContent').innerHTML = `
-                <div class="result-item"><span>Gross Pay Input:</span><span>${currency}${gross.toFixed(2)}</span></div>
-                <div class="result-item"><span>Est. Tax Rate (${(rate * 100)}%):</span><span>${currency}${tax.toFixed(2)}</span></div>
-                <div class="result-item result-total"><span>Net Take-Home Pay:</span><span>${currency}${net.toFixed(2)}</span></div>`;
-            document.getElementById('tax-results').style.display = "block";
-        }
-    </script>
-</body>
-</html>
+            let rate = 0.10; 
+            
+            if (currency === '₦' || currency === 'KSh' || currency === '₹') {
+                // High-face value currencies parameters (NGN, KES, INR)
+                if (annualEstimate > 5000000) rate = 0.24;
+                else if (annualEstimate > 2500000) rate = 0.18;
+                else if (annualEstimate > 600000) rate = 0.11;
+                else rate = 0.07;
+            } else if (currency === '₵' || currency === 'R') {
+                // Mid-value currencies parameters (GHS, ZAR)
+                if (annualEstimate > 200000) rate = 0.25;
+                else if (annualEstimate > 100000) rate = 0.18;
+                else if (annualEstimate > 30000) rate = 0.12;
+                else rate = 0.08;
+            } else {
+                // Western standard benchmark values (USD, GBP, EUR, CAD, AUD)
+                if (annualEstimate > 100000) rate = 0.28;
