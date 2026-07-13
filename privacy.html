@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Legal Center - Split Bill Calculator</title>
+    <title>Privacy Policy - Split Bill Calculator</title>
     <style>
         :root {
             --primary: #2563eb;
@@ -15,219 +15,35 @@
             --border: #e2e8f0;
         }
 
-        * {
-            box-sizing: border-box;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            background-color: var(--bg-main);
-            color: var(--text-body);
-            padding: 40px 15px;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-
-        .container {
-            max-width: 680px;
-            width: 100%;
-            margin: 0 auto;
-            background: var(--card-bg);
-            padding: 40px 30px;
-            border-radius: 24px;
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
-        }
-
-        .back-link {
-            display: inline-flex;
-            align-items: center;
-            color: var(--primary);
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 15px;
-            margin-bottom: 30px;
-            transition: color 0.2s ease;
-        }
-
-        .back-link:hover {
-            color: var(--primary-hover);
-            text-decoration: underline;
-        }
-
-        .legal-menu {
-            display: flex;
-            background: #f1f5f9;
-            padding: 6px;
-            border-radius: 14px;
-            margin-bottom: 35px;
-            gap: 4px;
-        }
-
-        .menu-btn {
-            background: none;
-            border: none;
-            padding: 12px 8px;
-            font-weight: 600;
-            font-size: 13px;
-            color: #64748b;
-            cursor: pointer;
-            width: 25%;
-            border-radius: 10px;
-            transition: all 0.2s ease;
-            text-align: center;
-        }
-
-        .active-btn {
-            background: var(--card-bg);
-            color: var(--primary);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-        }
-
-        .legal-panel {
-            display: none;
-            animation: fadeIn 0.3s ease;
-        }
-
-        .active-panel {
-            display: block;
-        }
-
-        h1 {
-            color: var(--text-title);
-            font-size: 26px;
-            font-weight: 800;
-            margin-bottom: 20px;
-            letter-spacing: -0.5px;
-        }
-
-        p {
-            font-size: 15px;
-            line-height: 1.7;
-            margin-bottom: 16px;
-            color: var(--text-body);
-        }
-
-        ul {
-            padding-left: 22px;
-            margin-bottom: 20px;
-        }
-
-        li {
-            margin-bottom: 10px;
-            line-height: 1.6;
-            font-size: 15px;
-        }
-
-        .email-highlight-box {
-            background: #f1f5f9;
-            border-left: 4px solid var(--primary);
-            padding: 20px;
-            border-radius: 12px;
-            margin: 25px 0;
-            text-align: center;
-        }
-
-        .email-address {
-            font-weight: 700;
-            color: var(--text-title);
-            font-size: 18px;
-            margin-top: 5px;
-        }
-
-        footer {
-            margin-top: auto;
-            padding-top: 40px;
-            font-size: 13px;
-            color: #64748b;
-            text-align: center;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(5px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        * { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; margin: 0; padding: 0; }
+        body { background-color: var(--bg-main); color: var(--text-body); padding: 40px 15px; display: flex; flex-direction: column; min-height: 100vh; }
+        .container { max-width: 520px; width: 100%; margin: 20px auto; background: var(--card-bg); padding: 35px 24px; border-radius: 24px; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05); }
+        
+        h1 { color: var(--text-title); font-size: 24px; font-weight: 800; margin-bottom: 20px; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px; text-align: left; }
+        p { line-height: 1.7; margin-bottom: 18px; font-size: 15px; text-align: left; }
+        
+        .email-box { background: #f1f5f9; border-left: 4px solid var(--primary); padding: 15px; border-radius: 12px; margin: 20px 0; text-align: center; }
+        .email-address { font-weight: 700; color: var(--primary); font-size: 16px; margin-top: 5px; }
+        
+        .back-btn { display: block; text-align: center; padding: 14px; font-size: 15px; border-radius: 12px; border: 1px solid var(--border); font-weight: 700; cursor: pointer; background-color: #fff; color: var(--text-title); text-decoration: none; transition: background 0.2s; margin-top: 25px; }
+        .back-btn:hover { background-color: #f1f5f9; }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <a href="index.html" class="back-link">← Back to Calculator</a>
-
-        <!-- Legal Center Switcher -->
-        <div class="legal-menu">
-            <button id="btn-privacy" class="menu-btn active-btn" onclick="switchSection('privacy')">Privacy</button>
-            <button id="btn-about" class="menu-btn" onclick="switchSection('about')">About Us</button>
-            <button id="btn-terms" class="menu-btn" onclick="switchSection('terms')">Terms</button>
-            <button id="btn-contact" class="menu-btn" onclick="switchSection('contact')">Contact</button>
+        <h1>Privacy Policy</h1>
+        <p>At Split Bill Calculator, user privacy is safeguarded as one of our highest operational parameters.</p>
+        <p>Our calculation engine operates entirely client-side right inside your local web browser session. We never read, collect, save, transmit, or synchronize any personal financial variables or individual metrics inputted into our utility forms.</p>
+        <p>We do not store information permanently. Your calculation data disappears immediately when you close or refresh your web browser window.</p>
+        
+        <div class="email-box">
+            <p>Customer Service Support Email</p>
+            <div class="email-address">calculatorsplitbill@gmail.com</div>
         </div>
 
-        <!-- Section 1: Privacy Policy -->
-        <div id="panel-privacy" class="legal-panel active-panel">
-            <h1>Privacy Policy</h1>
-            <p>At Split Bill Calculator, user privacy is safeguarded as one of our highest operational parameters.</p>
-            <p>Our calculation engine operates entirely client-side right inside your local web browser session. We never read, collect, save, transmit, or synchronize any personal financial variables or individual metrics inputted into our utility forms.</p>
-            <p>We do not store information permanently. Your calculation logs disappear immediately when you close or refresh your web browser window.</p>
-        </div>
-
-        <!-- Section 2: About Us -->
-        <div id="panel-about" class="legal-panel">
-            <h1>About Us</h1>
-            <p>Welcome to <strong>Split Bill Calculator</strong>, an online utility hub built to make everyday personal calculation processes fluid, highly responsive, and completely reliable.</p>
-            <p>Our high-fidelity dashboard provides streamlined solutions including:</p>
-            <ul>
-                <li><strong>Bill Splitter Module</strong> – Helps group split checks fairly with ease.</li>
-                <li><strong>Percentage Finder</strong> – Provides swift percentage calculations for analytics.</li>
-                <li><strong>Income Tax Estimator</strong> – Computes estimated progressive baseline take-home metrics dynamically.</li>
-            </ul>
-            <p>We focus on speed and clear design so our financial tools perform beautifully across mobile screens, tablets, and desktop computers worldwide.</p>
-        </div>
-
-        <!-- Section 3: Terms of Use -->
-        <div id="panel-terms" class="legal-panel">
-            <h1>Terms of Use</h1>
-            <p>By accessing and utilizing Split Bill Calculator, you explicitly agree to accept these baseline terms responsibly.</p>
-            <p>The mathematical operations and progressive tax rules running inside this platform rely on simplified financial estimates. Calculations generated across these tools are built exclusively for personal reference and informational tasks. They do not constitute formal, certified tax accounting logs or binding professional financial advice.</p>
-            <p>We maintain our computing parameters carefully but cannot guarantee situational compliance for specific institutional tax filings.</p>
-        </div>
-
-        <!-- Section 4: Contact Us -->
-        <div id="panel-contact" class="legal-panel">
-            <h1>Contact Us</h1>
-            <p>We welcome your system feedback, structural upgrade recommendations, and general technical tool requests regarding Split Bill Calculator.</p>
-            <p>If you require customer support or want to report an issue with the operational inputs, please contact our desk directly:</p>
-            
-            <div class="email-highlight-box">
-                <p>Official Customer Service Email</p>
-                <div class="email-address">calculatorsplitbill@gmail.com</div>
-            </div>
-        </div>
-
-        <footer>
-            <p>© 2026 Split Bill Calculator. All rights reserved.</p>
-        </footer>
+        <a href="index.html" class="back-btn">← Back to Calculator</a>
     </div>
 
-    <script>
-        function switchSection(target) {
-            // Hide all legal text blocks
-            document.getElementById('panel-privacy').classList.remove('active-panel');
-            document.getElementById('panel-about').classList.remove('active-panel');
-            document.getElementById('panel-terms').classList.remove('active-panel');
-            document.getElementById('panel-contact').classList.remove('active-panel');
-
-            // Deactivate all navigation tab buttons
-            document.getElementById('btn-privacy').classList.remove('active-btn');
-            document.getElementById('btn-about').classList.remove('active-btn');
-            document.getElementById('btn-terms').classList.remove('active-btn');
-            document.getElementById('btn-contact').classList.remove('active-btn');
-
-            // Render active state items
-            document.getElementById('panel-' + target).classList.add('active-panel');
-            document.getElementById('btn-' + target).classList.add('active-btn');
-        }
-    </script>
 </body>
 </html>
