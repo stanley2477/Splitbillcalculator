@@ -1,2 +1,2 @@
 # Splitbillcalculator
-Use our Split Bill Calculator today! It's simple, fast, and free. Bill Splitter, Percentage Finder, Income Before Tax Etc.
+Use Our Split Bill Calculator Today! It's Simple, Fast, And Free. Bill Splitter, Percentage Finder, Income Before Tax Etc.
