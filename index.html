@@ -169,6 +169,7 @@
             color: #064e3b;
         }
 
+        /* Modern Slide-up Modals for Legal Pages */
         .modal {
             display: none;
             position: fixed;
@@ -190,6 +191,18 @@
             text-align: left;
         }
 
+        .modal-content h2 {
+            color: var(--text-title);
+            margin-bottom: 15px;
+            font-size: 22px;
+        }
+
+        .modal-content p {
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+
         .close-modal {
             background: #f1f5f9;
             border: none;
@@ -198,6 +211,7 @@
             cursor: pointer;
             float: right;
             margin-top: 15px;
+            font-weight: 600;
         }
 
         footer {
@@ -208,15 +222,18 @@
             text-align: center;
         }
 
-        footer button, footer a {
+        footer p { margin-bottom: 8px; }
+
+        footer button {
             background: none;
             border: none;
             color: var(--primary);
             cursor: pointer;
             font-weight: 600;
-            text-decoration: none;
+            font-size: 13px;
             padding: 0 4px;
         }
+        footer button:hover { text-decoration: underline; }
     </style>
 </head>
 <body>
@@ -294,13 +311,4 @@
             <div class="form-group">
                 <label for="taxIncome">Enter Income Amount</label>
                 <input type="number" id="taxIncome" placeholder="e.g. 5000">
-            </div>
-            <div class="form-group">
-                <label for="taxPeriod">Pay Period</label>
-                <select id="taxPeriod">
-                    <option value="Hourly">Hourly</option>
-                    <option value="Weekly">Weekly</option>
-                    <option value="Monthly">Monthly</option>
-                    <option value="Yearly">Yearly</option>
-                </select>
             </div>
