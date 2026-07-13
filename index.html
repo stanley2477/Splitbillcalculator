@@ -162,7 +162,6 @@
                 return;
             }
 
-            // Estimate annual earnings parameter
             let annualEstimate = 0;
             if (period === 'Hourly') annualEstimate = income * 40 * 52;
             else if (period === 'Weekly') annualEstimate = income * 52;
@@ -171,9 +170,7 @@
 
             let rate = 0.10; 
             
-            // Accurate National Bracket Systems per Local Currency Values
             if (currency === '₦') {
-                // Nigeria (NGN) PAYE 2026 Models [INDEX]
                 if (annualEstimate > 3200000) rate = 0.24;
                 else if (annualEstimate > 1600000) rate = 0.21;
                 else if (annualEstimate > 1100000) rate = 0.19;
@@ -181,9 +178,12 @@
                 else if (annualEstimate > 300000) rate = 0.11;
                 else rate = 0.07;
             } else if (currency === '₵') {
-                // Ghana (GHS) GRA Brackets [INDEX]
                 if (annualEstimate > 600000) rate = 0.35;
                 else if (annualEstimate > 240000) rate = 0.30;
                 else if (annualEstimate > 40000) rate = 0.25;
                 else if (annualEstimate > 20000) rate = 0.175;
                 else if (annualEstimate > 4800) rate = 0.10;
+                else if (annualEstimate > 1320) rate = 0.055;
+                else rate = 0.00;
+            } else if (currency === 'KSh') {
+                if (annualEstimate > 960000) rate = 0.35;
