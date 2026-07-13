@@ -31,24 +31,36 @@
         label { display: block; font-weight: 600; margin-bottom: 8px; color: #475569; font-size: 13px; text-transform: uppercase; }
         input, select { padding: 14px 16px; font-size: 16px; border-radius: 12px; border: 1px solid var(--border); width: 100%; box-sizing: border-box; background: #fff; color: var(--text-title); }
         
-        button.action-btn { padding: 16px; font-size: 16px; border-radius: 12px; border: none; width: 100%; font-weight: 700; cursor: pointer; background-color: var(--primary); color: white; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2); transition: background 0.2s; }
+        button.action-btn { 
+            padding: 16px; 
+            font-size: 16px; 
+            border-radius: 12px; 
+            border: none; 
+            width: 100%; 
+            font-weight: 700; 
+            cursor: pointer; 
+            background-color: var(--primary); 
+            color: white; 
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2); 
+            transition: background 0.1s, transform 0.1s; 
+            -webkit-tap-highlight-color: transparent;
+        }
         button.action-btn:hover { background-color: var(--primary-hover); }
+        button.action-btn:active { transform: scale(0.98); opacity: 0.9; }
         
         .result-box { display: none; margin-top: 20px; background: var(--success-bg); border: 1px solid var(--success-border); padding: 20px; border-radius: 16px; text-align: left; }
         .result-box h3 { color: var(--success-text); margin-bottom: 14px; font-size: 15px; text-transform: uppercase; text-align: center; border-bottom: 1px dashed rgba(16, 185, 129, 0.3); padding-bottom: 6px; }
         .result-item { display: flex; justify-content: space-between; margin-bottom: 10px; color: var(--success-text); font-size: 15px; }
-        .result-total { font-size: 22px; font-weight: 800; border-top: 1px dashed #10b981; padding-top: 12px; margin-top: 12px; color: #064e3b; }
+        .result-total { font-size: 22px; font-weight: 800; border-top: 1px dashed #10b981; padding-top: 12px; margin-top: 12px; color: #064e3b; display: flex; justify-content: space-between; }
         
         footer { margin-top: auto; padding: 24px 0 10px 0; font-size: 13px; color: #64748b; text-align: center; }
-        footer a { color: var(--primary); text-decoration: none; font-weight: 600; }
-        footer a:hover { text-decoration: underline; }
     </style>
 </head>
 <body>
 
     <div class="container">
         <header>
-            <h1>Split Bill Calculator</h1>
+            <h1>Financial Utility Suite</h1>
             <p>Smart, simple calculation tools designed for daily finance.</p>
         </header>
 
@@ -171,16 +183,9 @@
             <button class="action-btn" onclick="calculateConversion()">Convert Currency</button>
             
             <div id="convert-results" class="result-box">
-                <h3>Conversion Result</h3>
+                <h3>Conversion Results</h3>
                 <div id="convertContent"></div>
             </div>
         </section>
-    </div>
 
-    <footer>
-        <p>© 2026 Split Bill Calculator | <a href="privacy.html">Privacy Policy</a></p>
-    </footer>
-
-    <script>
-        function calculateSplit() {
-            const bill = parseFloat(document.getElementById('totalBill').value);
+        <footer>
