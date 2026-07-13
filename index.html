@@ -20,19 +20,21 @@
 
         * { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; margin: 0; padding: 0; }
         body { background-color: var(--bg-main); color: var(--text-body); padding: 20px 15px; display: flex; flex-direction: column; min-height: 100vh; }
-        .container { max-width: 520px; width: 100%; margin: 10px auto; background: var(--card-bg); padding: 30px 24px; border-radius: 24px; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05); }
+        .container { max-width: 520px; width: 100%; margin: 10px auto; background: var(--card-bg); padding: 30px 24px; border-radius: 24px; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05); position: relative; }
         header h1 { color: var(--text-title); font-size: 26px; font-weight: 800; margin-bottom: 6px; text-align: center; }
         header p { color: #64748b; font-size: 14px; margin-bottom: 28px; text-align: center; }
         
-        .section-divider { margin: 35px 0 25px 0; border-top: 2px solid #e2e8f0; padding-top: 25px; }
-        h2 { color: var(--text-title); font-size: 18px; margin-bottom: 15px; text-align: left; display: flex; align-items: center; gap: 6px; }
+        /* FIXED LAYOUT HANGS: Clear block rendering parameters to stop overlay leakage */
+        .section-divider { clear: both; display: block; margin: 35px 0 25px 0; border-top: 2px solid #e2e8f0; height: 1px; width: 100%; }
+        section { display: block; position: relative; z-index: 10; width: 100%; }
         
-        .form-group { margin-bottom: 18px; text-align: left; }
+        .form-group { margin-bottom: 18px; text-align: left; position: relative; z-index: 15; }
         label { display: block; font-weight: 600; margin-bottom: 8px; color: #475569; font-size: 13px; text-transform: uppercase; }
-        input, select { padding: 14px 16px; font-size: 16px; border-radius: 12px; border: 1px solid var(--border); width: 100%; box-sizing: border-box; background: #fff; color: var(--text-title); }
+        input, select { padding: 14px 16px; font-size: 16px; border-radius: 12px; border: 1px solid var(--border); width: 100%; box-sizing: border-box; background: #fff; color: var(--text-title); display: block; }
         
-        /* Fixed: High contrast focus & physical micro-click movement rules to guarantee tactile touch */
+        /* FIXED TACTILE INTERACTION: Added pointer-events to cut through dead layout wrappers */
         button.action-btn { 
+            display: block;
             padding: 16px; 
             font-size: 16px; 
             border-radius: 12px; 
@@ -45,18 +47,19 @@
             box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2); 
             transition: background 0.1s, transform 0.05s; 
             -webkit-tap-highlight-color: transparent;
+            position: relative;
+            z-index: 30;
+            pointer-events: auto !important;
         }
         button.action-btn:hover { background-color: var(--primary-hover); }
-        button.action-btn:active { transform: scale(0.96); opacity: 0.95; }
+        button.action-btn:active { transform: scale(0.95); }
         
         .result-box { display: none; margin-top: 20px; background: var(--success-bg); border: 1px solid var(--success-border); padding: 20px; border-radius: 16px; text-align: left; }
         .result-box h3 { color: var(--success-text); margin-bottom: 14px; font-size: 15px; text-transform: uppercase; text-align: center; border-bottom: 1px dashed rgba(16, 185, 129, 0.3); padding-bottom: 6px; }
         .result-item { display: flex; justify-content: space-between; margin-bottom: 10px; color: var(--success-text); font-size: 15px; }
         .result-total { font-size: 22px; font-weight: 800; border-top: 1px dashed #10b981; padding-top: 12px; margin-top: 12px; color: #064e3b; display: flex; justify-content: space-between; }
         
-        footer { margin-top: auto; padding: 24px 0 10px 0; font-size: 13px; color: #64748b; text-align: center; }
-        footer a { color: var(--primary); text-decoration: none; font-weight: 600; }
-        footer a:hover { text-decoration: underline; }
+        footer { margin-top: auto; padding: 24px 0 10px 0; font-size: 13px; color: #64748b; text-align: center; clear: both; }
     </style>
 </head>
 <body>
@@ -93,7 +96,7 @@
                 <label for="peopleCount">Number of People</label>
                 <input type="number" id="peopleCount" placeholder="Example: 4">
             </div>
-            <button class="action-btn" id="btn-split">Calculate Split Amount</button>
+            <button class="action-btn" onclick="runSplitCalculator()">Calculate Split Amount</button>
             
             <div id="split-results" class="result-box">
                 <h3>Calculated Split Breakdown</h3>
@@ -135,7 +138,7 @@
                     <option value="Yearly">Yearly</option>
                 </select>
             </div>
-            <button class="action-btn" id="btn-tax">Calculate Income & Tax</button>
+            <button class="action-btn" onclick="runTaxCalculator()">Calculate Income & Tax</button>
             
             <div id="tax-results" class="result-box">
                 <h3>Tax Calculation Breakdown</h3>
@@ -182,5 +185,3 @@
                     <option value="CAD">🇨🇦 CAD - Canadian Dollar (C$)</option>
                     <option value="AUD">🇦🇺 AUD - Australian Dollar (A$)</option>
                 </select>
-            </div>
-            <button class="action-btn" id="btn-convert">Convert Currency</button>
