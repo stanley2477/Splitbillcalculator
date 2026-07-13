@@ -75,7 +75,7 @@
                 <input type="number" id="totalBill" placeholder="Example: 150">
             </div>
             <div class="form-group">
-                <label Whitespace for="peopleCount">Number of People</label>
+                <label for="peopleCount">Number of People</label>
                 <input type="number" id="peopleCount" placeholder="Example: 4">
             </div>
             <button class="action-btn" onclick="calculateSplit()">Calculate Split Amount</button>
@@ -162,6 +162,7 @@
                 return;
             }
 
+            // Standardize income base to calculate matching tax bands
             let annualEstimate = 0;
             if (period === 'Hourly') annualEstimate = income * 40 * 52;
             else if (period === 'Weekly') annualEstimate = income * 52;
@@ -170,9 +171,8 @@
 
             let rate = 0.10; 
             
-            // Country-specific tax bracket parameters
+            // Custom country specific progressive calculations
             if (currency === '₦') {
-                // Nigeria (NGN) Brackets
                 if (annualEstimate > 3200000) rate = 0.24;
                 else if (annualEstimate > 1600000) rate = 0.21;
                 else if (annualEstimate > 1100000) rate = 0.19;
@@ -180,8 +180,8 @@
                 else if (annualEstimate > 300000) rate = 0.11;
                 else rate = 0.07;
             } else if (currency === '₵') {
-                // Ghana (GHS) Brackets
                 if (annualEstimate > 600000) rate = 0.35;
                 else if (annualEstimate > 240000) rate = 0.30;
                 else if (annualEstimate > 40000) rate = 0.25;
                 else if (annualEstimate > 20000) rate = 0.175;
+                else if (annualEstimate > 4800) rate = 0.10;
