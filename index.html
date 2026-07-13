@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Split Bill & Currency Converter</title>
+    <title>Split Bill, Tax & Currency Dashboard</title>
     <style>
         :root {
             --primary: #2563eb;
@@ -40,6 +40,8 @@
         .result-total { font-size: 22px; font-weight: 800; border-top: 1px dashed #10b981; padding-top: 12px; margin-top: 12px; color: #064e3b; }
         
         footer { margin-top: auto; padding: 24px 0 10px 0; font-size: 13px; color: #64748b; text-align: center; }
+        footer a { color: var(--primary); text-decoration: none; font-weight: 600; }
+        footer a:hover { text-decoration: underline; }
     </style>
 </head>
 <body>
@@ -87,7 +89,49 @@
         <!-- VISUAL SECTION DIVIDER -->
         <div class="section-divider"></div>
 
-        <!-- TOOL 2: CURRENCY CONVERTER -->
+        <!-- TOOL 2: INCOME TAX TOOL -->
+        <section>
+            <h2>💰 Income Tax Tool</h2>
+            <div class="form-group">
+                <label for="taxCurrency">Select Your Local Currency</label>
+                <select id="taxCurrency">
+                    <option value="$">🇺🇸 USD - Dollar ($)</option>
+                    <option value="₦">🇳🇬 NGN - Naira (₦)</option>
+                    <option value="₵">🇬🇭 GHS - Cedi (₵)</option>
+                    <option value="£">🇬🇧 GBP - Pound (£)</option>
+                    <option value="€">🇪🇺 EUR - Euro (€)</option>
+                    <option value="KSh">🇰🇪 KES - Shilling (KSh)</option>
+                    <option value="R">🇿🇦 ZAR - Rand (R)</option>
+                    <option value="₹">🇮🇳 INR - Rupee (₹)</option>
+                    <option value="C$">🇨🇦 CAD - Canadian Dollar (C$)</option>
+                    <option value="A$">🇦🇺 AUD - Australian Dollar (A$)</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="taxIncome">Enter Income Amount</label>
+                <input type="number" id="taxIncome" placeholder="Example: 5000">
+            </div>
+            <div class="form-group">
+                <label for="taxPeriod">Pay Period</label>
+                <select id="taxPeriod">
+                    <option value="Hourly">Hourly</option>
+                    <option value="Weekly">Weekly</option>
+                    <option value="Monthly">Monthly</option>
+                    <option value="Yearly">Yearly</option>
+                </select>
+            </div>
+            <button class="action-btn" onclick="calculateTax()">Calculate Income & Tax</button>
+            
+            <div id="tax-results" class="result-box">
+                <h3>Tax Calculation Breakdown</h3>
+                <div id="taxContent"></div>
+            </div>
+        </section>
+
+        <!-- VISUAL SECTION DIVIDER -->
+        <div class="section-divider"></div>
+
+        <!-- TOOL 3: CURRENCY CONVERTER -->
         <section>
             <h2>💱 Currency Converter Tool</h2>
             <div class="form-group">
@@ -134,58 +178,9 @@
     </div>
 
     <footer>
-        <p>© 2026 Split Bill Calculator</p>
+        <p>© 2026 Split Bill Calculator | <a href="privacy.html">Privacy Policy</a></p>
     </footer>
 
     <script>
         function calculateSplit() {
             const bill = parseFloat(document.getElementById('totalBill').value);
-            const people = parseInt(document.getElementById('peopleCount').value);
-            const currency = document.getElementById('currencySelect').value;
-
-            if (isNaN(bill) || isNaN(people) || people <= 0) {
-                alert("Please enter valid amounts and total number of people.");
-                return;
-            }
-
-            const share = (bill / people).toFixed(2);
-            document.getElementById('splitContent').innerHTML = `
-                <div class="result-item"><span>Total Bill Pool:</span><span>${currency}${bill.toFixed(2)}</span></div>
-                <div class="result-item"><span>Total Splitters:</span><span>${people} People</span></div>
-                <div class="result-item result-total"><span>Each Person Pays:</span><span>${currency}${share}</span></div>`;
-            document.getElementById('split-results').style.display = "block";
-        }
-
-        function calculateConversion() {
-            const amount = parseFloat(document.getElementById('convertAmount').value);
-            const from = document.getElementById('fromCurrency').value;
-            const to = document.getElementById('toCurrency').value;
-
-            if (isNaN(amount) || amount <= 0) {
-                alert("Please enter a valid amount to convert.");
-                return;
-            }
-
-            const rates = {
-                USD: 1.00,
-                NGN: 1450.00,
-                GHS: 14.20,
-                GBP: 0.78,
-                EUR: 0.92,
-                KES: 131.00,
-                ZAR: 18.10,
-                INR: 83.50,
-                CAD: 1.36,
-                AUD: 1.50
-            };
-
-            const symbols = {
-                USD: '$', NGN: '₦', GHS: '₵', GBP: '£', EUR: '€',
-                KES: 'KSh', ZAR: 'R', INR: '₹', CAD: 'C$', AUD: 'A$'
-            };
-
-            const amountInUSD = amount / rates[from];
-            const convertedAmount = amountInUSD * rates[to];
-
-            document.getElementById('convertContent').innerHTML = `
-                <div class="result-item"><span>Original Value:</span><span>${symbols[from]}${amount.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span></div>
