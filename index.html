@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Split Bill Calculator</title>
+    <title>Split Bill & Value Tools</title>
     <style>
         :root {
             --primary: #2563eb;
@@ -24,6 +24,7 @@
         header h1 { color: var(--text-title); font-size: 26px; font-weight: 800; margin-bottom: 6px; text-align: center; }
         header p { color: #64748b; font-size: 14px; margin-bottom: 28px; text-align: center; }
         
+        .section-divider { margin: 35px 0 25px 0; border-top: 2px solid #e2e8f0; padding-top: 25px; }
         h2 { color: var(--text-title); font-size: 18px; margin-bottom: 15px; text-align: left; display: flex; align-items: center; gap: 6px; }
         
         .form-group { margin-bottom: 18px; text-align: left; }
@@ -45,28 +46,32 @@
 
     <div class="container">
         <header>
-            <h1>Split Bill Calculator</h1>
+            <h1>Split Bill & Value Tools</h1>
             <p>Smart, simple calculation tools designed for daily finance.</p>
         </header>
 
-        <!-- BILL SPLITTER TOOL -->
+        <!-- GLOBAL CURRENCY SELECTOR FOR THE WHOLE PAGE -->
+        <div class="form-group">
+            <label>Select Your Local Currency</label>
+            <select id="currencySelect">
+                <option value="$">🇺🇸 USD - Dollar ($)</option>
+                <option value="₦">🇳🇬 NGN - Naira (₦)</option>
+                <option value="₵">🇬🇭 GHS - Cedi (₵)</option>
+                <option value="£">🇬🇧 GBP - Pound (£)</option>
+                <option value="€">🇪🇺 EUR - Euro (€)</option>
+                <option value="KSh">🇰🇪 KES - Shilling (KSh)</option>
+                <option value="R">🇿🇦 ZAR - Rand (R)</option>
+                <option value="₹">🇮🇳 INR - Rupee (₹)</option>
+                <option value="C$">🇨🇦 CAD - Canadian Dollar (C$)</option>
+                <option value="A$">🇦🇺 AUD - Australian Dollar (A$)</option>
+            </select>
+        </div>
+
+        <div class="section-divider"></div>
+
+        <!-- TOOL 1: ORIGINAL BILL SPLITTER -->
         <section>
             <h2>👥 Bill Splitter Tool</h2>
-            <div class="form-group">
-                <label>Select Your Local Currency</label>
-                <select id="currencySelect">
-                    <option value="$">🇺🇸 USD - Dollar ($)</option>
-                    <option value="₦">🇳🇬 NGN - Naira (₦)</option>
-                    <option value="₵">🇬🇭 GHS - Cedi (₵)</option>
-                    <option value="£">🇬🇧 GBP - Pound (£)</option>
-                    <option value="€">🇪🇺 EUR - Euro (€)</option>
-                    <option value="KSh">🇰🇪 KES - Shilling (KSh)</option>
-                    <option value="R">🇿🇦 ZAR - Rand (R)</option>
-                    <option value="₹">🇮🇳 INR - Rupee (₹)</option>
-                    <option value="C$">🇨🇦 CAD - Canadian Dollar (C$)</option>
-                    <option value="A$">🇦🇺 AUD - Australian Dollar (A$)</option>
-                </select>
-            </div>
             <div class="form-group">
                 <label>Total Bill Amount</label>
                 <input type="number" id="totalBill" placeholder="Example: 150">
@@ -82,6 +87,50 @@
                 <div id="splitContent"></div>
             </div>
         </section>
+
+        <!-- VISUAL SECTION DIVIDER -->
+        <div class="section-divider"></div>
+
+        <!-- TOOL 2: DEFINE PERCENTAGE CUT PER PERSON -->
+        <section>
+            <h2>📊 Define Percentage Cut Per Person</h2>
+            <div class="form-group">
+                <label>Total Bill Amount</label>
+                <input type="number" id="percentageTotalBill" placeholder="Example: 150">
+            </div>
+            <div class="form-group">
+                <label>Your Custom Cut Percentage (%)</label>
+                <input type="number" id="customPercentage" placeholder="Example: 25" min="1" max="100">
+            </div>
+            <button class="action-btn" onclick="calculatePercentageCut()">Calculate Percentage Cut</button>
+            
+            <div id="percentage-results" class="result-box">
+                <h3>Calculated Share Breakdown</h3>
+                <div id="percentageContent"></div>
+            </div>
+        </section>
+
+        <!-- VISUAL SECTION DIVIDER -->
+        <div class="section-divider"></div>
+
+        <!-- TOOL 3: PRODUCT DISCOUNT FINDER -->
+        <section>
+            <h2>🏷️ Product Discount Finder</h2>
+            <div class="form-group">
+                <label>Original Product Price</label>
+                <input type="number" id="originalPrice" placeholder="Example: 80">
+            </div>
+            <div class="form-group">
+                <label>Discount Rate (%)</label>
+                <input type="number" id="discountRate" placeholder="Example: 15" min="0" max="100">
+            </div>
+            <button class="action-btn" onclick="calculateDiscount()">Find Discounted Price</button>
+            
+            <div id="discount-results" class="result-box">
+                <h3>Price Savings Summary</h3>
+                <div id="discountContent"></div>
+            </div>
+        </section>
     </div>
 
     <footer>
@@ -89,6 +138,7 @@
     </footer>
 
     <script>
+        // FUNCTION 1: ORIGINAL SPLIT BILL
         function calculateSplit() {
             const bill = parseFloat(document.getElementById('totalBill').value);
             const people = parseInt(document.getElementById('peopleCount').value);
@@ -106,6 +156,33 @@
                 <div class="result-item result-total"><span>Each Person Pays:</span><span>${currency}${share}</span></div>`;
             document.getElementById('split-results').style.display = "block";
         }
-    </script>
-</body>
-</html>
+
+        // FUNCTION 2: PERCENTAGE CUT
+        function calculatePercentageCut() {
+            const bill = parseFloat(document.getElementById('percentageTotalBill').value);
+            const percentage = parseFloat(document.getElementById('customPercentage').value);
+            const currency = document.getElementById('currencySelect').value;
+
+            if (isNaN(bill) || isNaN(percentage) || percentage <= 0 || percentage > 100) {
+                alert("Please enter a valid bill amount and a percentage between 1 and 100.");
+                return;
+            }
+
+            const personPays = ((bill * percentage) / 100).toFixed(2);
+            const remainingBalance = (bill - personPays).toFixed(2);
+
+            document.getElementById('percentageContent').innerHTML = `
+                <div class="result-item"><span>Total Bill Pool:</span><span>${currency}${bill.toFixed(2)}</span></div>
+                <div class="result-item"><span>Your Custom Cut:</span><span>${percentage}%</span></div>
+                <div class="result-item"><span>Remaining Balance:</span><span>${currency}${remainingBalance}</span></div>
+                <div class="result-item result-total"><span>You Will Pay:</span><span>${currency}${personPays}</span></div>`;
+            document.getElementById('percentage-results').style.display = "block";
+        }
+
+        // FUNCTION 3: DISCOUNT FINDER
+        function calculateDiscount() {
+            const originalPrice = parseFloat(document.getElementById('originalPrice').value);
+            const discountRate = parseFloat(document.getElementById('discountRate').value);
+            const currency = document.getElementById('currencySelect').value;
+
+            if (isNaN(originalPrice) || isNaN(discountRate) || discountRate < 0 || discountRate > 100) {
