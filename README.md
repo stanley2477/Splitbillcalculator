@@ -1,2 +1,2 @@
 # Splitbillcalculator
-Use Our Split Bill Calculator Today! It's Simple, Fast, And Free. Bill Splitter, Percentage Finder, Income Before Tax Etc.
+Use our free split bill calculator today! Split group expenses in any local currency and instantly calculate custom percentage cuts per person.
