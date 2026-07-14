@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+html<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -38,7 +38,7 @@
         .grid-5 input { padding: 10px 4px; text-align: center; font-size: 14px; width: 100%; }
         .grid-5 label { font-size: 10px; text-align: center; margin-bottom: 4px; }
         
-        /* THE ULTIMATE CLICKABLE BUTTON FIX */
+        /* OVERRIDDEN BLUE COLOR FIX RULESET */
         button.action-btn { 
             display: block;
             padding: 14px; 
@@ -53,20 +53,23 @@
             box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2); 
             transition: transform 0.1s ease, background-color 0.1s ease;
             position: relative;
-            z-index: 99999 !important; /* Forces button above all broken layers */
-            pointer-events: auto !important; /* Tells browser to allow direct touch */
+            z-index: 99999 !important;
+            pointer-events: auto !important;
             touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent !important; /* Removes native Safari tap filter */
+            outline: none !important;
         }
 
         button.action-btn:hover { 
             background-color: var(--primary-hover); 
         }
 
-        /* Guaranteed physical bounce motion */
-        button.action-btn:active { 
-            transform: translateY(4px) scale(0.97) !important;
+        /* Fluid click release styling */
+        button.action-btn:active, button.action-btn:focus { 
+            transform: translateY(3px) scale(0.98) !important;
             background-color: var(--primary-hover) !important;
-            box-shadow: 0 2px 4px rgba(37, 99, 235, 0.1) !important;
+            outline: none !important;
+            box-shadow: none !important;
         }
         
         .result-box { display: none; margin-top: 15px; background: var(--success-bg); border: 1px solid var(--success-border); padding: 15px; border-radius: 16px; text-align: left; position: relative; z-index: 10; }
@@ -178,7 +181,6 @@
         <section>
             <h2>🏷️ Product Discount Finder</h2>
             <div class="form-group">
-                <!-- FIXED ACCIDENTALLY BROKEN CODE AND TAG BLOCKS BELOW -->
                 <label for="productPrice">Original Product Price</label>
                 <input type="number" id="productPrice" placeholder="Example: 15000">
             </div>
@@ -201,4 +203,3 @@
     </div>
 
     <script>
-        function getCurrency() {
