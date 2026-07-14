@@ -31,8 +31,8 @@
         label { display: block; font-weight: 600; margin-bottom: 8px; color: #475569; font-size: 13px; text-transform: uppercase; }
         input, select { padding: 14px 16px; font-size: 16px; border-radius: 12px; border: 1px solid var(--border); width: 100%; box-sizing: border-box; background: #fff; color: var(--text-title); }
         
+        /* FIXED TACTILE BUTTONS: Prevents mobile freezing and allows visual movement */
         button.action-btn { 
-            display: block;
             padding: 16px; 
             font-size: 16px; 
             border-radius: 12px; 
@@ -44,7 +44,7 @@
             color: white; 
             box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2); 
             transition: background 0.1s, transform 0.1s; 
-            -webkit-tap-highlight-color: transparent !important;
+            -webkit-tap-highlight-color: transparent;
         }
         button.action-btn:hover { background-color: var(--primary-hover); }
         button.action-btn:active { transform: scale(0.97); }
@@ -55,8 +55,6 @@
         .result-total { font-size: 22px; font-weight: 800; border-top: 1px dashed #10b981; padding-top: 12px; margin-top: 12px; color: #064e3b; display: flex; justify-content: space-between; }
         
         footer { margin-top: auto; padding: 24px 0 10px 0; font-size: 13px; color: #64748b; text-align: center; }
-        footer a { color: var(--primary); text-decoration: none; font-weight: 600; }
-        footer a:hover { text-decoration: underline; }
     </style>
 </head>
 <body>
@@ -71,7 +69,7 @@
         <section>
             <h2>👥 Bill Splitter Tool</h2>
             <div class="form-group">
-                <label for="currencySelect">Select Your Local Currency</label>
+                <label>Select Your Local Currency</label>
                 <select id="currencySelect">
                     <option value="$">🇺🇸 USD - Dollar ($)</option>
                     <option value="₦">🇳🇬 NGN - Naira (₦)</option>
@@ -86,14 +84,14 @@
                 </select>
             </div>
             <div class="form-group">
-                <label for="totalBill">Total Bill Amount</label>
+                <label>Total Bill Amount</label>
                 <input type="number" id="totalBill" placeholder="Example: 150">
             </div>
             <div class="form-group">
-                <label for="peopleCount">Number of People</label>
+                <label>Number of People</label>
                 <input type="number" id="peopleCount" placeholder="Example: 4">
             </div>
-            <button type="button" class="action-btn" onclick="calculateSplit()">Calculate Split Amount</button>
+            <button class="action-btn" onclick="calculateSplit()">Calculate Split Amount</button>
             
             <div id="split-results" class="result-box">
                 <h3>Calculated Split Breakdown</h3>
@@ -108,7 +106,7 @@
         <section>
             <h2>💰 Income Tax Tool</h2>
             <div class="form-group">
-                <label for="taxCurrency">Select Your Local Currency</label>
+                <label>Select Your Local Currency</label>
                 <select id="taxCurrency">
                     <option value="$">🇺🇸 USD - Dollar ($)</option>
                     <option value="₦">🇳🇬 NGN - Naira (₦)</option>
@@ -123,11 +121,11 @@
                 </select>
             </div>
             <div class="form-group">
-                <label for="taxIncome">Enter Income Amount</label>
+                <label>Enter Income Amount</label>
                 <input type="number" id="taxIncome" placeholder="Example: 5000">
             </div>
             <div class="form-group">
-                <label for="taxPeriod">Pay Period</label>
+                <label>Pay Period</label>
                 <select id="taxPeriod">
                     <option value="Hourly">Hourly</option>
                     <option value="Weekly">Weekly</option>
@@ -135,7 +133,7 @@
                     <option value="Yearly">Yearly</option>
                 </select>
             </div>
-            <button type="button" class="action-btn" onclick="calculateTax()">Calculate Income & Tax</button>
+            <button class="action-btn" onclick="calculateTax()">Calculate Income & Tax</button>
             
             <div id="tax-results" class="result-box">
                 <h3>Tax Calculation Breakdown</h3>
@@ -150,11 +148,11 @@
         <section>
             <h2>💱 Currency Converter Tool</h2>
             <div class="form-group">
-                <label for="convertAmount">Amount to Convert</label>
+                <label>Amount to Convert</label>
                 <input type="number" id="convertAmount" placeholder="Example: 100">
             </div>
             <div class="form-group">
-                <label for="fromCurrency">From Currency</label>
+                <label>From Currency</label>
                 <select id="fromCurrency">
                     <option value="USD">🇺🇸 USD - Dollar ($)</option>
                     <option value="NGN">🇳🇬 NGN - Naira (₦)</option>
@@ -169,7 +167,7 @@
                 </select>
             </div>
             <div class="form-group">
-                <label for="toCurrency">To Currency</label>
+                <label>To Currency</label>
                 <select id="toCurrency">
                     <option value="NGN">🇳🇬 NGN - Naira (₦)</option>
                     <option value="USD">🇺🇸 USD - Dollar ($)</option>
@@ -183,4 +181,16 @@
                     <option value="AUD">🇦🇺 AUD - Australian Dollar (A$)</option>
                 </select>
             </div>
-            <button type="button" class="action-btn" onclick="calculateConversion()">Convert Currency</button>
+            <button class="action-btn" onclick="calculateConversion()">Convert Currency</button>
+            
+            <div id="convert-results" class="result-box">
+                <h3>Conversion Results</h3>
+                <div id="convertContent"></div>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <p>© 2026 Split Bill Calculator</p>
+    </footer>
+
