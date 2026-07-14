@@ -42,7 +42,7 @@
         .grid-5 input { padding: 10px 4px; text-align: center; font-size: 14px; width: 100%; }
         .grid-5 label { font-size: 10px; text-align: center; margin-bottom: 4px; }
         
-        /* EXPLICIT INTERACTION RULESET TO REMOVE STUCK VISUAL FREEZES */
+        /* HARD OVERRIDE FOR BLUE COLOR FREEZES */
         button.action-btn { 
             display: block;
             padding: 14px; 
@@ -68,7 +68,7 @@
             background-color: var(--primary-hover); 
         }
 
-        /* Spring bounce physics behavior that clears color status */
+        /* Instant elastic physical click response */
         button.action-btn:active, button.action-btn:focus { 
             transform: translateY(3px) scale(0.98) !important;
             background-color: var(--primary-hover) !important;
@@ -102,7 +102,7 @@
                     <!-- USA FIRST -->
                     <option value="$">🇺🇸 USD - US Dollar ($)</option>
                     
-                    <!-- FOREIGN COUNTRIES (UP) -->
+                    <!-- OTHER FOREIGN COUNTRIES (UP) -->
                     <option value="£">🇬🇧 GBP - British Pound (£)</option>
                     <option value="€">🇪🇺 EUR - Euro (€)</option>
                     <option value="₹">🇮🇳 INR - Indian Rupee (₹)</option>
@@ -125,7 +125,6 @@
                 <input type="number" id="peopleCount" placeholder="Example: 4">
             </div>
             
-            <!-- FIXED EXPLICIT FUNCTION BINDING AS DEMANDED BY SERVER -->
             <button type="button" class="action-btn" onclick="calculateSplit(this)">Calculate Split</button>
             
             <div id="split-results" class="result-box">
@@ -172,7 +171,6 @@
 
             <div id="percentage-warn" class="warning-notice">⚠️ Total must equal 100%! Current total: <span id="current-pct-total">0</span>%</div>
 
-            <!-- FIXED EXPLICIT FUNCTION BINDING AS DEMANDED BY SERVER -->
             <button type="button" class="action-btn" onclick="calculateShare(this)">Calculate Share Breakdown</button>
             
             <div id="share-results" class="result-box">
@@ -195,4 +193,8 @@
                 <input type="number" id="discountPercentage" placeholder="Example: 15">
             </div>
             
-            <!-- FIXED EXPLICIT FUNCTION BINDING AS DEMANDED BY SERVER -->
+            <button type="button" class="action-btn" onclick="calculateDiscount(this)">Calculate Discount</button>
+            
+            <div id="discount-results" class="result-box">
+                <h3>Discount Breakdown</h3>
+                <div id="discountContent"></div>
