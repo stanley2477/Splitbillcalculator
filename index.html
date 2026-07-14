@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Split Bill & Percentage Suite</title>
+    <title>Split Bill & Tax Calculator</title>
     
-    <!-- PASTE YOUR GOOGLE SEARCH CONSOLE META TAG DIRECTLY BELOW THIS LINE -->
+    <!-- GOOGLE SEARCH CONSOLE META VERIFICATION PORT -->
     <meta name="google-site-verification" content="PASTE_YOUR_GOOGLE_CODE_HERE" />
 
     <style>
@@ -20,31 +20,24 @@
             --success-bg: #f0fdf4;
             --success-border: #10b981;
             --success-text: #166534;
-            --warning-bg: #fffbeb;
-            --warning-text: #78350f;
         }
 
         * { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; margin: 0; padding: 0; }
-        body { background-color: var(--bg-main); color: var(--text-body); padding: 15px; display: flex; flex-direction: column; min-height: 100vh; }
-        .container { max-width: 520px; width: 100%; margin: 10px auto; background: var(--card-bg); padding: 24px; border-radius: 24px; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05); position: relative; z-index: 1; }
-        header h1 { color: var(--text-title); font-size: 24px; font-weight: 800; margin-bottom: 6px; text-align: center; }
-        header p { color: #64748b; font-size: 14px; margin-bottom: 24px; text-align: center; }
+        body { background-color: var(--bg-main); color: var(--text-body); padding: 20px 15px; display: flex; flex-direction: column; min-height: 100vh; -webkit-tap-highlight-color: transparent; }
+        .container { max-width: 520px; width: 100%; margin: 10px auto; background: var(--card-bg); padding: 30px 24px; border-radius: 24px; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05); position: relative; z-index: 1; }
+        header h1 { color: var(--text-title); font-size: 26px; font-weight: 800; margin-bottom: 6px; text-align: center; }
+        header p { color: #64748b; font-size: 14px; margin-bottom: 28px; text-align: center; }
         
-        .section-divider { margin: 25px 0; border-top: 2px solid #e2e8f0; width: 100%; clear: both; }
-        section { display: block; width: 100%; margin-bottom: 10px; clear: both; position: relative; }
-        h2 { font-size: 18px; font-weight: 700; color: var(--text-title); margin-bottom: 14px; }
+        .section-divider { margin: 35px 0 25px 0; border-top: 2px solid #e2e8f0; padding-top: 25px; clear: both; }
+        h2 { color: var(--text-title); font-size: 18px; margin-bottom: 15px; text-align: left; display: flex; align-items: center; gap: 6px; }
         
-        .form-group { margin-bottom: 15px; text-align: left; }
-        .grid-5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; margin-bottom: 10px; width: 100%; }
-        label { display: block; font-weight: 600; margin-bottom: 6px; color: #475569; font-size: 12px; text-transform: uppercase; }
-        input, select { padding: 12px 14px; font-size: 16px; border-radius: 12px; border: 1px solid var(--border); width: 100%; box-sizing: border-box; background: #fff; color: var(--text-title); position: relative; z-index: 2; }
+        .form-group { margin-bottom: 18px; text-align: left; }
+        label { display: block; font-weight: 600; margin-bottom: 8px; color: #475569; font-size: 13px; text-transform: uppercase; }
+        input, select { padding: 14px 16px; font-size: 16px; border-radius: 12px; border: 1px solid var(--border); width: 100%; box-sizing: border-box; background: #fff; color: var(--text-title); position: relative; z-index: 2; }
         
-        .grid-5 input { padding: 10px 4px; text-align: center; font-size: 14px; width: 100%; }
-        .grid-5 label { font-size: 10px; text-align: center; margin-bottom: 4px; }
-        
+        /* HARD OVERRIDE FOR MOBILE INTERACTION FREEZES */
         button.action-btn { 
-            display: block;
-            padding: 14px; 
+            padding: 16px; 
             font-size: 16px; 
             border-radius: 12px; 
             border: none; 
@@ -54,30 +47,32 @@
             background-color: var(--primary); 
             color: white; 
             box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2); 
-            transition: transform 0.05s, background-color 0.05s;
+            transition: transform 0.05s ease, background-color 0.05s ease;
             position: relative;
-            z-index: 9999;
+            z-index: 9999 !important;
+            pointer-events: auto !important;
             touch-action: manipulation;
-            -webkit-tap-highlight-color: transparent;
             outline: none !important;
         }
-
-        button.action-btn:hover { 
-            background-color: var(--primary-hover); 
+        
+        @media (hover: hover) {
+            button.action-btn:hover { background-color: var(--primary-hover); }
         }
 
-        button.action-btn:active { 
-            transform: translateY(3px) scale(0.98);
-            background-color: var(--primary-hover);
+        /* Clean mechanical bounce animation that immediately releases color lock */
+        button.action-btn:active, button.action-btn:focus { 
+            transform: translateY(3px) scale(0.98) !important;
+            background-color: var(--primary-hover) !important;
+            outline: none !important;
+            box-shadow: none !important;
         }
         
-        .result-box { display: none; margin-top: 15px; background: var(--success-bg); border: 1px solid var(--success-border); padding: 15px; border-radius: 16px; text-align: left; position: relative; z-index: 10; }
-        .result-box h3 { color: var(--success-text); margin-bottom: 12px; font-size: 14px; text-transform: uppercase; text-align: center; border-bottom: 1px dashed rgba(16, 185, 129, 0.3); padding-bottom: 6px; }
-        .result-item { display: flex; justify-content: space-between; margin-bottom: 8px; color: var(--success-text); font-size: 14px; }
-        .result-total { font-size: 20px; font-weight: 800; border-top: 1px dashed #10b981; padding-top: 10px; margin-top: 10px; color: #064e3b; display: flex; justify-content: space-between; }
+        .result-box { display: none; margin-top: 20px; background: var(--success-bg); border: 1px solid var(--success-border); padding: 20px; border-radius: 16px; text-align: left; position: relative; z-index: 10; }
+        .result-box h3 { color: var(--success-text); margin-bottom: 14px; font-size: 15px; text-transform: uppercase; text-align: center; border-bottom: 1px dashed rgba(16,185,129,0.3); padding-bottom: 6px; }
+        .result-item { display: flex; justify-content: space-between; margin-bottom: 10px; color: var(--success-text); font-size: 15px; }
+        .result-total { font-size: 22px; font-weight: 800; border-top: 1px dashed #10b981; padding-top: 12px; margin-top: 12px; color: #064e3b; display: flex; justify-content: space-between; }
         
-        .warning-notice { display: none; background: var(--warning-bg); border: 1px solid #f59e0b; padding: 10px; border-radius: 12px; font-size: 13px; color: var(--warning-text); margin-bottom: 12px; text-align: center; font-weight: 500; }
-        footer { padding: 15px 0 5px 0; font-size: 13px; color: #64748b; text-align: center; clear: both; }
+        footer { margin-top: auto; padding: 24px 0 10px 0; font-size: 13px; color: #64748b; text-align: center; clear: both; }
     </style>
 </head>
 <body>
@@ -88,34 +83,38 @@
             <p>Smart, simple calculation tools designed for daily finance.</p>
         </header>
 
-        <!-- TOOL 1: SPLIT BILL -->
+        <!-- TOOL 1: BILL SPLITTER (ALWAYS VISIBLE) -->
         <section>
-            <h2>Split Bill</h2>
+            <h2>👥 Bill Splitter Tool</h2>
             <div class="form-group">
-                <label for="currencySelect">Select Currency Symbol</label>
+                <label for="currencySelect">Select Your Local Currency</label>
                 <select id="currencySelect">
-                    <option value="$">🇺🇸 USD - US Dollar ($)</option>
-                    <option value="£">🇬🇧 GBP - British Pound (£)</option>
+                    <!-- USA FIRST -->
+                    <option value="$">🇺🇸 USD - Dollar ($)</option>
+                    
+                    <!-- FOREIGN COUNTRIES (UP) -->
+                    <option value="£">🇬🇧 GBP - Pound (£)</option>
                     <option value="€">🇪🇺 EUR - Euro (€)</option>
-                    <option value="₹">🇮🇳 INR - Indian Rupee (₹)</option>
-                    <option value="A$">🇦🇺 AUD - Australian Dollar (A$)</option>
+                    <option value="₹">🇮🇳 INR - Rupee (₹)</option>
                     <option value="C$">🇨🇦 CAD - Canadian Dollar (C$)</option>
-                    <option value="₦" selected>🇳🇬 NGN - Nigerian Naira (₦)</option>
-                    <option value="₵">🇬🇭 GHS - Ghanaian Cedi (₵)</option>
-                    <option value="KSh">🇰🇪 KES - Kenyan Shilling (KSh)</option>
-                    <option value="R">🇿🇦 ZAR - South African Rand (R)</option>
+                    <option value="A$">🇦🇺 AUD - Australian Dollar (A$)</option>
+                    
+                    <!-- AFRICA COUNTRIES (DOWN) -->
+                    <option value="₦" selected>🇳🇬 NGN - Naira (₦)</option>
+                    <option value="₵">🇬🇭 GHS - Cedi (₵)</option>
+                    <option value="KSh">🇰🇪 KES - Shilling (KSh)</option>
+                    <option value="R">🇿🇦 ZAR - Rand (R)</option>
                 </select>
             </div>
             <div class="form-group">
-                <label for="totalBill">Total Money Amount</label>
-                <input type="number" id="totalBill" placeholder="Example: 25000">
+                <label for="totalBill">Total Bill Amount</label>
+                <input type="number" id="totalBill" placeholder="Example: 150">
             </div>
             <div class="form-group">
                 <label for="peopleCount">Number of People</label>
                 <input type="number" id="peopleCount" placeholder="Example: 4">
             </div>
-            
-            <button type="button" class="action-btn" onclick="calculateSplitBill(this)">Calculate Split</button>
+            <button class="action-btn" onclick="calculateSplit(this)">Calculate Split Amount</button>
             
             <div id="split-results" class="result-box">
                 <h3>Calculated Split Breakdown</h3>
@@ -123,83 +122,72 @@
             </div>
         </section>
 
+        <!-- VISUAL SECTION DIVIDER -->
         <div class="section-divider"></div>
 
-        <!-- TOOL 2: DEFINE PERCENTAGE CUT PER PERSON -->
+        <!-- TOOL 2: INCOME TAX TOOL (ALWAYS VISIBLE) -->
         <section>
-            <h2>📊 Define Percentage Cut Per Person (%)</h2>
+            <h2>💰 Income Tax Tool</h2>
             <div class="form-group">
-                <label for="shareTotalAmount">Total Amount to Share</label>
-                <input type="number" id="shareTotalAmount" placeholder="Example: 100000">
+                <label for="taxCurrency">Select Your Local Currency</label>
+                <select id="taxCurrency">
+                    <!-- USA FIRST -->
+                    <option value="$">🇺🇸 USD - Dollar ($)</option>
+                    
+                    <!-- FOREIGN COUNTRIES (UP) -->
+                    <option value="£">🇬🇧 GBP - Pound (£)</option>
+                    <option value="€">🇪🇺 EUR - Euro (€)</option>
+                    <option value="₹">🇮🇳 INR - Rupee (₹)</option>
+                    <option value="C$">🇨🇦 CAD - Canadian Dollar (C$)</option>
+                    <option value="A$">🇦🇺 AUD - Australian Dollar (A$)</option>
+                    
+                    <!-- AFRICA COUNTRIES (DOWN) -->
+                    <option value="₦" selected>🇳🇬 NGN - Naira (₦)</option>
+                    <option value="₵">🇬🇭 GHS - Cedi (₵)</option>
+                    <option value="KSh">🇰🇪 KES - Shilling (KSh)</option>
+                    <option value="R">🇿🇦 ZAR - Rand (R)</option>
+                </select>
             </div>
-            
             <div class="form-group">
-                <label>Percentages per Person (Must sum to 100% Total)</label>
-                <div class="grid-5">
-                    <div>
-                        <label>P1 %</label>
-                        <input type="number" id="pctPerson1" value="10">
-                    </div>
-                    <div>
-                        <label>P2 %</label>
-                        <input type="number" id="pctPerson2" value="20">
-                    </div>
-                    <div>
-                        <label>P3 %</label>
-                        <input type="number" id="pctPerson3" value="30">
-                    </div>
-                    <div>
-                        <label>P4 %</label>
-                        <input type="number" id="pctPerson4" value="20">
-                    </div>
-                    <div>
-                        <label>P5 %</label>
-                        <input type="number" id="pctPerson5" value="20">
-                    </div>
-                </div>
+                <label for="taxIncome">Enter Income Amount</label>
+                <input type="number" id="taxIncome" placeholder="Example: 5000">
             </div>
-
-            <div id="percentage-warn" class="warning-notice">⚠️ Total must equal 100%! Current total: <span id="current-pct-total">0</span>%</div>
-
-            <button type="button" class="action-btn" onclick="calculatePercentageShare(this)">Calculate Share Breakdown</button>
+            <div class="form-group">
+                <label for="taxPeriod">Pay Period</label>
+                <select id="taxPeriod">
+                    <option value="Hourly">Hourly</option>
+                    <option value="Weekly">Weekly</option>
+                    <option value="Monthly">Monthly</option>
+                    <option value="Yearly">Yearly</option>
+                </select>
+            </div>
+            <button class="action-btn" onclick="calculateTax(this)">Calculate Income & Tax</button>
             
-            <div id="share-results" class="result-box">
-                <h3>Custom Share Results</h3>
-                <div id="shareContent"></div>
+            <div id="tax-results" class="result-box">
+                <h3>Tax Calculation Breakdown</h3>
+                <div id="taxContent"></div>
             </div>
         </section>
-
-        <div class="section-divider"></div>
-
-        <!-- TOOL 3: PRODUCT DISCOUNT FINDER -->
-        <section>
-            <h2>🏷️ Product Discount Finder</h2>
-            <div class="form-group">
-                <label for="productPrice">Original Product Price</label>
-                <input type="number" id="productPrice" placeholder="Example: 15000">
-            </div>
-            <div class="form-group">
-                <label for="discountPercentage">Discount Percentage (%)</label>
-                <input type="number" id="discountPercentage" placeholder="Example: 15">
-            </div>
-            
-            <button type="button" class="action-btn" onclick="calculateProductDiscount(this)">Calculate Discount</button>
-            
-            <div id="discount-results" class="result-box">
-                <h3>Discount Breakdown</h3>
-                <div id="discountContent"></div>
-            </div>
-        </section>
-
-        <footer>
-            <p>&copy; Financial Suite Application</p>
-        </footer>
     </div>
 
-    <script>
-        function getCurrencySymbol() {
-            return document.getElementById('currencySelect').value;
-        }
+    <footer>
+        <p>© 2026 Split Bill Calculator</p>
+    </footer>
 
-        function calculateSplitBill(buttonEl) {
-            if(buttonEl) buttonEl.blur();
+    <script>
+        function calculateSplit(buttonEl) {
+            if (buttonEl) buttonEl.blur(); // Instantly drops focus to remove dark blue hold
+            
+            let bill = parseFloat(document.getElementById('totalBill').value);
+            let people = parseInt(document.getElementById('peopleCount').value);
+            const currency = document.getElementById('currencySelect').value;
+
+            if (isNaN(bill) || bill < 0) bill = 0;
+            if (isNaN(people) || people <= 0) people = 1;
+
+            const share = (bill / people).toFixed(2);
+            document.getElementById('splitContent').innerHTML = `
+                <div class="result-item"><span>Total Bill Pool:</span><span>${currency}${parseFloat(bill).toLocaleString(undefined, {minimumFractionDigits: 2})}</span></div>
+                <div class="result-item"><span>Total Splitters:</span><span>${people} People</span></div>
+                <div class="result-item result-total"><span>Each Person Pays:</span><span>${currency}${parseFloat(share).toLocaleString(undefined, {minimumFractionDigits: 2})}</span></div>`;
+            document.getElementById('split-results').style.display = "block";
