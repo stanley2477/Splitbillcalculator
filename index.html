@@ -31,7 +31,6 @@
         label { display: block; font-weight: 600; margin-bottom: 8px; color: #475569; font-size: 13px; text-transform: uppercase; }
         input, select { padding: 14px 16px; font-size: 16px; border-radius: 12px; border: 1px solid var(--border); width: 100%; box-sizing: border-box; background: #fff; color: var(--text-title); }
         
-        /* FIXED: Force pointer-events and clear touch highlights to guarantee mobile clicking */
         button.action-btn { 
             display: block;
             padding: 16px; 
@@ -46,7 +45,6 @@
             box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2); 
             transition: background 0.1s, transform 0.1s; 
             -webkit-tap-highlight-color: transparent !important;
-            pointer-events: auto !important;
         }
         button.action-btn:hover { background-color: var(--primary-hover); }
         button.action-btn:active { transform: scale(0.97); }
@@ -95,7 +93,7 @@
                 <label for="peopleCount">Number of People</label>
                 <input type="number" id="peopleCount" placeholder="Example: 4">
             </div>
-            <button type="button" class="action-btn" onclick="calculateSplit(event)">Calculate Split Amount</button>
+            <button type="button" class="action-btn" onclick="calculateSplit()">Calculate Split Amount</button>
             
             <div id="split-results" class="result-box">
                 <h3>Calculated Split Breakdown</h3>
@@ -137,7 +135,7 @@
                     <option value="Yearly">Yearly</option>
                 </select>
             </div>
-            <button type="button" class="action-btn" onclick="calculateTax(event)">Calculate Income & Tax</button>
+            <button type="button" class="action-btn" onclick="calculateTax()">Calculate Income & Tax</button>
             
             <div id="tax-results" class="result-box">
                 <h3>Tax Calculation Breakdown</h3>
@@ -183,3 +181,6 @@
                     <option value="INR">🇮🇳 INR - Rupee (₹)</option>
                     <option value="CAD">🇨🇦 CAD - Canadian Dollar (C$)</option>
                     <option value="AUD">🇦🇺 AUD - Australian Dollar (A$)</option>
+                </select>
+            </div>
+            <button type="button" class="action-btn" onclick="calculateConversion()">Convert Currency</button>
