@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Split Bill Calculator</title>
+  <title>Split Bill Calculator Converter</title>
   <style>
-    /* Direct Layout Styles to Prevent Code Freezes */
+    /* Direct Layout Styles to Ensure Zero Loading Latency */
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       background-color: #f8fafc;
@@ -53,7 +53,9 @@
     .pct-box { text-align: center; }
     .pct-box span { font-size: 10px; font-weight: 900; color: #94a3b8; display: block; margin-bottom: 4px; }
     .pct-box input { text-align: center; padding: 10px 4px; font-size: 12px; }
-    button {
+    
+    /* Strong Blue Action Buttons */
+    .btn-action {
       width: 100%;
       background-color: #2563eb;
       color: #ffffff;
@@ -67,8 +69,10 @@
       transition: all 0.2s;
       margin-top: 4px;
     }
-    button:hover { background-color: #1d4ed8; }
-    button:active { transform: scale(0.99); }
+    .btn-action:hover { background-color: #1d4ed8; }
+    .btn-action:active { transform: scale(0.99); }
+    
+    /* Result Display Layouts */
     .result-box { border-radius: 16px; padding: 16px; margin-top: 16px; font-size: 14px; display: none; }
     .blue-res { background-color: #eff6ff; border: 1px solid #dbeafe; color: #1e3a8a; }
     .blue-res span { font-weight: 900; color: #2563eb; font-size: 16px; }
@@ -89,25 +93,25 @@
       <p>Smart, simple calculation tools designed for daily finance.</p>
     </div>
 
-    <!-- 1. SPLIT BILL COMPONENT -->
+    <!-- 1. SPLIT BILL CONVERTER MODULE -->
     <section>
       <h2>Split Bill</h2>
       <div class="form-group">
         <label>Select Currency Symbol</label>
         <select id="currency">
-          <!-- First: USA -->
+          <!-- USA First -->
           <option value="$">🇺🇸 USD - US Dollar ($)</option>
-          <!-- Next: 4 Foreign Currencies -->
+          <!-- 4 Foreign Currencies -->
           <option value="£">🇬🇧 GBP - British Pound (£)</option>
           <option value="€">🇪🇺 EUR - Euro (€)</option>
           <option value="C$">🇨🇦 CAD - Canadian Dollar ($)</option>
           <option value="A$">🇦🇺 AUD - Australian Dollar ($)</option>
-          <!-- Next: African Currencies -->
+          <!-- African Currencies -->
           <option value="₦">🇳🇬 NGN - Nigerian Naira (₦)</option>
           <option value="₵">🇬🇭 GHS - Ghanaian Cedi (₵)</option>
           <option value="KSh">🇰🇪 KES - Kenyan Shilling (KSh)</option>
           <option value="R">🇿🇦 ZAR - South African Rand (R)</option>
-          <!-- Next: Other Global Currencies -->
+          <!-- Other Global Currencies -->
           <option value="₹">🇮🇳 INR - Indian Rupee (₹)</option>
           <option value="د.إ">🇦🇪 AED - UAE Dirham (د.إ)</option>
           <option value="¥">🇨🇳 CNY - Chinese Yuan (¥)</option>
@@ -124,7 +128,9 @@
         <label>Number of People</label>
         <input id="peopleCount" type="number" placeholder="33" />
       </div>
-      <button type="button" onclick="calculateSplit()">Calculate Split</button>
+      
+      <!-- Hardcoded Inline Onclick Executor -->
+      <button class="btn-action" onclick="runSplitBillConversion(event)">Calculate Split</button>
       
       <div id="splitResult" class="result-box blue-res">
         <p style="margin:0 0 4px 0;">Each Person Pays: <span id="perPersonText"></span></p>
@@ -132,7 +138,7 @@
       </div>
     </section>
 
-    <!-- 2. DEFINE PERCENTAGE CUT COMPONENT -->
+    <!-- 2. PERCENTAGE SHARE CONVERTER MODULE -->
     <section>
       <h2>📊 Define Percentage Cut Per Person (%)</h2>
       <div class="form-group">
@@ -149,12 +155,14 @@
           <div class="pct-box"><span>P5 %</span><input id="p5" type="number" value="20" /></div>
         </div>
       </div>
-      <button type="button" onclick="calculatePercentageCut()">Calculate Share Breakdown</button>
+      
+      <!-- Hardcoded Inline Onclick Executor -->
+      <button class="btn-action" onclick="runPercentageCutConversion(event)">Calculate Share Breakdown</button>
       
       <div id="shareResult" class="result-box slate-res" style="flex-direction:column; gap:6px;"></div>
     </section>
 
-    <!-- 3. PRODUCT DISCOUNT FINDER COMPONENT -->
+    <!-- 3. DISCOUNT FINDER CONVERTER MODULE -->
     <section style="margin-bottom:0;">
       <h2>🏷️ Product Discount Finder</h2>
       <div class="form-group">
@@ -165,7 +173,9 @@
         <label>Discount Percentage (%)</label>
         <input id="discountPercent" type="number" placeholder="Example: 15" />
       </div>
-      <button type="button" onclick="calculateDiscount()">Calculate Discount</button>
+      
+      <!-- Hardcoded Inline Onclick Executor -->
+      <button class="btn-action" onclick="runDiscountConversion(event)">Calculate Discount</button>
       
       <div id="discountResult" class="result-box green-res">
         <p style="margin:0 0 4px 0;">Final Sale Price: <span id="finalPriceText"></span></p>
@@ -175,57 +185,50 @@
 
   </div>
 
-  <!-- Re-Engineered Independent Calculator Logic -->
+  <!-- Direct Execution Engine -->
   <script>
-    function calculateSplit() {
-      const symbol = document.getElementById('currency').value;
-      const billInput = document.getElementById('totalBill').value;
-      const peopleInput = document.getElementById('peopleCount').value;
+    function runSplitBillConversion(event) {
+      // Force block any hidden page resets
+      if(event) { event.preventDefault(); event.stopPropagation(); }
+      
+      var symbol = document.getElementById('currency').value;
+      var billInput = document.getElementById('totalBill').value;
+      var peopleInput = document.getElementById('peopleCount').value;
       
       if (!billInput || !peopleInput) {
         alert("Please enter both the Total Money Amount and the Number of People.");
-        return;
+        return false;
       }
 
-      const bill = parseFloat(billInput);
-      const people = parseInt(peopleInput);
+      var bill = parseFloat(billInput);
+      var people = parseInt(peopleInput);
 
       if (people <= 0) {
         alert("Number of people must be greater than 0.");
-        return;
+        return false;
       }
 
-      const perPerson = Math.floor((bill / people) * 100) / 100;
-      const distributed = perPerson * people;
-      const remainder = Math.round((bill - distributed) * 100) / 100;
+      var perPerson = Math.floor((bill / people) * 100) / 100;
+      var distributed = perPerson * people;
+      var remainder = Math.round((bill - distributed) * 100) / 100;
 
       document.getElementById('perPersonText').innerText = symbol + perPerson.toLocaleString(undefined, {minimumFractionDigits: 2});
       document.getElementById('remainderText').innerText = symbol + remainder.toFixed(2);
       document.getElementById('splitResult').style.display = 'block';
+      return false;
     }
 
-    function calculatePercentageCut() {
-      const symbol = document.getElementById('currency').value;
-      const totalInput = document.getElementById('shareTotal').value;
+    function runPercentageCutConversion(event) {
+      // Force block any hidden page resets
+      if(event) { event.preventDefault(); event.stopPropagation(); }
+      
+      var symbol = document.getElementById('currency').value;
+      var totalInput = document.getElementById('shareTotal').value;
       
       if (!totalInput) {
         alert("Please enter the Total Amount to Share.");
-        return;
+        return false;
       }
 
-      const total = parseFloat(totalInput);
-      const p1 = parseInt(document.getElementById('p1').value) || 0;
-      const p2 = parseInt(document.getElementById('p2').value) || 0;
-      const p3 = parseInt(document.getElementById('p3').value) || 0;
-      const p4 = parseInt(document.getElementById('p4').value) || 0;
-      const p5 = parseInt(document.getElementById('p5').value) || 0;
-
-      if ((p1 + p2 + p3 + p4 + p5) !== 100) {
-        alert("Percentages must sum up to exactly 100%!");
-        return;
-      }
-
-      const pArr = [p1, p2, p3, p4, p5];
-      let html = '';
-      pArr.forEach((pct, index) => {
-        const amt = (total * (pct / 100)).toFixed(2);
+      var total = parseFloat(totalInput);
+      var p1 = parseInt(document.getElementById('p1').value) || 0;
