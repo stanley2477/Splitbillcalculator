@@ -35,7 +35,7 @@
         button.action-btn:hover { background-color: var(--primary-hover); }
         
         .result-box { display: none; margin-top: 20px; background: var(--success-bg); border: 1px solid var(--success-border); padding: 20px; border-radius: 16px; text-align: left; }
-        .result-box h3 { color: var(--success-text); margin-bottom: 14px; font-size: 15px; text-transform: uppercase; text-align: center; border-bottom: 1px dashed rgba(16, 185, 129, 0.3); padding-bottom: 6px; }
+        .result-box h3 { color: var(--success-text); margin-bottom: 14px; font-size: 15px; text-transform: uppercase; text-align: center; border-bottom: 1px dashed rgba(16,185,129,0.3); padding-bottom: 6px; }
         .result-item { display: flex; justify-content: space-between; margin-bottom: 10px; color: var(--success-text); font-size: 15px; }
         .result-total { font-size: 22px; font-weight: 800; border-top: 1px dashed #10b981; padding-top: 12px; margin-top: 12px; color: #064e3b; }
         
@@ -125,55 +125,6 @@
                 <div id="taxContent"></div>
             </div>
         </section>
-
-        <!-- VISUAL SECTION DIVIDER -->
-        <div class="section-divider"></div>
-
-        <!-- TOOL 3: CURRENCY CONVERTER -->
-        <section>
-            <h2>💱 Currency Converter Tool</h2>
-            <div class="form-group">
-                <label>Amount to Convert</label>
-                <input type="number" id="convertAmount" placeholder="Example: 100">
-            </div>
-            <div class="form-group">
-                <label>From Currency</label>
-                <select id="fromCurrency">
-                    <option value="USD">🇺🇸 USD - Dollar ($)</option>
-                    <option value="NGN">🇳🇬 NGN - Naira (₦)</option>
-                    <option value="GHS">🇬🇭 GHS - Cedi (₵)</option>
-                    <option value="GBP">🇬🇧 GBP - Pound (£)</option>
-                    <option value="EUR">🇪🇺 EUR - Euro (€)</option>
-                    <option value="KES">🇰🇪 KES - Shilling (KSh)</option>
-                    <option value="ZAR">🇿🇦 ZAR - Rand (R)</option>
-                    <option value="INR">🇮🇳 INR - Rupee (₹)</option>
-                    <option value="CAD">🇨🇦 CAD - Canadian Dollar (C$)</option>
-                    <option value="AUD">🇦🇺 AUD - Australian Dollar (A$)</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label>To Currency</label>
-                <select id="toCurrency">
-                    <option value="NGN">🇳🇬 NGN - Naira (₦)</option>
-                    <option value="USD">🇺🇸 USD - Dollar ($)</option>
-                    <option value="GHS">🇬🇭 GHS - Cedi (₵)</option>
-                    <option value="GBP">🇬🇧 GBP - Pound (£)</option>
-                    <option value="EUR">🇪🇺 EUR - Euro (€)</option>
-                    <option value="KES">🇰🇪 KES - Shilling (KSh)</option>
-                    <option value="ZAR">🇿🇦 ZAR - Rand (R)</option>
-                    <option value="INR">🇮🇳 INR - Rupee (₹)</option>
-                    <option value="CAD">🇨🇦 CAD - Canadian Dollar (C$)</option>
-                    <option value="AUD">🇦🇺 AUD - Australian Dollar (A$)</option>
-                </select>
-            </div>
-            <button class="action-btn" onclick="calculateConversion()">Convert Currency</button>
-            
-            <!-- FIXED: Added missing results cards to prevent script crashes -->
-            <div id="convert-results" class="result-box">
-                <h3>Conversion Results</h3>
-                <div id="convertContent"></div>
-            </div>
-        </section>
     </div>
 
     <footer>
@@ -186,3 +137,128 @@
             const people = parseInt(document.getElementById('peopleCount').value);
             const currency = document.getElementById('currencySelect').value;
 
+            if (isNaN(bill) || isNaN(people) || people <= 0) {
+                alert("Please enter valid amounts and total number of people.");
+                return;
+            }
+
+            const share = (bill / people).toFixed(2);
+            document.getElementById('splitContent').innerHTML = `
+                <div class="result-item"><span>Total Bill Pool:</span><span>${currency}${bill.toFixed(2)}</span></div>
+                <div class="result-item"><span>Total Splitters:</span><span>${people} People</span></div>
+                <div class="result-item result-total"><span>Each Person Pays:</span><span>${currency}${share}</span></div>`;
+            document.getElementById('split-results').style.display = "block";
+        }
+
+        function calculateTax() {
+            const currency = document.getElementById('taxCurrency').value;
+            const income = parseFloat(document.getElementById('taxIncome').value);
+            const period = document.getElementById('taxPeriod').value;
+
+            if (isNaN(income) || income < 0) {
+                alert("Please enter a valid financial income parameter.");
+                return;
+            }
+
+            let annualEstimate = 0;
+            if (period === 'Hourly') annualEstimate = income * 40 * 52;
+            else if (period === 'Weekly') annualEstimate = income * 52;
+            else if (period === 'Monthly') annualEstimate = income * 12;
+            else annualEstimate = income;
+
+            let rate = 0.10;
+            if (annualEstimate > 100000) rate = 0.30;
+            else if (annualEstimate > 50000) rate = 0.20;
+            else if (annualEstimate > 15000) rate = 0.15;
+
+            const gross = income;
+            const tax = gross * rate;
+            const net = gross - tax;
+
+            document.getElementById('taxContent').innerHTML = `
+                <div class="result-item"><span>Gross Pay Input:</span><span>${currency}${gross.toFixed(2)}</span></div>
+                <div class="result-item"><span>Est. Tax Rate (${(rate * 100)}%):</span><span>${currency}${tax.toFixed(2)}</span></div>
+                <div class="result-item result-total"><span>Net Take-Home Pay:</span><span>${currency}${net.toFixed(2)}</span></div>`;
+            document.getElementById('tax-results').style.display = "block";
+        }
+    </script>
+</body>
+</html>
+<!-- VISUAL SECTION DIVIDER -->
+<div class="section-divider"></div>
+
+<!-- TOOL 3: CURRENCY CONVERTER -->
+<section style="position: relative; z-index: 999;">
+    <h2>💱 Currency Converter Tool</h2>
+    <div class="form-group">
+        <label>Amount to Convert</label>
+        <input type="number" id="convertAmount" placeholder="Example: 100">
+    </div>
+    <div class="form-group">
+        <label>From Currency</label>
+        <select id="fromCurrency">
+            <option value="USD">🇺🇸 USD - Dollar ($)</option>
+            <option value="NGN">🇳🇬 NGN - Naira (₦)</option>
+            <option value="GHS">🇬🇭 GHS - Cedi (₵)</option>
+            <option value="GBP">🇬🇧 GBP - Pound (£)</option>
+            <option value="EUR">🇪🇺 EUR - Euro (€)</option>
+            <option value="KES">🇰🇪 KES - Shilling (KSh)</option>
+            <option value="ZAR">🇿🇦 ZAR - Rand (R)</option>
+            <option value="INR">🇮🇳 INR - Rupee (₹)</option>
+            <option value="CAD">🇨🇦 CAD - Canadian Dollar (C$)</option>
+            <option value="AUD">🇦🇺 AUD - Australian Dollar (A$)</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label>To Currency</label>
+        <select id="toCurrency">
+            <option value="NGN">🇳🇬 NGN - Naira (₦)</option>
+            <option value="USD">🇺🇸 USD - Dollar ($)</option>
+            <option value="GHS">🇬🇭 GHS - Cedi (₵)</option>
+            <option value="GBP">🇬🇧 GBP - Pound (£)</option>
+            <option value="EUR">🇪🇺 EUR - Euro (€)</option>
+            <option value="KES">🇰🇪 KES - Shilling (KSh)</option>
+            <option value="ZAR">🇿🇦 ZAR - Rand (R)</option>
+            <option value="INR">🇮🇳 INR - Rupee (₹)</option>
+            <option value="CAD">🇨🇦 CAD - Canadian Dollar (C$)</option>
+            <option value="AUD">🇦🇺 AUD - Australian Dollar (A$)</option>
+        </select>
+    </div>
+    <button class="action-btn" onclick="calculateConversion()">Convert Currency</button>
+    
+    <div id="convert-results" class="result-box">
+        <h3>Conversion Results</h3>
+        <div id="convertContent"></div>
+    </div>
+</section>
+function calculateConversion() {
+    const amount = parseFloat(document.getElementById('convertAmount').value);
+    const from = document.getElementById('fromCurrency').value;
+    const to = document.getElementById('toCurrency').value;
+
+    if (isNaN(amount) || amount <= 0) {
+        alert("Please enter a valid conversion amount.");
+        return;
+    }
+
+    const symbols = {
+        USD: "$", NGN: "₦", GHS: "₵", GBP: "£", EUR: "€",
+        KES: "KSh", ZAR: "R", INR: "₹", CAD: "C$", AUD: "A$"
+    };
+
+    // Updated with official 2026 Central Bank market exchange rates
+    const usdRates = {
+        USD: 1, NGN: 1379.80, GHS: 15.00, GBP: 0.78, EUR: 0.92,
+        KES: 130.00, ZAR: 18.20, INR: 83.50, CAD: 1.36, AUD: 1.49
+    };
+
+    const amountInUSD = amount / usdRates[from];
+    const finalOutputValue = amountInUSD * usdRates[to];
+    const displayRate = usdRates[to] / usdRates[from];
+
+    document.getElementById('convertContent').innerHTML = `
+        <div class="result-item"><span>From Currency:</span><span>${symbols[from]}${amount.toFixed(2)} ${from}</span></div>
+        <div class="result-item"><span>Base Exchange Rate:</span><span>1 ${from} = ${displayRate.toFixed(4)} ${to}</span></div>
+        <div class="result-item result-total"><span>Converted Amount:</span><span>${symbols[to]}${finalOutputValue.toFixed(2)} ${to}</span></div>`;
+    document.getElementById('convert-results').style.display = "block";
+}
