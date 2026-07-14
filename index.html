@@ -28,6 +28,7 @@
         
         .section-divider { margin: 25px 0; border-top: 2px solid #e2e8f0; width: 100%; clear: both; }
         section { display: block; width: 100%; margin-bottom: 10px; clear: both; position: relative; }
+        h2 { font-size: 18px; font-weight: 700; color: var(--text-title); margin-bottom: 14px; }
         
         .form-group { margin-bottom: 15px; text-align: left; }
         .grid-5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; margin-bottom: 10px; width: 100%; }
@@ -37,7 +38,6 @@
         .grid-5 input { padding: 10px 4px; text-align: center; font-size: 14px; width: 100%; }
         .grid-5 label { font-size: 10px; text-align: center; margin-bottom: 4px; }
         
-        /* HARD CLICKABLE RESET: Forces the browser to put buttons on top of all transparent layers */
         button.action-btn { 
             display: block;
             padding: 14px; 
@@ -50,14 +50,15 @@
             background-color: var(--primary); 
             color: white; 
             box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2); 
-            transition: background 0.1s, transform 0.05s; 
+            transition: background 0.1s, transform 0.1s; 
             -webkit-tap-highlight-color: transparent !important;
             position: relative;
-            z-index: 9999 !important;
+            z-index: 10;
             pointer-events: auto !important;
         }
         button.action-btn:hover { background-color: var(--primary-hover); }
-        button.action-btn:active { transform: scale(0.96); }
+        /* Noticeable movement styling below */
+        button.action-btn:active { transform: translateY(3px) scale(0.97); box-shadow: 0 2px 4px rgba(37, 99, 235, 0.1); }
         
         .result-box { display: none; margin-top: 15px; background: var(--success-bg); border: 1px solid var(--success-border); padding: 15px; border-radius: 16px; text-align: left; position: relative; z-index: 10; }
         .result-box h3 { color: var(--success-text); margin-bottom: 12px; font-size: 14px; text-transform: uppercase; text-align: center; border-bottom: 1px dashed rgba(16, 185, 129, 0.3); padding-bottom: 6px; }
@@ -119,7 +120,7 @@
             </div>
             
             <div class="form-group">
-                <label>Percentages per Person (Must sum to 100% bridges)</label>
+                <label>Percentages per Person (Must sum to 100%)</label>
                 <div class="grid-5">
                     <div>
                         <label>P1 %</label>
@@ -165,37 +166,38 @@
             </div>
             <div class="form-group">
                 <label for="discountPercentage">Discount Percentage (%)</label>
-                <input type="number" id="discountPercentage" placeholder="Example: 10">
+                <input type="number" id="discountPercentage" placeholder="Example: 15">
             </div>
-            <button type="button" class="action-btn" id="btn-discount">Find Total Savings</button>
+            <button type="button" class="action-btn" id="btn-discount">Calculate Discount</button>
             
             <div id="discount-results" class="result-box">
-                <h3>Discount Savings Breakdown</h3>
+                <h3>Discount Breakdown</h3>
                 <div id="discountContent"></div>
             </div>
         </section>
+
+        <footer>
+            <p>&copy; Financial Suite Application</p>
+        </footer>
     </div>
 
-    <footer>
-        <p>© 2026 Split Bill Calculator</p>
-    </footer>
-
+    <!-- JAVASCRIPT LOGIC IMPLEMENTATION -->
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
+        // Get global currency selection helper
+        function getCurrency() {
+            return document.getElementById('currencySelect').value;
+        }
 
-            // 1. SPLIT BILL HANDLER
-            document.getElementById('btn-split').addEventListener('click', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                var sym = document.getElementById('currencySelect').value;
-                var total = parseFloat(document.getElementById('totalBill').value);
-                var people = parseInt(document.getElementById('peopleCount').value);
+        // TOOL 1: Split Bill Calculation Engine
+        document.getElementById('btn-split').addEventListener('click', function() {
+            const total = parseFloat(document.getElementById('totalBill').value);
+            const people = parseInt(document.getElementById('peopleCount').value);
+            const resultBox = document.getElementById('split-results');
+            const content = document.getElementById('splitContent');
+            const currency = getCurrency();
 
-                if (isNaN(total) || isNaN(people) || total <= 0 || people <= 0) {
-                    alert("Please enter valid amounts.");
-                    return;
-                }
+            if (isNaN(total) || total <= 0 || isNaN(people) || people <= 0) {
+                alert('Please enter valid positive numbers for total amount and people count.');
+                return;
+            }
 
-                var eachPays = (total / people).toFixed(2);
-                document.getElementById('splitContent').innerHTML = `
-                    <div class="result-item"><span>Total Amount:</span> <span>${sym}${total.toFixed(2)}</span></div>
