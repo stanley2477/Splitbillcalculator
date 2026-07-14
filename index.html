@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Split Bill & Value Tools</title>
+    <title>Split Bill & Percentage Cut Calculator</title>
     <style>
         :root {
             --primary: #2563eb;
@@ -50,7 +50,7 @@
             <p>Smart, simple calculation tools designed for daily finance.</p>
         </header>
 
-        <!-- GLOBAL CURRENCY SELECTOR FOR THE WHOLE PAGE -->
+        <!-- GLOBAL CURRENCY SELECTOR -->
         <div class="form-group">
             <label>Select Your Local Currency</label>
             <select id="currencySelect">
@@ -69,7 +69,7 @@
 
         <div class="section-divider"></div>
 
-        <!-- TOOL 1: ORIGINAL BILL SPLITTER -->
+        <!-- TOOL 1: BILL SPLITTER TOOL -->
         <section>
             <h2>👥 Bill Splitter Tool</h2>
             <div class="form-group">
@@ -80,7 +80,7 @@
                 <label>Number of People</label>
                 <input type="number" id="peopleCount" placeholder="Example: 4">
             </div>
-            <button class="action-btn" onclick="calculateSplit()">Calculate Split Amount</button>
+            <button type="button" class="action-btn" onclick="calculateSplit()">Calculate Split Amount</button>
             
             <div id="split-results" class="result-box">
                 <h3>Calculated Split Breakdown</h3>
@@ -93,7 +93,7 @@
 
         <!-- TOOL 2: DEFINE PERCENTAGE CUT PER PERSON -->
         <section>
-            <h2>📊 Define Percentage Cut Per Person</h2>
+            <h2>📊 Define Percentage Cut Per Person (%)</h2>
             <div class="form-group">
                 <label>Total Bill Amount</label>
                 <input type="number" id="percentageTotalBill" placeholder="Example: 150">
@@ -102,33 +102,11 @@
                 <label>Your Custom Cut Percentage (%)</label>
                 <input type="number" id="customPercentage" placeholder="Example: 25" min="1" max="100">
             </div>
-            <button class="action-btn" onclick="calculatePercentageCut()">Calculate Percentage Cut</button>
+            <button type="button" class="action-btn" onclick="calculatePercentageCut()">Calculate Percentage Cut</button>
             
             <div id="percentage-results" class="result-box">
                 <h3>Calculated Share Breakdown</h3>
                 <div id="percentageContent"></div>
-            </div>
-        </section>
-
-        <!-- VISUAL SECTION DIVIDER -->
-        <div class="section-divider"></div>
-
-        <!-- TOOL 3: PRODUCT DISCOUNT FINDER -->
-        <section>
-            <h2>🏷️ Product Discount Finder</h2>
-            <div class="form-group">
-                <label>Original Product Price</label>
-                <input type="number" id="originalPrice" placeholder="Example: 80">
-            </div>
-            <div class="form-group">
-                <label>Discount Rate (%)</label>
-                <input type="number" id="discountRate" placeholder="Example: 15" min="0" max="100">
-            </div>
-            <button class="action-btn" onclick="calculateDiscount()">Find Discounted Price</button>
-            
-            <div id="discount-results" class="result-box">
-                <h3>Price Savings Summary</h3>
-                <div id="discountContent"></div>
             </div>
         </section>
     </div>
@@ -138,7 +116,7 @@
     </footer>
 
     <script>
-        // FUNCTION 1: ORIGINAL SPLIT BILL
+        // TOOL 1 FUNCTION
         function calculateSplit() {
             const bill = parseFloat(document.getElementById('totalBill').value);
             const people = parseInt(document.getElementById('peopleCount').value);
@@ -157,7 +135,7 @@
             document.getElementById('split-results').style.display = "block";
         }
 
-        // FUNCTION 2: PERCENTAGE CUT
+        // TOOL 2 FUNCTION
         function calculatePercentageCut() {
             const bill = parseFloat(document.getElementById('percentageTotalBill').value);
             const percentage = parseFloat(document.getElementById('customPercentage').value);
@@ -178,11 +156,6 @@
                 <div class="result-item result-total"><span>You Will Pay:</span><span>${currency}${personPays}</span></div>`;
             document.getElementById('percentage-results').style.display = "block";
         }
-
-        // FUNCTION 3: DISCOUNT FINDER
-        function calculateDiscount() {
-            const originalPrice = parseFloat(document.getElementById('originalPrice').value);
-            const discountRate = parseFloat(document.getElementById('discountRate').value);
-            const currency = document.getElementById('currencySelect').value;
-
-            if (isNaN(originalPrice) || isNaN(discountRate) || discountRate < 0 || discountRate > 100) {
+    </script>
+</body>
+</html>
