@@ -1,9 +1,13 @@
-html<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Split Bill & Percentage Suite</title>
+    
+    <!-- PASTE YOUR GOOGLE SEARCH CONSOLE META TAG DIRECTLY BELOW THIS LINE -->
+    <meta name="google-site-verification" content="PASTE_YOUR_GOOGLE_CODE_HERE" />
+
     <style>
         :root {
             --primary: #2563eb;
@@ -38,7 +42,6 @@ html<!DOCTYPE html>
         .grid-5 input { padding: 10px 4px; text-align: center; font-size: 14px; width: 100%; }
         .grid-5 label { font-size: 10px; text-align: center; margin-bottom: 4px; }
         
-        /* OVERRIDDEN BLUE COLOR FIX RULESET */
         button.action-btn { 
             display: block;
             padding: 14px; 
@@ -51,12 +54,11 @@ html<!DOCTYPE html>
             background-color: var(--primary); 
             color: white; 
             box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2); 
-            transition: transform 0.1s ease, background-color 0.1s ease;
+            transition: transform 0.05s, background-color 0.05s;
             position: relative;
-            z-index: 99999 !important;
-            pointer-events: auto !important;
+            z-index: 9999;
             touch-action: manipulation;
-            -webkit-tap-highlight-color: transparent !important; /* Removes native Safari tap filter */
+            -webkit-tap-highlight-color: transparent;
             outline: none !important;
         }
 
@@ -64,12 +66,9 @@ html<!DOCTYPE html>
             background-color: var(--primary-hover); 
         }
 
-        /* Fluid click release styling */
-        button.action-btn:active, button.action-btn:focus { 
-            transform: translateY(3px) scale(0.98) !important;
-            background-color: var(--primary-hover) !important;
-            outline: none !important;
-            box-shadow: none !important;
+        button.action-btn:active { 
+            transform: translateY(3px) scale(0.98);
+            background-color: var(--primary-hover);
         }
         
         .result-box { display: none; margin-top: 15px; background: var(--success-bg); border: 1px solid var(--success-border); padding: 15px; border-radius: 16px; text-align: left; position: relative; z-index: 10; }
@@ -95,17 +94,12 @@ html<!DOCTYPE html>
             <div class="form-group">
                 <label for="currencySelect">Select Currency Symbol</label>
                 <select id="currencySelect">
-                    <!-- USA FIRST -->
                     <option value="$">🇺🇸 USD - US Dollar ($)</option>
-                    
-                    <!-- OTHER FOREIGN COUNTRIES (UP) -->
                     <option value="£">🇬🇧 GBP - British Pound (£)</option>
                     <option value="€">🇪🇺 EUR - Euro (€)</option>
                     <option value="₹">🇮🇳 INR - Indian Rupee (₹)</option>
                     <option value="A$">🇦🇺 AUD - Australian Dollar (A$)</option>
                     <option value="C$">🇨🇦 CAD - Canadian Dollar (C$)</option>
-                    
-                    <!-- AFRICA GROUP (DOWN) -->
                     <option value="₦" selected>🇳🇬 NGN - Nigerian Naira (₦)</option>
                     <option value="₵">🇬🇭 GHS - Ghanaian Cedi (₵)</option>
                     <option value="KSh">🇰🇪 KES - Kenyan Shilling (KSh)</option>
@@ -121,7 +115,7 @@ html<!DOCTYPE html>
                 <input type="number" id="peopleCount" placeholder="Example: 4">
             </div>
             
-            <button type="button" class="action-btn" id="btn-split">Calculate Split</button>
+            <button type="button" class="action-btn" onclick="calculateSplitBill(this)">Calculate Split</button>
             
             <div id="split-results" class="result-box">
                 <h3>Calculated Split Breakdown</h3>
@@ -167,7 +161,7 @@ html<!DOCTYPE html>
 
             <div id="percentage-warn" class="warning-notice">⚠️ Total must equal 100%! Current total: <span id="current-pct-total">0</span>%</div>
 
-            <button type="button" class="action-btn" id="btn-share">Calculate Share Breakdown</button>
+            <button type="button" class="action-btn" onclick="calculatePercentageShare(this)">Calculate Share Breakdown</button>
             
             <div id="share-results" class="result-box">
                 <h3>Custom Share Results</h3>
@@ -189,7 +183,7 @@ html<!DOCTYPE html>
                 <input type="number" id="discountPercentage" placeholder="Example: 15">
             </div>
             
-            <button type="button" class="action-btn" id="btn-discount">Calculate Discount</button>
+            <button type="button" class="action-btn" onclick="calculateProductDiscount(this)">Calculate Discount</button>
             
             <div id="discount-results" class="result-box">
                 <h3>Discount Breakdown</h3>
@@ -203,3 +197,9 @@ html<!DOCTYPE html>
     </div>
 
     <script>
+        function getCurrencySymbol() {
+            return document.getElementById('currencySelect').value;
+        }
+
+        function calculateSplitBill(buttonEl) {
+            if(buttonEl) buttonEl.blur();
