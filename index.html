@@ -69,20 +69,16 @@
             <p>Smart, simple calculation tools designed for daily finance.</p>
         </header>
 
-        <!-- TOOL 1: RESTAURANT EQUAL BILL SPLITTER -->
+        <!-- TOOL 1: RESTAURANT BILL SPLITTER -->
         <section>
             <h2>🍕 Restaurant Bill Splitter</h2>
             <div class="form-group">
                 <label for="currencySelect">Select Currency Symbol</label>
                 <select id="currencySelect">
-                    <option value="₦">🇳🇬 NGN - Naira (₦)</option>
+                    <!-- USA AT FIRST PLACE -->
                     <option value="$">🇺🇸 USD - Dollar ($)</option>
-                    <option value="₵">🇬🇭 GHS - Cedi (₵)</option>
                     <option value="£">🇬🇧 GBP - Pound (£)</option>
                     <option value="€">🇪🇺 EUR - Euro (€)</option>
-                    <option value="KSh">🇰🇪 KES - Shilling (KSh)</option>
-                    <option value="R">🇿🇦 ZAR - Rand (R)</option>
-                    <option value="₹">🇮🇳 INR - Rupee (₹)</option>
                     <option value="C$">🇨🇦 CAD - Canadian Dollar (C$)</option>
                     <option value="A$">🇦🇺 AUD - Australian Dollar (A$)</option>
                     <option value="¥">🇯🇵 JPY - Yen (¥)</option>
@@ -100,14 +96,22 @@
                     <option value="₽">🇷🇺 RUB - Ruble (₽)</option>
                     <option value="Rupiah">🇮🇩 IDR - Rupiah (Rupiah)</option>
                     <option value="RM">🇲🇾 MYR - Ringgit (RM)</option>
-                    <option value="₱">🇵🇭 PHP - Peso (₱)</option>
+                    
+                    <!-- REQUESTED COUNTRIES GROUPED EXCLUSIVELY IN THE MIDDLE -->
+                    <option value="₦">🇳🇬 NGN - Naira (₦)</option>
+                    <option value="₵">🇬🇭 GHS - Cedi (₵)</option>
+                    <option value="R">🇿🇦 ZAR - Rand (R)</option>
+                    <option value="KSh">🇰🇪 KES - Shilling (KSh)</option>
+                    <option value="₹">🇮🇳 INR - Rupee (₹)</option>
+                    
+                    <option value="🇵🇭">🇵🇭 PHP - Peso (🇵🇭)</option>
                     <option value="฿">🇹🇭 THB - Baht (฿)</option>
                     <option value="zł">🇵🇱 PLN - Zloty (zł)</option>
                     <option value="₪">🇮🇱 ILS - Shekel (₪)</option>
-                    <option value="K">ù🇲🇲 MMK - Kyat (K)</option>
+                    <option value="K">🇲🇲 MMK - Kyat (K)</option>
                     <option value="RD$">🇩🇴 DOP - Peso (RD$)</option>
                     <option value="Ft">🇭🇺 HUF - Forint (Ft)</option>
-                    <option value="Kč">🇨🇿 CZK - Koruna (Kč)</option>
+                    <option value="Kč">🇨zech CZK - Koruna (Kč)</option>
                     <option value="ل.د">🇱🇾 LYD - Dinar (ل.د)</option>
                     <option value="د.إ">🇦🇪 AED - Dirham (د.إ)</option>
                     <option value="ر.س">🇸🇦 SAR - Riyal (ر.س)</option>
@@ -116,7 +120,6 @@
                     <option value="د.أ">🇯🇴 JOD - Dinar (د.أ)</option>
                     <option value="ل.ل">🇱🇧 LBP - Pound (ل.ل)</option>
                     <option value="ج.م">🇪🇬 EGP - Pound (ج.م)</option>
-                    <option value="₵">🇬🇭 GHS - Cedi (₵)</option>
                     <option value="D">🇬🇲 GMD - Dalasi (D)</option>
                     <option value="FG">🇬🇮 GNF - Franc (FG)</option>
                     <option value="Le">🇸🇱 SLE - Leone (Le)</option>
@@ -130,10 +133,6 @@
             <div class="form-group">
                 <label for="totalBill">Restaurant Bill Amount</label>
                 <input type="number" id="totalBill" placeholder="Example: 45000">
-            </div>
-            <div class="form-group">
-                <label for="tipAmount">Optional Tip / Service Charge (Amount)</label>
-                <input type="number" id="tipAmount" value="0" placeholder="Example: 2000">
             </div>
             <div class="form-group">
                 <label for="peopleCount">Number of People to Split Bill</label>
@@ -168,3 +167,5 @@
 
             <div id="percentage-warn" class="warning-notice">⚠️ Warning: Percentages must add up exactly to 100%! Current total: <span id="current-pct-total">0</span>%</div>
 
+            <button type="button" class="action-btn" id="btn-share">Calculate Share Breakdown</button>
+            
