@@ -40,6 +40,8 @@
         .result-total { font-size: 22px; font-weight: 800; border-top: 1px dashed #10b981; padding-top: 12px; margin-top: 12px; color: #064e3b; }
         
         footer { margin-top: auto; padding: 24px 0 10px 0; font-size: 13px; color: #64748b; text-align: center; }
+        footer a { color: #2563eb; text-decoration: none; margin-left: 5px; font-weight: 600; }
+        footer a:hover { text-decoration: underline; }
     </style>
 </head>
 <body>
@@ -112,11 +114,10 @@
     </div>
 
     <footer>
-        <p>© 2026 Split Bill Calculator</p>
+        <p>© 2026 Split Bill Calculator | <a href="privacy.html">Privacy Policy</a></p>
     </footer>
 
     <script>
-        // TOOL 1 FUNCTION
         function calculateSplit() {
             const bill = parseFloat(document.getElementById('totalBill').value);
             const people = parseInt(document.getElementById('peopleCount').value);
@@ -135,7 +136,6 @@
             document.getElementById('split-results').style.display = "block";
         }
 
-        // TOOL 2 FUNCTION
         function calculatePercentageCut() {
             const bill = parseFloat(document.getElementById('percentageTotalBill').value);
             const percentage = parseFloat(document.getElementById('customPercentage').value);
