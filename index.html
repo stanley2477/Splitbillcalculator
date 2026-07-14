@@ -4,14 +4,15 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Split Bill Calculator</title>
-  <!-- Tailwind CSS CDN for styling -->
+  <!-- Tailwind CSS Framework CDN -->
   <script src="https://jsdelivr.net"></script>
 </head>
-<body class="min-h-screen bg-slate-50 py-6 px-4 text-slate-800 antialiased font-sans">
+<body class="min-h-screen bg-slate-50 py-6 px-4 text-slate-800 antialiased font-sans flex items-center justify-center">
 
-  <div class="max-w-md mx-auto bg-white rounded-[32px] shadow-xl border border-slate-100 p-6 space-y-8">
+  <!-- Main Calculator Card -->
+  <div class="w-full max-w-md bg-white rounded-[32px] shadow-xl border border-slate-100 p-6 space-y-8">
     
-    <!-- Main Header Block -->
+    <!-- Title / Header -->
     <div class="text-center space-y-1">
       <h1 class="text-2xl font-black text-blue-950 tracking-tight">Split Bill Calculator</h1>
       <p class="text-xs text-slate-400 font-medium px-4 leading-normal">
@@ -19,7 +20,7 @@
       </p>
     </div>
 
-    <!-- 1. SPLIT BILL COMPONENT -->
+    <!-- Section 1: Split Bill Form -->
     <section class="space-y-4">
       <h2 class="text-xl font-extrabold text-slate-900 tracking-tight">Split Bill</h2>
       
@@ -28,7 +29,7 @@
           <label class="block text-[11px] font-extrabold text-slate-500 uppercase tracking-wider mb-1.5">
             Select Currency Symbol
           </label>
-          <select id="currency" class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3.5 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-blue-600 transition-all">
+          <select id="currency" class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3.5 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-blue-600 transition-all appearance-none">
             <option value="₦">🇳🇬 NGN - Nigerian Naira (₦)</option>
             <option value="$">🇺🇸 USD - US Dollar ($)</option>
             <option value="£">🇬🇧 GBP - British Pound (£)</option>
@@ -61,19 +62,19 @@
           <input id="peopleCount" type="number" placeholder="33" class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3.5 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-blue-600 transition-all" required />
         </div>
 
-        <button onclick="calculateSplit()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-2xl text-sm transition-all shadow-md shadow-blue-200 active:scale-[0.99]">
+        <button onclick="calculateSplit()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-2xl text-sm transition-all shadow-md shadow-blue-200 active:scale-[0.99] cursor-pointer">
           Calculate Split
         </button>
       </div>
 
-      <!-- Result Target Box -->
+      <!-- Split Results -->
       <div id="splitResult" class="hidden bg-blue-50/60 border border-blue-100 rounded-2xl p-4 text-sm space-y-1">
         <p class="font-semibold text-blue-950">Each Person Pays: <span id="perPersonText" class="font-black text-blue-600 text-base"></span></p>
         <p class="text-xs text-blue-700 font-medium">Remainder Left Over: <span id="remainderText"></span></p>
       </div>
     </section>
 
-    <!-- 2. DEFINE PERCENTAGE CUT COMPONENT -->
+    <!-- Section 2: Percentage Cut Form -->
     <section class="space-y-4 pt-2">
       <h2 class="text-xl font-extrabold text-slate-900 tracking-tight flex items-center gap-2">
         📊 Define Percentage Cut Per Person (%)
@@ -94,37 +95,37 @@
           <div class="grid grid-cols-5 gap-2">
             <div class="text-center space-y-1">
               <span class="text-[10px] font-black text-slate-400 block uppercase">P1 %</span>
-              <input id="p1" type="number" value="10" class="pct-input w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-center text-xs font-bold focus:outline-none focus:ring-2 focus:ring-blue-600 transition-all" />
+              <input id="p1" type="number" value="10" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-center text-xs font-bold focus:outline-none focus:ring-2 focus:ring-blue-600 transition-all" />
             </div>
             <div class="text-center space-y-1">
               <span class="text-[10px] font-black text-slate-400 block uppercase">P2 %</span>
-              <input id="p2" type="number" value="20" class="pct-input w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-center text-xs font-bold focus:outline-none focus:ring-2 focus:ring-blue-600 transition-all" />
+              <input id="p2" type="number" value="20" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-center text-xs font-bold focus:outline-none focus:ring-2 focus:ring-blue-600 transition-all" />
             </div>
             <div class="text-center space-y-1">
               <span class="text-[10px] font-black text-slate-400 block uppercase">P3 %</span>
-              <input id="p3" type="number" value="30" class="pct-input w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-center text-xs font-bold focus:outline-none focus:ring-2 focus:ring-blue-600 transition-all" />
+              <input id="p3" type="number" value="30" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-center text-xs font-bold focus:outline-none focus:ring-2 focus:ring-blue-600 transition-all" />
             </div>
             <div class="text-center space-y-1">
               <span class="text-[10px] font-black text-slate-400 block uppercase">P4 %</span>
-              <input id="p4" type="number" value="20" class="pct-input w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-center text-xs font-bold focus:outline-none focus:ring-2 focus:ring-blue-600 transition-all" />
+              <input id="p4" type="number" value="20" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-center text-xs font-bold focus:outline-none focus:ring-2 focus:ring-blue-600 transition-all" />
             </div>
             <div class="text-center space-y-1">
               <span class="text-[10px] font-black text-slate-400 block uppercase">P5 %</span>
-              <input id="p5" type="number" value="20" class="pct-input w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-center text-xs font-bold focus:outline-none focus:ring-2 focus:ring-blue-600 transition-all" />
+              <input id="p5" type="number" value="20" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-center text-xs font-bold focus:outline-none focus:ring-2 focus:ring-blue-600 transition-all" />
             </div>
           </div>
         </div>
 
-        <button onclick="calculatePercentageCut()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-2xl text-sm transition-all shadow-md shadow-blue-200 active:scale-[0.99]">
+        <button onclick="calculatePercentageCut()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-2xl text-sm transition-all shadow-md shadow-blue-200 active:scale-[0.99] cursor-pointer">
           Calculate Share Breakdown
         </button>
       </div>
 
-      <!-- Percentage Output Target Box -->
+      <!-- Percentage Results -->
       <div id="shareResult" class="hidden bg-slate-50 border border-slate-200 rounded-2xl p-4 text-xs font-medium space-y-2"></div>
     </section>
 
-    <!-- 3. PRODUCT DISCOUNT FINDER COMPONENT -->
+    <!-- Section 3: Product Discount Form -->
     <section class="space-y-4 pt-2">
       <h2 class="text-xl font-extrabold text-slate-900 tracking-tight flex items-center gap-2">
         🏷️ Product Discount Finder
@@ -145,12 +146,12 @@
           <input id="discountPercent" type="number" placeholder="Example: 15" class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3.5 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-blue-600 transition-all" required />
         </div>
 
-        <button onclick="calculateDiscount()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-2xl text-sm transition-all shadow-md shadow-blue-200 active:scale-[0.99]">
+        <button onclick="calculateDiscount()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-2xl text-sm transition-all shadow-md shadow-blue-200 active:scale-[0.99] cursor-pointer">
           Calculate Discount
         </button>
       </div>
 
-      <!-- Discount Output Target Box -->
+      <!-- Discount Results -->
       <div id="discountResult" class="hidden bg-emerald-50/60 border border-emerald-100 rounded-2xl p-4 text-sm space-y-1">
         <p class="font-semibold text-emerald-950">Final Sale Price: <span id="finalPriceText" class="font-black text-emerald-600 text-base"></span></p>
         <p class="text-xs text-emerald-700 font-medium">Total Money Saved: <span id="savedAmountText"></span></p>
@@ -159,7 +160,7 @@
 
   </div>
 
-  <!-- JavaScript Functions to Run Computations -->
+  <!-- Business Logic Calculations Script -->
   <script>
     function calculateSplit() {
       const symbol = document.getElementById('currency').value;
@@ -172,5 +173,4 @@
       const distributed = perPerson * people;
       const remainder = Math.round((bill - distributed) * 100) / 100;
 
-      document.getElementById('perPersonText').innerText = symbol + perPerson.toFixed(2);
-      document.getElementById('remainderText').innerText = symbol + remainder.toFixed(2);
+      document.getElementById('perPersonText').innerText = symbol + perPerson.toLocaleString(undefined, {minimumFractionDigits: 2});
