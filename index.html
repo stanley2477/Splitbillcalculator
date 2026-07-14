@@ -26,13 +26,15 @@
         header h1 { color: var(--text-title); font-size: 26px; font-weight: 800; margin-bottom: 6px; text-align: center; }
         header p { color: #64748b; font-size: 14px; margin-bottom: 28px; text-align: center; }
         
-        .section-divider { margin: 35px 0 25px 0; border-top: 2px solid #e2e8f0; padding-top: 25px; }
-        h2 { color: var(--text-title); font-size: 18px; margin-bottom: 15px; text-align: left; display: flex; align-items: center; gap: 6px; }
+        /* FIXED LAYOUT HANGS: Force layout containment blocks so sections never bleed or overlap clicks */
+        .section-divider { clear: both; display: block; margin: 35px 0 25px 0; border-top: 2px solid #e2e8f0; height: 1px; width: 100%; }
+        section { clear: both; display: block; position: relative; z-index: 10; width: 100%; margin-bottom: 10px; }
         
-        .form-group { margin-bottom: 18px; text-align: left; }
-        .form-row { display: flex; gap: 10px; margin-bottom: 10px; }
+        .form-group { margin-bottom: 18px; text-align: left; clear: both; }
+        .form-row-5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; margin-bottom: 10px; }
         label { display: block; font-weight: 600; margin-bottom: 8px; color: #475569; font-size: 13px; text-transform: uppercase; }
         input, select { padding: 14px 16px; font-size: 16px; border-radius: 12px; border: 1px solid var(--border); width: 100%; box-sizing: border-box; background: #fff; color: var(--text-title); }
+        .form-row-5 input { padding: 12px 8px; text-align: center; font-size: 14px; }
         
         button.action-btn { 
             display: block;
@@ -48,17 +50,21 @@
             box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2); 
             transition: background 0.1s, transform 0.05s; 
             -webkit-tap-highlight-color: transparent !important;
+            /* CRITICAL FIX: Cut through any invisible structural borders */
+            position: relative;
+            z-index: 999 !important;
             pointer-events: auto !important;
         }
         button.action-btn:hover { background-color: var(--primary-hover); }
         button.action-btn:active { transform: scale(0.96); opacity: 0.95; }
         
-        .result-box { display: none; margin-top: 20px; background: var(--success-bg); border: 1px solid var(--success-border); padding: 20px; border-radius: 16px; text-align: left; }
+        .result-box { display: none; margin-top: 20px; background: var(--success-bg); border: 1px solid var(--success-border); padding: 20px; border-radius: 16px; text-align: left; clear: both; position: relative; z-index: 50; }
         .result-box h3 { color: var(--success-text); margin-bottom: 14px; font-size: 15px; text-transform: uppercase; text-align: center; border-bottom: 1px dashed rgba(16, 185, 129, 0.3); padding-bottom: 6px; }
         .result-item { display: flex; justify-content: space-between; margin-bottom: 10px; color: var(--success-text); font-size: 15px; }
         .result-total { font-size: 22px; font-weight: 800; border-top: 1px dashed #10b981; padding-top: 12px; margin-top: 12px; color: #064e3b; display: flex; justify-content: space-between; }
         
-        .warning-notice { display: none; background: var(--warning-bg); border: 1px solid #f59e0b; padding: 12px; border-radius: 12px; font-size: 14px; color: var(--warning-text); margin-bottom: 15px; text-align: center; font-weight: 500; }
+        .warning-notice { display: none; background: var(--warning-bg); border: 1px solid #f59e0b; padding: 12px; border-radius: 12px; font-size: 14px; color: var(--warning-text); margin-bottom: 15px; text-align: center; font-weight: 500; clear: both; }
+        footer { margin-top: auto; padding: 24px 0 10px 0; font-size: 13px; color: #64748b; text-align: center; clear: both; }
     </style>
 </head>
 <body>
@@ -75,7 +81,6 @@
             <div class="form-group">
                 <label for="currencySelect">Select Currency Symbol</label>
                 <select id="currencySelect">
-                    <!-- USA AT FIRST PLACE -->
                     <option value="$">🇺🇸 USD - Dollar ($)</option>
                     <option value="£">🇬🇧 GBP - Pound (£)</option>
                     <option value="€">🇪🇺 EUR - Euro (€)</option>
@@ -97,7 +102,7 @@
                     <option value="Rupiah">🇮🇩 IDR - Rupiah (Rupiah)</option>
                     <option value="RM">🇲🇾 MYR - Ringgit (RM)</option>
                     
-                    <!-- REQUESTED COUNTRIES GROUPED EXCLUSIVELY IN THE MIDDLE -->
+                    <!-- MIDDLE COUNTRIES REGIONAL PREFERENCES -->
                     <option value="₦">🇳🇬 NGN - Naira (₦)</option>
                     <option value="₵">🇬🇭 GHS - Cedi (₵)</option>
                     <option value="R">🇿🇦 ZAR - Rand (R)</option>
@@ -111,7 +116,7 @@
                     <option value="K">🇲🇲 MMK - Kyat (K)</option>
                     <option value="RD$">🇩🇴 DOP - Peso (RD$)</option>
                     <option value="Ft">🇭🇺 HUF - Forint (Ft)</option>
-                    <option value="Kč">🇨zech CZK - Koruna (Kč)</option>
+                    <option value="Kč">🇨🇿 CZK - Koruna (Kč)</option>
                     <option value="ل.د">🇱🇾 LYD - Dinar (ل.د)</option>
                     <option value="د.إ">🇦🇪 AED - Dirham (د.إ)</option>
                     <option value="ر.س">🇸🇦 SAR - Riyal (ر.س)</option>
@@ -157,15 +162,7 @@
             </div>
             
             <div class="form-group">
-                <label>Define Percentage Cut Per Person (%)</label>
-                <div class="form-row">
-                    <input type="number" id="pctPerson1" value="10" placeholder="Person 1 %">
-                    <input type="number" id="pctPerson2" value="30" placeholder="Person 2 %">
-                    <input type="number" id="pctPerson3" value="60" placeholder="Person 3 %">
-                </div>
-            </div>
-
-            <div id="percentage-warn" class="warning-notice">⚠️ Warning: Percentages must add up exactly to 100%! Current total: <span id="current-pct-total">0</span>%</div>
-
-            <button type="button" class="action-btn" id="btn-share">Calculate Share Breakdown</button>
-            
+                <label>Define Percentage Cut Per Person (%) - Must equal 100%</label>
+                <!-- FIXED UP TO 5 COLUMNS -->
+                <div class="form-row-5">
+                    <div>
