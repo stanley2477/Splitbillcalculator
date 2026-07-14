@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Split Bill & Percentage Suite</title>
     <style>
         :root {
@@ -38,7 +38,8 @@
         .grid-5 input { padding: 10px 4px; text-align: center; font-size: 14px; width: 100%; }
         .grid-5 label { font-size: 10px; text-align: center; margin-bottom: 4px; }
         
-        button.action-btn { 
+        /* SAFE NON-REFRESHING TAP TARGET ELEMENT */
+        .action-tap-el { 
             display: block;
             padding: 14px; 
             font-size: 16px; 
@@ -53,23 +54,25 @@
             transition: transform 0.05s, background-color 0.05s;
             position: relative;
             z-index: 5;
-            touch-action: manipulation;
+            text-align: center;
+            user-select: none;
+            -webkit-user-select: none;
         }
 
         @media (hover: hover) {
-            button.action-btn:hover { 
+            .action-tap-el:hover { 
                 background-color: var(--primary-hover); 
             }
         }
 
-        button.action-btn:active,
-        button.action-btn.is-active { 
-            transform: translateY(2px) scale(0.99) !important;
+        /* Direct mechanical physics simulation */
+        .action-tap-el:active,
+        .action-tap-el.is-active { 
+            transform: translateY(3px) scale(0.98) !important;
             background-color: var(--primary-hover) !important;
             box-shadow: 0 2px 4px rgba(37, 99, 235, 0.1) !important;
         }
         
-        /* Forces clean processing view allocation */
         .result-box { display: none; margin-top: 15px; background: var(--success-bg); border: 1px solid var(--success-border); padding: 15px; border-radius: 16px; text-align: left; position: relative; z-index: 10; }
         .result-box h3 { color: var(--success-text); margin-bottom: 12px; font-size: 14px; text-transform: uppercase; text-align: center; border-bottom: 1px dashed rgba(16, 185, 129, 0.3); padding-bottom: 6px; }
         .result-item { display: flex; justify-content: space-between; margin-bottom: 8px; color: var(--success-text); font-size: 14px; }
@@ -79,7 +82,7 @@
         footer { padding: 15px 0 5px 0; font-size: 13px; color: #64748b; text-align: center; clear: both; }
     </style>
 </head>
-<body ontouchstart="">
+<body>
 
     <div class="container">
         <header>
@@ -118,7 +121,9 @@
                 <label for="peopleCount">Number of People</label>
                 <input type="number" id="peopleCount" placeholder="Example: 4">
             </div>
-            <button type="button" class="action-btn" id="btn-split">Calculate Split</button>
+            
+            <!-- CHANGED TO DIV TARGET TO AVOID FORCED REFRESH BOUNCING -->
+            <div class="action-tap-el" id="btn-split">Calculate Split</div>
             
             <div id="split-results" class="result-box">
                 <h3>Calculated Split Breakdown</h3>
@@ -164,7 +169,8 @@
 
             <div id="percentage-warn" class="warning-notice">⚠️ Total must equal 100%! Current total: <span id="current-pct-total">0</span>%</div>
 
-            <button type="button" class="action-btn" id="btn-share">Calculate Share Breakdown</button>
+            <!-- CHANGED TO DIV TARGET TO AVOID FORCED REFRESH BOUNCING -->
+            <div class="action-tap-el" id="btn-share">Calculate Share Breakdown</div>
             
             <div id="share-results" class="result-box">
                 <h3>Custom Share Results</h3>
@@ -185,7 +191,9 @@
                 <label for="discountPercentage">Discount Percentage (%)</label>
                 <input type="number" id="discountPercentage" placeholder="Example: 15">
             </div>
-            <button type="button" class="action-btn" id="btn-discount">Calculate Discount</button>
+            
+            <!-- CHANGED TO DIV TARGET TO AVOID FORCED REFRESH BOUNCING -->
+            <div class="action-tap-el" id="btn-discount">Calculate Discount</div>
             
             <div id="discount-results" class="result-box">
                 <h3>Discount Breakdown</h3>
@@ -195,13 +203,3 @@
 
         <footer>
             <p>&copy; Financial Suite Application</p>
-        </footer>
-    </div>
-
-    <script>
-        // Dual-Engine Handler: Bypasses browser timing intercept blocks
-        function bindProcessEngine(elementId, calculationCallback) {
-            const element = document.getElementById(elementId);
-            if (!element) return;
-
-            // Direct Execution wrapper
