@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Split Bill, Tax & Currency Dashboard</title>
+    <title>Restaurant Splitter & Percentage Suite</title>
     <style>
         :root {
             --primary: #2563eb;
@@ -16,6 +16,8 @@
             --success-bg: #f0fdf4;
             --success-border: #10b981;
             --success-text: #166534;
+            --warning-bg: #fffbeb;
+            --warning-text: #78350f;
         }
 
         * { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; margin: 0; padding: 0; }
@@ -28,10 +30,10 @@
         h2 { color: var(--text-title); font-size: 18px; margin-bottom: 15px; text-align: left; display: flex; align-items: center; gap: 6px; }
         
         .form-group { margin-bottom: 18px; text-align: left; }
+        .form-row { display: flex; gap: 10px; margin-bottom: 10px; }
         label { display: block; font-weight: 600; margin-bottom: 8px; color: #475569; font-size: 13px; text-transform: uppercase; }
         input, select { padding: 14px 16px; font-size: 16px; border-radius: 12px; border: 1px solid var(--border); width: 100%; box-sizing: border-box; background: #fff; color: var(--text-title); }
         
-        /* FIX: Set clear pointer priorities to force mobile browser button clicks */
         button.action-btn { 
             display: block;
             padding: 16px; 
@@ -56,7 +58,7 @@
         .result-item { display: flex; justify-content: space-between; margin-bottom: 10px; color: var(--success-text); font-size: 15px; }
         .result-total { font-size: 22px; font-weight: 800; border-top: 1px dashed #10b981; padding-top: 12px; margin-top: 12px; color: #064e3b; display: flex; justify-content: space-between; }
         
-        footer { margin-top: auto; padding: 24px 0 10px 0; font-size: 13px; color: #64748b; text-align: center; }
+        .warning-notice { display: none; background: var(--warning-bg); border: 1px solid #f59e0b; padding: 12px; border-radius: 12px; font-size: 14px; color: var(--warning-text); margin-bottom: 15px; text-align: center; font-weight: 500; }
     </style>
 </head>
 <body>
@@ -67,14 +69,14 @@
             <p>Smart, simple calculation tools designed for daily finance.</p>
         </header>
 
-        <!-- TOOL 1: BILL SPLITTER -->
+        <!-- TOOL 1: RESTAURANT EQUAL BILL SPLITTER -->
         <section>
-            <h2>👥 Bill Splitter Tool</h2>
+            <h2>🍕 Restaurant Bill Splitter</h2>
             <div class="form-group">
-                <label for="currencySelect">Select Your Local Currency</label>
+                <label for="currencySelect">Select Currency Symbol</label>
                 <select id="currencySelect">
-                    <option value="$">🇺🇸 USD - Dollar ($)</option>
                     <option value="₦">🇳🇬 NGN - Naira (₦)</option>
+                    <option value="$">🇺🇸 USD - Dollar ($)</option>
                     <option value="₵">🇬🇭 GHS - Cedi (₵)</option>
                     <option value="£">🇬🇧 GBP - Pound (£)</option>
                     <option value="€">🇪🇺 EUR - Euro (€)</option>
@@ -83,17 +85,61 @@
                     <option value="₹">🇮🇳 INR - Rupee (₹)</option>
                     <option value="C$">🇨🇦 CAD - Canadian Dollar (C$)</option>
                     <option value="A$">🇦🇺 AUD - Australian Dollar (A$)</option>
+                    <option value="¥">🇯🇵 JPY - Yen (¥)</option>
+                    <option value="Fr">🇨🇭 CHF - Franc (Fr)</option>
+                    <option value="元">🇨🇳 CNY - Yuan (元)</option>
+                    <option value="kr">🇸🇪 SEK - Krona (kr)</option>
+                    <option value="NZ$">🇳🇿 NZD - New Zealand Dollar (NZ$)</option>
+                    <option value="Mex$">🇲🇽 MXN - Peso (Mex$)</option>
+                    <option value="S$">🇸🇬 SGD - Singapore Dollar (S$)</option>
+                    <option value="HK$">🇭🇰 HKD - Hong Kong Dollar (HK$)</option>
+                    <option value="kr">🇳🇴 NOK - Krone (kr)</option>
+                    <option value="₩">🇰🇷 KRW - Won (₩)</option>
+                    <option value="TL">🇹🇷 TRY - Lira (TL)</option>
+                    <option value="R$">🇧🇷 BRL - Real (R$)</option>
+                    <option value="₽">🇷🇺 RUB - Ruble (₽)</option>
+                    <option value="Rupiah">🇮🇩 IDR - Rupiah (Rupiah)</option>
+                    <option value="RM">🇲🇾 MYR - Ringgit (RM)</option>
+                    <option value="₱">🇵🇭 PHP - Peso (₱)</option>
+                    <option value="฿">🇹🇭 THB - Baht (฿)</option>
+                    <option value="zł">🇵🇱 PLN - Zloty (zł)</option>
+                    <option value="₪">🇮🇱 ILS - Shekel (₪)</option>
+                    <option value="K">ù🇲🇲 MMK - Kyat (K)</option>
+                    <option value="RD$">🇩🇴 DOP - Peso (RD$)</option>
+                    <option value="Ft">🇭🇺 HUF - Forint (Ft)</option>
+                    <option value="Kč">🇨🇿 CZK - Koruna (Kč)</option>
+                    <option value="ل.د">🇱🇾 LYD - Dinar (ل.د)</option>
+                    <option value="د.إ">🇦🇪 AED - Dirham (د.إ)</option>
+                    <option value="ر.س">🇸🇦 SAR - Riyal (ر.س)</option>
+                    <option value="ر.ع">🇴🇲 OMR - Rial (ر.ع)</option>
+                    <option value="د.ب">🇧🇭 BHD - Dinar (د.ب)</option>
+                    <option value="د.أ">🇯🇴 JOD - Dinar (د.أ)</option>
+                    <option value="ل.ل">🇱🇧 LBP - Pound (ل.ل)</option>
+                    <option value="ج.م">🇪🇬 EGP - Pound (ج.م)</option>
+                    <option value="₵">🇬🇭 GHS - Cedi (₵)</option>
+                    <option value="D">🇬🇲 GMD - Dalasi (D)</option>
+                    <option value="FG">🇬🇮 GNF - Franc (FG)</option>
+                    <option value="Le">🇸🇱 SLE - Leone (Le)</option>
+                    <option value="Sh.so.">🇸🇴 SOS - Shilling (Sh.so.)</option>
+                    <option value="UM">🇲🇷 MRU - Ouguiya (UM)</option>
+                    <option value="K">🇿🇲 ZMW - Kwacha (K)</option>
+                    <option value="P">🇧🇼 BWP - Pula (P)</option>
+                    <option value="BZ$">🇧🇿 BZD - Dollar (BZ$)</option>
                 </select>
             </div>
             <div class="form-group">
-                <label for="totalBill">Total Bill Amount</label>
-                <input type="number" id="totalBill" placeholder="Example: 150">
+                <label for="totalBill">Restaurant Bill Amount</label>
+                <input type="number" id="totalBill" placeholder="Example: 45000">
             </div>
             <div class="form-group">
-                <label for="peopleCount">Number of People</label>
+                <label for="tipAmount">Optional Tip / Service Charge (Amount)</label>
+                <input type="number" id="tipAmount" value="0" placeholder="Example: 2000">
+            </div>
+            <div class="form-group">
+                <label for="peopleCount">Number of People to Split Bill</label>
                 <input type="number" id="peopleCount" placeholder="Example: 4">
             </div>
-            <button type="button" class="action-btn" id="btn-split">Calculate Split Amount</button>
+            <button type="button" class="action-btn" id="btn-split">Calculate Equal Split</button>
             
             <div id="split-results" class="result-box">
                 <h3>Calculated Split Breakdown</h3>
@@ -101,87 +147,24 @@
             </div>
         </section>
 
-        <!-- VISUAL SECTION DIVIDER -->
         <div class="section-divider"></div>
 
-        <!-- TOOL 2: INCOME TAX TOOL -->
+        <!-- TOOL 2: CUSTOM PERCENTAGE MONEY SHARE SPLITTER -->
         <section>
-            <h2>💰 Income Tax Tool</h2>
+            <h2>📊 Custom % Money Share Splitter</h2>
             <div class="form-group">
-                <label for="taxCurrency">Select Your Local Currency</label>
-                <select id="taxCurrency">
-                    <option value="$">🇺🇸 USD - Dollar ($)</option>
-                    <option value="₦" selected>🇳🇬 NGN - Naira (₦)</option>
-                    <option value="₵">🇬🇭 GHS - Cedi (₵)</option>
-                    <option value="£">🇬🇧 GBP - Pound (£)</option>
-                    <option value="€">🇪🇺 EUR - Euro (€)</option>
-                    <option value="KSh">🇰🇪 KES - Shilling (KSh)</option>
-                    <option value="R">🇿🇦 ZAR - Rand (R)</option>
-                    <option value="₹">🇮🇳 INR - Rupee (₹)</option>
-                    <option value="C$">🇨🇦 CAD - Canadian Dollar (C$)</option>
-                    <option value="A$">🇦🇺 AUD - Australian Dollar (A$)</option>
-                </select>
+                <label for="shareTotalAmount">Total Amount to Share</label>
+                <input type="number" id="shareTotalAmount" placeholder="Example: 100000">
             </div>
-            <div class="form-group">
-                <label for="taxIncome">Enter Income Amount</label>
-                <input type="number" id="taxIncome" placeholder="Example: 5000">
-            </div>
-            <div class="form-group">
-                <label for="taxPeriod">Pay Period</label>
-                <select id="taxPeriod">
-                    <option value="Monthly">Monthly</option>
-                    <option value="Yearly">Yearly</option>
-                    <option value="Weekly">Weekly</option>
-                    <option value="Hourly">Hourly</option>
-                </select>
-            </div>
-            <button type="button" class="action-btn" id="btn-tax">Calculate Income & Tax</button>
             
-            <div id="tax-results" class="result-box">
-                <h3>Tax Calculation Breakdown</h3>
-                <div id="taxContent"></div>
+            <div class="form-group">
+                <label>Define Percentage Cut Per Person (%)</label>
+                <div class="form-row">
+                    <input type="number" id="pctPerson1" value="10" placeholder="Person 1 %">
+                    <input type="number" id="pctPerson2" value="30" placeholder="Person 2 %">
+                    <input type="number" id="pctPerson3" value="60" placeholder="Person 3 %">
+                </div>
             </div>
-        </section>
 
-        <!-- VISUAL SECTION DIVIDER -->
-        <div class="section-divider"></div>
+            <div id="percentage-warn" class="warning-notice">⚠️ Warning: Percentages must add up exactly to 100%! Current total: <span id="current-pct-total">0</span>%</div>
 
-        <!-- TOOL 3: CURRENCY CONVERTER -->
-        <section>
-            <h2>💱 Currency Converter Tool</h2>
-            <div class="form-group">
-                <label for="convertAmount">Amount to Convert</label>
-                <input type="number" id="convertAmount" placeholder="Example: 100">
-            </div>
-            <div class="form-group">
-                <label for="fromCurrency">From Currency</label>
-                <select id="fromCurrency">
-                    <option value="USD">🇺🇸 USD - Dollar ($)</option>
-                    <option value="NGN">🇳🇬 NGN - Naira (₦)</option>
-                    <option value="GHS">🇬🇭 GHS - Cedi (₵)</option>
-                    <option value="GBP">🇬🇧 GBP - Pound (£)</option>
-                    <option value="EUR">🇪🇺 EUR - Euro (€)</option>
-                    <option value="KES">🇰🇪 KES - Shilling (KSh)</option>
-                    <option value="ZAR">🇿🇦 ZAR - Rand (R)</option>
-                    <option value="INR">🇮🇳 INR - Rupee (₹)</option>
-                    <option value="CAD">🇨🇦 CAD - Canadian Dollar (C$)</option>
-                    <option value="AUD">🇦🇺 AUD - Australian Dollar (A$)</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="toCurrency">To Currency</label>
-                <select id="toCurrency">
-                    <option value="NGN">🇳🇬 NGN - Naira (₦)</option>
-                    <option value="USD">🇺🇸 USD - Dollar ($)</option>
-                    <option value="GHS">🇬🇭 GHS - Cedi (₵)</option>
-                    <option value="GBP">🇬🇧 GBP - Pound (£)</option>
-                    <option value="EUR">🇪🇺 EUR - Euro (€)</option>
-                    <option value="KES">🇰🇪 KES - Shilling (KSh)</option>
-                    <option value="ZAR">🇿🇦 ZAR - Rand (R)</option>
-                    <option value="INR">🇮🇳 INR - Rupee (₹)</option>
-                    <option value="CAD">🇨🇦 CAD - Canadian Dollar (C$)</option>
-                    <option value="AUD">🇦🇺 AUD - Australian Dollar (A$)</option>
-                </select>
-            </div>
-            <button type="button" class="action-btn" id="btn-convert">Convert Currency</button>
-            
