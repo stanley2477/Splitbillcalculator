@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Restaurant Splitter & Percentage Suite</title>
+    <title>Money Splitter & Percentage Suite</title>
     <style>
         :root {
             --primary: #2563eb;
@@ -21,24 +21,25 @@
         }
 
         * { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; margin: 0; padding: 0; }
-        body { background-color: var(--bg-main); color: var(--text-body); padding: 20px 15px; display: flex; flex-direction: column; min-height: 100vh; }
-        .container { max-width: 520px; width: 100%; margin: 10px auto; background: var(--card-bg); padding: 30px 24px; border-radius: 24px; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05); }
-        header h1 { color: var(--text-title); font-size: 26px; font-weight: 800; margin-bottom: 6px; text-align: center; }
-        header p { color: #64748b; font-size: 14px; margin-bottom: 28px; text-align: center; }
+        body { background-color: var(--bg-main); color: var(--text-body); padding: 15px; display: flex; flex-direction: column; min-height: 100vh; }
+        .container { max-width: 520px; width: 100%; margin: 10px auto; background: var(--card-bg); padding: 24px; border-radius: 24px; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05); }
+        header h1 { color: var(--text-title); font-size: 24px; font-weight: 800; margin-bottom: 6px; text-align: center; }
+        header p { color: #64748b; font-size: 14px; margin-bottom: 24px; text-align: center; }
         
-        /* FIXED LAYOUT HANGS: Force layout containment blocks so sections never bleed or overlap clicks */
-        .section-divider { clear: both; display: block; margin: 35px 0 25px 0; border-top: 2px solid #e2e8f0; height: 1px; width: 100%; }
-        section { clear: both; display: block; position: relative; z-index: 10; width: 100%; margin-bottom: 10px; }
+        .section-divider { margin: 25px 0; border-top: 2px solid #e2e8f0; width: 100%; }
+        section { display: block; width: 100%; margin-bottom: 10px; }
         
-        .form-group { margin-bottom: 18px; text-align: left; clear: both; }
-        .form-row-5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; margin-bottom: 10px; }
-        label { display: block; font-weight: 600; margin-bottom: 8px; color: #475569; font-size: 13px; text-transform: uppercase; }
-        input, select { padding: 14px 16px; font-size: 16px; border-radius: 12px; border: 1px solid var(--border); width: 100%; box-sizing: border-box; background: #fff; color: var(--text-title); }
-        .form-row-5 input { padding: 12px 8px; text-align: center; font-size: 14px; }
+        .form-group { margin-bottom: 15px; text-align: left; }
+        .grid-5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; margin-bottom: 10px; }
+        label { display: block; font-weight: 600; margin-bottom: 6px; color: #475569; font-size: 12px; text-transform: uppercase; }
+        input, select { padding: 12px 14px; font-size: 16px; border-radius: 12px; border: 1px solid var(--border); width: 100%; box-sizing: border-box; background: #fff; color: var(--text-title); }
+        
+        .grid-5 input { padding: 10px 4px; text-align: center; font-size: 14px; width: 100%; }
+        .grid-5 label { font-size: 10px; text-align: center; margin-bottom: 4px; }
         
         button.action-btn { 
             display: block;
-            padding: 16px; 
+            padding: 14px; 
             font-size: 16px; 
             border-radius: 12px; 
             border: none; 
@@ -50,21 +51,17 @@
             box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2); 
             transition: background 0.1s, transform 0.05s; 
             -webkit-tap-highlight-color: transparent !important;
-            /* CRITICAL FIX: Cut through any invisible structural borders */
-            position: relative;
-            z-index: 999 !important;
-            pointer-events: auto !important;
         }
         button.action-btn:hover { background-color: var(--primary-hover); }
-        button.action-btn:active { transform: scale(0.96); opacity: 0.95; }
+        button.action-btn:active { transform: scale(0.96); }
         
-        .result-box { display: none; margin-top: 20px; background: var(--success-bg); border: 1px solid var(--success-border); padding: 20px; border-radius: 16px; text-align: left; clear: both; position: relative; z-index: 50; }
-        .result-box h3 { color: var(--success-text); margin-bottom: 14px; font-size: 15px; text-transform: uppercase; text-align: center; border-bottom: 1px dashed rgba(16, 185, 129, 0.3); padding-bottom: 6px; }
-        .result-item { display: flex; justify-content: space-between; margin-bottom: 10px; color: var(--success-text); font-size: 15px; }
-        .result-total { font-size: 22px; font-weight: 800; border-top: 1px dashed #10b981; padding-top: 12px; margin-top: 12px; color: #064e3b; display: flex; justify-content: space-between; }
+        .result-box { display: none; margin-top: 15px; background: var(--success-bg); border: 1px solid var(--success-border); padding: 15px; border-radius: 16px; text-align: left; }
+        .result-box h3 { color: var(--success-text); margin-bottom: 12px; font-size: 14px; text-transform: uppercase; text-align: center; border-bottom: 1px dashed rgba(16, 185, 129, 0.3); padding-bottom: 6px; }
+        .result-item { display: flex; justify-content: space-between; margin-bottom: 8px; color: var(--success-text); font-size: 14px; }
+        .result-total { font-size: 20px; font-weight: 800; border-top: 1px dashed #10b981; padding-top: 10px; margin-top: 10px; color: #064e3b; display: flex; justify-content: space-between; }
         
-        .warning-notice { display: none; background: var(--warning-bg); border: 1px solid #f59e0b; padding: 12px; border-radius: 12px; font-size: 14px; color: var(--warning-text); margin-bottom: 15px; text-align: center; font-weight: 500; clear: both; }
-        footer { margin-top: auto; padding: 24px 0 10px 0; font-size: 13px; color: #64748b; text-align: center; clear: both; }
+        .warning-notice { display: none; background: var(--warning-bg); border: 1px solid #f59e0b; padding: 10px; border-radius: 12px; font-size: 13px; color: var(--warning-text); margin-bottom: 12px; text-align: center; font-weight: 500; }
+        footer { padding: 15px 0 5px 0; font-size: 13px; color: #64748b; text-align: center; }
     </style>
 </head>
 <body>
@@ -75,75 +72,31 @@
             <p>Smart, simple calculation tools designed for daily finance.</p>
         </header>
 
-        <!-- TOOL 1: RESTAURANT BILL SPLITTER -->
+        <!-- TOOL 1: MONEY SPLIT BILL -->
         <section>
-            <h2>🍕 Restaurant Bill Splitter</h2>
+            <h2>💸 Money Split Bill</h2>
             <div class="form-group">
                 <label for="currencySelect">Select Currency Symbol</label>
                 <select id="currencySelect">
                     <option value="$">🇺🇸 USD - Dollar ($)</option>
-                    <option value="£">🇬🇧 GBP - Pound (£)</option>
-                    <option value="€">🇪🇺 EUR - Euro (€)</option>
-                    <option value="C$">🇨🇦 CAD - Canadian Dollar (C$)</option>
-                    <option value="A$">🇦🇺 AUD - Australian Dollar (A$)</option>
-                    <option value="¥">🇯🇵 JPY - Yen (¥)</option>
-                    <option value="Fr">🇨🇭 CHF - Franc (Fr)</option>
-                    <option value="元">🇨🇳 CNY - Yuan (元)</option>
-                    <option value="kr">🇸🇪 SEK - Krona (kr)</option>
-                    <option value="NZ$">🇳🇿 NZD - New Zealand Dollar (NZ$)</option>
-                    <option value="Mex$">🇲🇽 MXN - Peso (Mex$)</option>
-                    <option value="S$">🇸🇬 SGD - Singapore Dollar (S$)</option>
-                    <option value="HK$">🇭🇰 HKD - Hong Kong Dollar (HK$)</option>
-                    <option value="kr">🇳🇴 NOK - Krone (kr)</option>
-                    <option value="₩">🇰🇷 KRW - Won (₩)</option>
-                    <option value="TL">🇹🇷 TRY - Lira (TL)</option>
-                    <option value="R$">🇧🇷 BRL - Real (R$)</option>
-                    <option value="₽">🇷🇺 RUB - Ruble (₽)</option>
-                    <option value="Rupiah">🇮🇩 IDR - Rupiah (Rupiah)</option>
-                    <option value="RM">🇲🇾 MYR - Ringgit (RM)</option>
-                    
-                    <!-- MIDDLE COUNTRIES REGIONAL PREFERENCES -->
                     <option value="₦">🇳🇬 NGN - Naira (₦)</option>
                     <option value="₵">🇬🇭 GHS - Cedi (₵)</option>
                     <option value="R">🇿🇦 ZAR - Rand (R)</option>
                     <option value="KSh">🇰🇪 KES - Shilling (KSh)</option>
                     <option value="₹">🇮🇳 INR - Rupee (₹)</option>
-                    
-                    <option value="🇵🇭">🇵🇭 PHP - Peso (🇵🇭)</option>
-                    <option value="฿">🇹🇭 THB - Baht (฿)</option>
-                    <option value="zł">🇵🇱 PLN - Zloty (zł)</option>
-                    <option value="₪">🇮🇱 ILS - Shekel (₪)</option>
-                    <option value="K">🇲🇲 MMK - Kyat (K)</option>
-                    <option value="RD$">🇩🇴 DOP - Peso (RD$)</option>
-                    <option value="Ft">🇭🇺 HUF - Forint (Ft)</option>
-                    <option value="Kč">🇨🇿 CZK - Koruna (Kč)</option>
-                    <option value="ل.د">🇱🇾 LYD - Dinar (ل.د)</option>
-                    <option value="د.إ">🇦🇪 AED - Dirham (د.إ)</option>
-                    <option value="ر.س">🇸🇦 SAR - Riyal (ر.س)</option>
-                    <option value="ر.ع">🇴🇲 OMR - Rial (ر.ع)</option>
-                    <option value="د.ب">🇧🇭 BHD - Dinar (د.ب)</option>
-                    <option value="د.أ">🇯🇴 JOD - Dinar (د.أ)</option>
-                    <option value="ل.ل">🇱🇧 LBP - Pound (ل.ل)</option>
-                    <option value="ج.م">🇪🇬 EGP - Pound (ج.م)</option>
-                    <option value="D">🇬🇲 GMD - Dalasi (D)</option>
-                    <option value="FG">🇬🇮 GNF - Franc (FG)</option>
-                    <option value="Le">🇸🇱 SLE - Leone (Le)</option>
-                    <option value="Sh.so.">🇸🇴 SOS - Shilling (Sh.so.)</option>
-                    <option value="UM">🇲🇷 MRU - Ouguiya (UM)</option>
-                    <option value="K">🇿🇲 ZMW - Kwacha (K)</option>
-                    <option value="P">🇧🇼 BWP - Pula (P)</option>
-                    <option value="BZ$">🇧🇿 BZD - Dollar (BZ$)</option>
+                    <option value="£">🇬🇧 GBP - Pound (£)</option>
+                    <option value="€">🇪🇺 EUR - Euro (€)</option>
                 </select>
             </div>
             <div class="form-group">
-                <label for="totalBill">Restaurant Bill Amount</label>
-                <input type="number" id="totalBill" placeholder="Example: 45000">
+                <label for="totalBill">Total Money Amount</label>
+                <input type="number" id="totalBill" placeholder="Example: 25000">
             </div>
             <div class="form-group">
-                <label for="peopleCount">Number of People to Split Bill</label>
+                <label for="peopleCount">Number of People</label>
                 <input type="number" id="peopleCount" placeholder="Example: 4">
             </div>
-            <button type="button" class="action-btn" id="btn-split">Calculate Equal Split</button>
+            <button type="button" class="action-btn" id="btn-split">Calculate Split</button>
             
             <div id="split-results" class="result-box">
                 <h3>Calculated Split Breakdown</h3>
@@ -153,16 +106,96 @@
 
         <div class="section-divider"></div>
 
-        <!-- TOOL 2: CUSTOM PERCENTAGE MONEY SHARE SPLITTER -->
+        <!-- TOOL 2: DEFINE PERCENTAGE CUT PER PERSON (5 PEOPLE FULLY LISTED) -->
         <section>
-            <h2>📊 Custom % Money Share Splitter</h2>
+            <h2>📊 Define Percentage Cut Per Person (%)</h2>
             <div class="form-group">
                 <label for="shareTotalAmount">Total Amount to Share</label>
                 <input type="number" id="shareTotalAmount" placeholder="Example: 100000">
             </div>
             
             <div class="form-group">
-                <label>Define Percentage Cut Per Person (%) - Must equal 100%</label>
-                <!-- FIXED UP TO 5 COLUMNS -->
-                <div class="form-row-5">
+                <label>Percentages per Person (Must sum to 100%)</label>
+                <div class="grid-5">
                     <div>
+                        <label>P1 %</label>
+                        <input type="number" id="pctPerson1" value="10">
+                    </div>
+                    <div>
+                        <label>P2 %</label>
+                        <input type="number" id="pctPerson2" value="20">
+                    </div>
+                    <div>
+                        <label>P3 %</label>
+                        <input type="number" id="pctPerson3" value="30">
+                    </div>
+                    <div>
+                        <label>P4 %</label>
+                        <input type="number" id="pctPerson4" value="20">
+                    </div>
+                    <div>
+                        <label>P5 %</label>
+                        <input type="number" id="pctPerson5" value="20">
+                    </div>
+                </div>
+            </div>
+
+            <div id="percentage-warn" class="warning-notice">⚠️ Total must equal 100%! Current total: <span id="current-pct-total">0</span>%</div>
+
+            <button type="button" class="action-btn" id="btn-share">Calculate Share Breakdown</button>
+            
+            <div id="share-results" class="result-box">
+                <h3>Custom Share Results</h3>
+                <div id="shareContent"></div>
+            </div>
+        </section>
+
+        <div class="section-divider"></div>
+
+        <!-- TOOL 3: PRODUCT DISCOUNT FINDER -->
+        <section>
+            <h2>🏷️ Product Discount Finder</h2>
+            <div class="form-group">
+                <label for="productPrice">Original Product Price</label>
+                <input type="number" id="productPrice" placeholder="Example: 15000">
+            </div>
+            <div class="form-group">
+                <label for="discountPercentage">Discount Percentage (%)</label>
+                <input type="number" id="discountPercentage" placeholder="Example: 10">
+            </div>
+            <button type="button" class="action-btn" id="btn-discount">Find Total Savings</button>
+            
+            <div id="discount-results" class="result-box">
+                <h3>Discount Savings Breakdown</h3>
+                <div id="discountContent"></div>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <p>© 2026 Split Bill Calculator</p>
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+
+            // 1. MONEY SPLIT BILL HANDLER
+            document.getElementById('btn-split').addEventListener('click', function(e) {
+                e.preventDefault();
+                var sym = document.getElementById('currencySelect').value;
+                var total = parseFloat(document.getElementById('totalBill').value);
+                var people = parseInt(document.getElementById('peopleCount').value);
+
+                if (isNaN(total) || isNaN(people) || total <= 0 || people <= 0) {
+                    alert("Please enter valid amounts.");
+                    return;
+                }
+
+                var eachPays = (total / people).toFixed(2);
+                document.getElementById('splitContent').innerHTML = `
+                    <div class="result-item"><span>Total Amount:</span> <span>${sym}${total.toFixed(2)}</span></div>
+                    <div class="result-item"><span>Shared Among:</span> <span>${people} People</span></div>
+                    <div class="result-total"><span>Each Person Gets:</span> <span>${sym}${eachPays}</span></div>`;
+                document.getElementById('split-results').style.display = 'block';
+            });
+
