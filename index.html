@@ -57,6 +57,7 @@
             box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2); 
             transition: background 0.2s, transform 0.05s; 
             outline: none !important;
+            margin-bottom: 10px;
         }
         button.action-btn:hover { background-color: var(--primary-hover); }
         button.action-btn:active { transform: scale(0.97); background-color: var(--primary-hover); }
@@ -155,48 +156,44 @@
                 </div>
             </div>
 
-            <div id="percentage-warn" class="warning-notice">⚠️ Total must equal 100%! Current total: <span id="current-pct-total">0</span>%</div>
+            <div id="percentage-warning" class="warning-notice"></div>
 
-            <button class="action-btn" onclick="calculateShare()">Calculate Share Breakdown</button>
-            
-            <div id="share-results" class="result-box">
-                <h3>Custom Share Results</h3>
-                <div id="shareContent"></div>
-            </div>
-        </section>
+            <button class="action-btn" onclick="calculatePercentages()">Calculate Percentage Cuts</button>
 
-        <div class="section-divider"></div>
-
-        <!-- TOOL 3: PRODUCT DISCOUNT FINDER -->
-        <section>
-            <h2>🏷️ Product Discount Finder</h2>
-            <div class="form-group">
-                <label for="productPrice">Original Product Price</label>
-                <input type="number" id="productPrice" placeholder="Example: 15000">
-            </div>
-            <div class="form-group">
-                <label for="discountPercentage">Discount Percentage (%)</label>
-                <input type="number" id="discountPercentage" placeholder="Example: 15">
-            </div>
-            
-            <button class="action-btn" onclick="calculateDiscount()">Calculate Discount</button>
-            
-            <div id="discount-results" class="result-box">
-                <h3>Discount Breakdown</h3>
-                <div id="discountContent"></div>
+            <div id="percentage-results" class="result-box">
+                <h3>Percentage Cut Allocation</h3>
+                <div id="percentageContent"></div>
             </div>
         </section>
 
         <footer>
-            <p>&copy; 2026 Split Bill Calculator</p>
+            <p>&copy; Built for Daily Finance Efficiency</p>
         </footer>
     </div>
 
     <script>
-        function getCurrency() {
-            return document.getElementById('currencySelect').value;
-        }
-
         function calculateSplit() {
-            document.activeElement.blur(); // Drops dark blue hold immediately
-            
+            const currency = document.getElementById('currencySelect').value;
+            const totalBill = parseFloat(document.getElementById('totalBill').value);
+            const peopleCount = parseInt(document.getElementById('peopleCount').value);
+            const resultBox = document.getElementById('split-results');
+            const resultContent = document.getElementById('splitContent');
+
+            if (isNaN(totalBill) || totalBill <= 0 || isNaN(peopleCount) || peopleCount <= 0) {
+                alert('Please enter valid, positive numbers for both the total amount and number of people.');
+                return;
+            }
+
+            const perPersonShare = (totalBill / peopleCount).toFixed(2);
+
+            resultContent.innerHTML = `
+                <div class="result-item">
+                    <span>Total Bill:</span>
+                    <span>${currency}${totalBill.toLocaleString()}</span>
+                </div>
+                <div class="result-item">
+                    <span>Total Splitters:</span>
+                    <span>${peopleCount} people</span>
+                </div>
+                <div class="result-total">
+                    <span>Each Pays:</span>
