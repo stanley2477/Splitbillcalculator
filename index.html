@@ -38,7 +38,7 @@
         .grid-5 input { padding: 10px 4px; text-align: center; font-size: 14px; width: 100%; }
         .grid-5 label { font-size: 10px; text-align: center; margin-bottom: 4px; }
         
-        /* SAFE NON-REFRESHING TAP TARGET ELEMENT */
+        /* MODERN HARD-CLICKABLE BUTTON ELEMENT WITH UNIFIED INTERACTION LAYERS */
         .action-tap-el { 
             display: block;
             padding: 14px; 
@@ -51,24 +51,25 @@
             background-color: var(--primary); 
             color: white; 
             box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2); 
-            transition: transform 0.05s, background-color 0.05s;
+            transition: transform 0.1s ease, background-color 0.1s ease;
             position: relative;
-            z-index: 5;
+            z-index: 20;
             text-align: center;
             user-select: none;
             -webkit-user-select: none;
+            touch-action: manipulation;
         }
 
+        /* Hover animation isolated purely to computer mice profiles */
         @media (hover: hover) {
             .action-tap-el:hover { 
                 background-color: var(--primary-hover); 
             }
         }
 
-        /* Direct mechanical physics simulation */
-        .action-tap-el:active,
-        .action-tap-el.is-active { 
-            transform: translateY(3px) scale(0.98) !important;
+        /* Fluid Mechanical Spring Bounce Effect */
+        .action-tap-el:active { 
+            transform: translateY(4px) scale(0.97) !important;
             background-color: var(--primary-hover) !important;
             box-shadow: 0 2px 4px rgba(37, 99, 235, 0.1) !important;
         }
@@ -122,7 +123,6 @@
                 <input type="number" id="peopleCount" placeholder="Example: 4">
             </div>
             
-            <!-- CHANGED TO DIV TARGET TO AVOID FORCED REFRESH BOUNCING -->
             <div class="action-tap-el" id="btn-split">Calculate Split</div>
             
             <div id="split-results" class="result-box">
@@ -169,7 +169,6 @@
 
             <div id="percentage-warn" class="warning-notice">⚠️ Total must equal 100%! Current total: <span id="current-pct-total">0</span>%</div>
 
-            <!-- CHANGED TO DIV TARGET TO AVOID FORCED REFRESH BOUNCING -->
             <div class="action-tap-el" id="btn-share">Calculate Share Breakdown</div>
             
             <div id="share-results" class="result-box">
@@ -192,7 +191,6 @@
                 <input type="number" id="discountPercentage" placeholder="Example: 15">
             </div>
             
-            <!-- CHANGED TO DIV TARGET TO AVOID FORCED REFRESH BOUNCING -->
             <div class="action-tap-el" id="btn-discount">Calculate Discount</div>
             
             <div id="discount-results" class="result-box">
@@ -203,3 +201,8 @@
 
         <footer>
             <p>&copy; Financial Suite Application</p>
+        </footer>
+    </div>
+
+    <script>
+        // Get currency character string selection
