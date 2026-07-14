@@ -1,186 +1,176 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Split Bill, Tax & Currency Dashboard</title>
-    <style>
-        :root {
-            --primary: #2563eb;
-            --primary-hover: #1d4ed8;
-            --bg-main: #f8fafc;
-            --card-bg: #ffffff;
-            --text-title: #0f172a;
-            --text-body: #334155;
-            --border: #e2e8f0;
-            --success-bg: #f0fdf4;
-            --success-border: #10b981;
-            --success-text: #166534;
-        }
-
-        * { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; margin: 0; padding: 0; }
-        body { background-color: var(--bg-main); color: var(--text-body); padding: 20px 15px; display: flex; flex-direction: column; min-height: 100vh; }
-        .container { max-width: 520px; width: 100%; margin: 10px auto; background: var(--card-bg); padding: 30px 24px; border-radius: 24px; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05); }
-        header h1 { color: var(--text-title); font-size: 26px; font-weight: 800; margin-bottom: 6px; text-align: center; }
-        header p { color: #64748b; font-size: 14px; margin-bottom: 28px; text-align: center; }
-        
-        .section-divider { margin: 35px 0 25px 0; border-top: 2px solid #e2e8f0; padding-top: 25px; }
-        h2 { color: var(--text-title); font-size: 18px; margin-bottom: 15px; text-align: left; display: flex; align-items: center; gap: 6px; }
-        
-        .form-group { margin-bottom: 18px; text-align: left; }
-        label { display: block; font-weight: 600; margin-bottom: 8px; color: #475569; font-size: 13px; text-transform: uppercase; }
-        input, select { padding: 14px 16px; font-size: 16px; border-radius: 12px; border: 1px solid var(--border); width: 100%; box-sizing: border-box; background: #fff; color: var(--text-title); }
-        
-        button.action-btn { padding: 16px; font-size: 16px; border-radius: 12px; border: none; width: 100%; font-weight: 700; cursor: pointer; background-color: var(--primary); color: white; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2); transition: background 0.2s; }
-        button.action-btn:hover { background-color: var(--primary-hover); }
-        
-        .result-box { display: none; margin-top: 20px; background: var(--success-bg); border: 1px solid var(--success-border); padding: 20px; border-radius: 16px; text-align: left; }
-        .result-box h3 { color: var(--success-text); margin-bottom: 14px; font-size: 15px; text-transform: uppercase; text-align: center; border-bottom: 1px dashed rgba(16, 185, 129, 0.3); padding-bottom: 6px; }
-        .result-item { display: flex; justify-content: space-between; margin-bottom: 10px; color: var(--success-text); font-size: 15px; }
-        .result-total { font-size: 22px; font-weight: 800; border-top: 1px dashed #10b981; padding-top: 12px; margin-top: 12px; color: #064e3b; }
-        
-        footer { margin-top: auto; padding: 24px 0 10px 0; font-size: 13px; color: #64748b; text-align: center; }
-        footer a { color: var(--primary); text-decoration: none; font-weight: 600; }
-        footer a:hover { text-decoration: underline; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Split Bill Calculator</title>
+  <!-- Tailwind CSS CDN for styling -->
+  <script src="https://jsdelivr.net"></script>
 </head>
-<body>
+<body class="min-h-screen bg-slate-50 py-6 px-4 text-slate-800 antialiased font-sans">
 
-    <div class="container">
-        <header>
-            <h1>Split Bill Calculator</h1>
-            <p>Smart, simple calculation tools designed for daily finance.</p>
-        </header>
-
-        <!-- TOOL 1: BILL SPLITTER -->
-        <section>
-            <h2>👥 Bill Splitter Tool</h2>
-            <div class="form-group">
-                <label for="currencySelect">Select Your Local Currency</label>
-                <select id="currencySelect">
-                    <option value="$">🇺🇸 USD - Dollar ($)</option>
-                    <option value="₦">🇳🇬 NGN - Naira (₦)</option>
-                    <option value="₵">🇬🇭 GHS - Cedi (₵)</option>
-                    <option value="£">🇬🇧 GBP - Pound (£)</option>
-                    <option value="€">🇪🇺 EUR - Euro (€)</option>
-                    <option value="KSh">🇰🇪 KES - Shilling (KSh)</option>
-                    <option value="R">🇿🇦 ZAR - Rand (R)</option>
-                    <option value="₹">🇮🇳 INR - Rupee (₹)</option>
-                    <option value="C$">🇨🇦 CAD - Canadian Dollar (C$)</option>
-                    <option value="A$">🇦🇺 AUD - Australian Dollar (A$)</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="totalBill">Total Bill Amount</label>
-                <input type="number" id="totalBill" placeholder="Example: 150">
-            </div>
-            <div class="form-group">
-                <label for="peopleCount">Number of People</label>
-                <input type="number" id="peopleCount" placeholder="Example: 4">
-            </div>
-            <button class="action-btn" onclick="calculateSplit()">Calculate Split Amount</button>
-            
-            <div id="split-results" class="result-box">
-                <h3>Calculated Split Breakdown</h3>
-                <div id="splitContent"></div>
-            </div>
-        </section>
-
-        <!-- VISUAL SECTION DIVIDER -->
-        <div class="section-divider"></div>
-
-        <!-- TOOL 2: INCOME TAX TOOL -->
-        <section>
-            <h2>💰 Income Tax Tool</h2>
-            <div class="form-group">
-                <label for="taxCurrency">Select Your Local Currency</label>
-                <select id="taxCurrency">
-                    <option value="$">🇺🇸 USD - Dollar ($)</option>
-                    <option value="₦">🇳🇬 NGN - Naira (₦)</option>
-                    <option value="₵">🇬🇭 GHS - Cedi (₵)</option>
-                    <option value="£">🇬🇧 GBP - Pound (£)</option>
-                    <option value="€">🇪🇺 EUR - Euro (€)</option>
-                    <option value="KSh">🇰🇪 KES - Shilling (KSh)</option>
-                    <option value="R">🇿🇦 ZAR - Rand (R)</option>
-                    <option value="₹">🇮🇳 INR - Rupee (₹)</option>
-                    <option value="C$">🇨🇦 CAD - Canadian Dollar (C$)</option>
-                    <option value="A$">🇦🇺 AUD - Australian Dollar (A$)</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="taxIncome">Enter Income Amount</label>
-                <input type="number" id="taxIncome" placeholder="Example: 5000">
-            </div>
-            <div class="form-group">
-                <label for="taxPeriod">Pay Period</label>
-                <select id="taxPeriod">
-                    <option value="Hourly">Hourly</option>
-                    <option value="Weekly">Weekly</option>
-                    <option value="Monthly">Monthly</option>
-                    <option value="Yearly">Yearly</option>
-                </select>
-            </div>
-            <button class="action-btn" onclick="calculateTax()">Calculate Income & Tax</button>
-            
-            <div id="tax-results" class="result-box">
-                <h3>Tax Calculation Breakdown</h3>
-                <div id="taxContent"></div>
-            </div>
-        </section>
-
-        <!-- VISUAL SECTION DIVIDER -->
-        <div class="section-divider"></div>
-
-        <!-- TOOL 3: CURRENCY CONVERTER -->
-        <section>
-            <h2>💱 Currency Converter Tool</h2>
-            <div class="form-group">
-                <label for="convertAmount">Amount to Convert</label>
-                <input type="number" id="convertAmount" placeholder="Example: 100">
-            </div>
-            <div class="form-group">
-                <label for="fromCurrency">From Currency</label>
-                <select id="fromCurrency">
-                    <option value="USD">🇺🇸 USD - Dollar ($)</option>
-                    <option value="NGN">🇳🇬 NGN - Naira (₦)</option>
-                    <option value="GHS">🇬🇭 GHS - Cedi (₵)</option>
-                    <option value="GBP">🇬🇧 GBP - Pound (£)</option>
-                    <option value="EUR">🇪🇺 EUR - Euro (€)</option>
-                    <option value="KES">🇰🇪 KES - Shilling (KSh)</option>
-                    <option value="ZAR">🇿🇦 ZAR - Rand (R)</option>
-                    <option value="INR">🇮🇳 INR - Rupee (₹)</option>
-                    <option value="CAD">🇨🇦 CAD - Canadian Dollar (C$)</option>
-                    <option value="AUD">🇦🇺 AUD - Australian Dollar (A$)</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="toCurrency">To Currency</label>
-                <select id="toCurrency">
-                    <option value="NGN">🇳🇬 NGN - Naira (₦)</option>
-                    <option value="USD">🇺🇸 USD - Dollar ($)</option>
-                    <option value="GHS">🇬🇭 GHS - Cedi (₵)</option>
-                    <option value="GBP">🇬🇧 GBP - Pound (£)</option>
-                    <option value="EUR">🇪🇺 EUR - Euro (€)</option>
-                    <option value="KES">🇰🇪 KES - Shilling (KSh)</option>
-                    <option value="ZAR">🇿🇦 ZAR - Rand (R)</option>
-                    <option value="INR">🇮🇳 INR - Rupee (₹)</option>
-                    <option value="CAD">🇨🇦 CAD - Canadian Dollar (C$)</option>
-                    <option value="AUD">🇦🇺 AUD - Australian Dollar (A$)</option>
-                </select>
-            </div>
-            <button class="action-btn" onclick="calculateConversion()">Convert Currency</button>
-            
-            <div id="convert-results" class="result-box">
-                <h3>Conversion Result</h3>
-                <div id="convertContent"></div>
-            </div>
-        </section>
+  <div class="max-w-md mx-auto bg-white rounded-[32px] shadow-xl border border-slate-100 p-6 space-y-8">
+    
+    <!-- Main Header Block -->
+    <div class="text-center space-y-1">
+      <h1 class="text-2xl font-black text-blue-950 tracking-tight">Split Bill Calculator</h1>
+      <p class="text-xs text-slate-400 font-medium px-4 leading-normal">
+        Smart, simple calculation tools designed for daily finance.
+      </p>
     </div>
 
-    <footer>
-        <p>© 2026 Split Bill Calculator | <a href="privacy.html">Privacy Policy</a></p>
-    </footer>
+    <!-- 1. SPLIT BILL COMPONENT -->
+    <section class="space-y-4">
+      <h2 class="text-xl font-extrabold text-slate-900 tracking-tight">Split Bill</h2>
+      
+      <div class="space-y-4">
+        <div>
+          <label class="block text-[11px] font-extrabold text-slate-500 uppercase tracking-wider mb-1.5">
+            Select Currency Symbol
+          </label>
+          <select id="currency" class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3.5 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-blue-600 transition-all">
+            <option value="₦">🇳🇬 NGN - Nigerian Naira (₦)</option>
+            <option value="$">🇺🇸 USD - US Dollar ($)</option>
+            <option value="£">🇬🇧 GBP - British Pound (£)</option>
+            <option value="€">🇪🇺 EUR - Euro (€)</option>
+            <option value="C$">🇨🇦 CAD - Canadian Dollar ($)</option>
+            <option value="A$">🇦🇺 AUD - Australian Dollar ($)</option>
+            <option value="R">🇿🇦 ZAR - South African Rand (R)</option>
+            <option value="₵">🇬🇭 GHS - Ghanaian Cedi (₵)</option>
+            <option value="KSh">🇰🇪 KES - Kenyan Shilling (KSh)</option>
+            <option value="₹">🇮🇳 INR - Indian Rupee (₹)</option>
+            <option value="د.إ">🇦🇪 AED - UAE Dirham (د.إ)</option>
+            <option value="¥">🇨🇳 CNY - Chinese Yuan (¥)</option>
+            <option value="¥">🇯🇵 JPY - Japanese Yen (¥)</option>
+            <option value="R$">🇧🇷 BRL - Brazilian Real (R$)</option>
+            <option value="$">🇲🇽 MXN - Mexican Peso ($)</option>
+          </select>
+        </div>
 
-    <script>
-        function calculateSplit() {
-            const bill = parseFloat(document.getElementById('totalBill').value);
+        <div>
+          <label class="block text-[11px] font-extrabold text-slate-500 uppercase tracking-wider mb-1.5">
+            Total Money Amount
+          </label>
+          <input id="totalBill" type="number" placeholder="29777" class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3.5 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-blue-600 transition-all" required />
+        </div>
+
+        <div>
+          <label class="block text-[11px] font-extrabold text-slate-500 uppercase tracking-wider mb-1.5">
+            Number of People
+          </label>
+          <input id="peopleCount" type="number" placeholder="33" class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3.5 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-blue-600 transition-all" required />
+        </div>
+
+        <button onclick="calculateSplit()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-2xl text-sm transition-all shadow-md shadow-blue-200 active:scale-[0.99]">
+          Calculate Split
+        </button>
+      </div>
+
+      <!-- Result Target Box -->
+      <div id="splitResult" class="hidden bg-blue-50/60 border border-blue-100 rounded-2xl p-4 text-sm space-y-1">
+        <p class="font-semibold text-blue-950">Each Person Pays: <span id="perPersonText" class="font-black text-blue-600 text-base"></span></p>
+        <p class="text-xs text-blue-700 font-medium">Remainder Left Over: <span id="remainderText"></span></p>
+      </div>
+    </section>
+
+    <!-- 2. DEFINE PERCENTAGE CUT COMPONENT -->
+    <section class="space-y-4 pt-2">
+      <h2 class="text-xl font-extrabold text-slate-900 tracking-tight flex items-center gap-2">
+        📊 Define Percentage Cut Per Person (%)
+      </h2>
+      
+      <div class="space-y-4">
+        <div>
+          <label class="block text-[11px] font-extrabold text-slate-500 uppercase tracking-wider mb-1.5">
+            Total Amount to Share
+          </label>
+          <input id="shareTotal" type="number" placeholder="Example: 100000" class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3.5 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-blue-600 transition-all" required />
+        </div>
+
+        <div>
+          <label class="block text-[11px] font-extrabold text-slate-500 uppercase tracking-wider mb-2">
+            Percentages Per Person (Must Sum to 100% Total)
+          </label>
+          <div class="grid grid-cols-5 gap-2">
+            <div class="text-center space-y-1">
+              <span class="text-[10px] font-black text-slate-400 block uppercase">P1 %</span>
+              <input id="p1" type="number" value="10" class="pct-input w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-center text-xs font-bold focus:outline-none focus:ring-2 focus:ring-blue-600 transition-all" />
+            </div>
+            <div class="text-center space-y-1">
+              <span class="text-[10px] font-black text-slate-400 block uppercase">P2 %</span>
+              <input id="p2" type="number" value="20" class="pct-input w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-center text-xs font-bold focus:outline-none focus:ring-2 focus:ring-blue-600 transition-all" />
+            </div>
+            <div class="text-center space-y-1">
+              <span class="text-[10px] font-black text-slate-400 block uppercase">P3 %</span>
+              <input id="p3" type="number" value="30" class="pct-input w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-center text-xs font-bold focus:outline-none focus:ring-2 focus:ring-blue-600 transition-all" />
+            </div>
+            <div class="text-center space-y-1">
+              <span class="text-[10px] font-black text-slate-400 block uppercase">P4 %</span>
+              <input id="p4" type="number" value="20" class="pct-input w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-center text-xs font-bold focus:outline-none focus:ring-2 focus:ring-blue-600 transition-all" />
+            </div>
+            <div class="text-center space-y-1">
+              <span class="text-[10px] font-black text-slate-400 block uppercase">P5 %</span>
+              <input id="p5" type="number" value="20" class="pct-input w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-center text-xs font-bold focus:outline-none focus:ring-2 focus:ring-blue-600 transition-all" />
+            </div>
+          </div>
+        </div>
+
+        <button onclick="calculatePercentageCut()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-2xl text-sm transition-all shadow-md shadow-blue-200 active:scale-[0.99]">
+          Calculate Share Breakdown
+        </button>
+      </div>
+
+      <!-- Percentage Output Target Box -->
+      <div id="shareResult" class="hidden bg-slate-50 border border-slate-200 rounded-2xl p-4 text-xs font-medium space-y-2"></div>
+    </section>
+
+    <!-- 3. PRODUCT DISCOUNT FINDER COMPONENT -->
+    <section class="space-y-4 pt-2">
+      <h2 class="text-xl font-extrabold text-slate-900 tracking-tight flex items-center gap-2">
+        🏷️ Product Discount Finder
+      </h2>
+      
+      <div class="space-y-4">
+        <div>
+          <label class="block text-[11px] font-extrabold text-slate-500 uppercase tracking-wider mb-1.5">
+            Original Product Price
+          </label>
+          <input id="originalPrice" type="number" placeholder="Example: 15000" class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3.5 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-blue-600 transition-all" required />
+        </div>
+
+        <div>
+          <label class="block text-[11px] font-extrabold text-slate-500 uppercase tracking-wider mb-1.5">
+            Discount Percentage (%)
+          </label>
+          <input id="discountPercent" type="number" placeholder="Example: 15" class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3.5 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-blue-600 transition-all" required />
+        </div>
+
+        <button onclick="calculateDiscount()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-2xl text-sm transition-all shadow-md shadow-blue-200 active:scale-[0.99]">
+          Calculate Discount
+        </button>
+      </div>
+
+      <!-- Discount Output Target Box -->
+      <div id="discountResult" class="hidden bg-emerald-50/60 border border-emerald-100 rounded-2xl p-4 text-sm space-y-1">
+        <p class="font-semibold text-emerald-950">Final Sale Price: <span id="finalPriceText" class="font-black text-emerald-600 text-base"></span></p>
+        <p class="text-xs text-emerald-700 font-medium">Total Money Saved: <span id="savedAmountText"></span></p>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- JavaScript Functions to Run Computations -->
+  <script>
+    function calculateSplit() {
+      const symbol = document.getElementById('currency').value;
+      const bill = parseFloat(document.getElementById('totalBill').value);
+      const people = parseInt(document.getElementById('peopleCount').value);
+      
+      if (!bill || !people) return;
+
+      const perPerson = Math.floor((bill / people) * 100) / 100;
+      const distributed = perPerson * people;
+      const remainder = Math.round((bill - distributed) * 100) / 100;
+
+      document.getElementById('perPersonText').innerText = symbol + perPerson.toFixed(2);
+      document.getElementById('remainderText').innerText = symbol + remainder.toFixed(2);
