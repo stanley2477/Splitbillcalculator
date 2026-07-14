@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Money Splitter & Percentage Suite</title>
+    <title>Split Bill & Percentage Suite</title>
     <style>
         :root {
             --primary: #2563eb;
@@ -26,17 +26,18 @@
         header h1 { color: var(--text-title); font-size: 24px; font-weight: 800; margin-bottom: 6px; text-align: center; }
         header p { color: #64748b; font-size: 14px; margin-bottom: 24px; text-align: center; }
         
-        .section-divider { margin: 25px 0; border-top: 2px solid #e2e8f0; width: 100%; }
-        section { display: block; width: 100%; margin-bottom: 10px; }
+        .section-divider { margin: 25px 0; border-top: 2px solid #e2e8f0; width: 100%; clear: both; }
+        section { display: block; width: 100%; margin-bottom: 10px; clear: both; position: relative; }
         
         .form-group { margin-bottom: 15px; text-align: left; }
-        .grid-5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; margin-bottom: 10px; }
+        .grid-5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; margin-bottom: 10px; width: 100%; }
         label { display: block; font-weight: 600; margin-bottom: 6px; color: #475569; font-size: 12px; text-transform: uppercase; }
         input, select { padding: 12px 14px; font-size: 16px; border-radius: 12px; border: 1px solid var(--border); width: 100%; box-sizing: border-box; background: #fff; color: var(--text-title); }
         
         .grid-5 input { padding: 10px 4px; text-align: center; font-size: 14px; width: 100%; }
         .grid-5 label { font-size: 10px; text-align: center; margin-bottom: 4px; }
         
+        /* HARD CLICKABLE RESET: Forces the browser to put buttons on top of all transparent layers */
         button.action-btn { 
             display: block;
             padding: 14px; 
@@ -51,17 +52,20 @@
             box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2); 
             transition: background 0.1s, transform 0.05s; 
             -webkit-tap-highlight-color: transparent !important;
+            position: relative;
+            z-index: 9999 !important;
+            pointer-events: auto !important;
         }
         button.action-btn:hover { background-color: var(--primary-hover); }
         button.action-btn:active { transform: scale(0.96); }
         
-        .result-box { display: none; margin-top: 15px; background: var(--success-bg); border: 1px solid var(--success-border); padding: 15px; border-radius: 16px; text-align: left; }
+        .result-box { display: none; margin-top: 15px; background: var(--success-bg); border: 1px solid var(--success-border); padding: 15px; border-radius: 16px; text-align: left; position: relative; z-index: 10; }
         .result-box h3 { color: var(--success-text); margin-bottom: 12px; font-size: 14px; text-transform: uppercase; text-align: center; border-bottom: 1px dashed rgba(16, 185, 129, 0.3); padding-bottom: 6px; }
         .result-item { display: flex; justify-content: space-between; margin-bottom: 8px; color: var(--success-text); font-size: 14px; }
         .result-total { font-size: 20px; font-weight: 800; border-top: 1px dashed #10b981; padding-top: 10px; margin-top: 10px; color: #064e3b; display: flex; justify-content: space-between; }
         
         .warning-notice { display: none; background: var(--warning-bg); border: 1px solid #f59e0b; padding: 10px; border-radius: 12px; font-size: 13px; color: var(--warning-text); margin-bottom: 12px; text-align: center; font-weight: 500; }
-        footer { padding: 15px 0 5px 0; font-size: 13px; color: #64748b; text-align: center; }
+        footer { padding: 15px 0 5px 0; font-size: 13px; color: #64748b; text-align: center; clear: both; }
     </style>
 </head>
 <body>
@@ -72,9 +76,9 @@
             <p>Smart, simple calculation tools designed for daily finance.</p>
         </header>
 
-        <!-- TOOL 1: MONEY SPLIT BILL -->
+        <!-- TOOL 1: SPLIT BILL -->
         <section>
-            <h2>💸 Money Split Bill</h2>
+            <h2>Split Bill</h2>
             <div class="form-group">
                 <label for="currencySelect">Select Currency Symbol</label>
                 <select id="currencySelect">
@@ -106,7 +110,7 @@
 
         <div class="section-divider"></div>
 
-        <!-- TOOL 2: DEFINE PERCENTAGE CUT PER PERSON (5 PEOPLE FULLY LISTED) -->
+        <!-- TOOL 2: DEFINE PERCENTAGE CUT PER PERSON -->
         <section>
             <h2>📊 Define Percentage Cut Per Person (%)</h2>
             <div class="form-group">
@@ -115,7 +119,7 @@
             </div>
             
             <div class="form-group">
-                <label>Percentages per Person (Must sum to 100%)</label>
+                <label>Percentages per Person (Must sum to 100% bridges)</label>
                 <div class="grid-5">
                     <div>
                         <label>P1 %</label>
@@ -179,9 +183,10 @@
     <script>
         document.addEventListener("DOMContentLoaded", function() {
 
-            // 1. MONEY SPLIT BILL HANDLER
+            // 1. SPLIT BILL HANDLER
             document.getElementById('btn-split').addEventListener('click', function(e) {
                 e.preventDefault();
+                e.stopPropagation();
                 var sym = document.getElementById('currencySelect').value;
                 var total = parseFloat(document.getElementById('totalBill').value);
                 var people = parseInt(document.getElementById('peopleCount').value);
@@ -194,8 +199,3 @@
                 var eachPays = (total / people).toFixed(2);
                 document.getElementById('splitContent').innerHTML = `
                     <div class="result-item"><span>Total Amount:</span> <span>${sym}${total.toFixed(2)}</span></div>
-                    <div class="result-item"><span>Shared Among:</span> <span>${people} People</span></div>
-                    <div class="result-total"><span>Each Person Gets:</span> <span>${sym}${eachPays}</span></div>`;
-                document.getElementById('split-results').style.display = 'block';
-            });
-
