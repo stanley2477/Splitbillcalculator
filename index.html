@@ -50,27 +50,26 @@
             background-color: var(--primary); 
             color: white; 
             box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2); 
-            transition: transform 0.1s, background-color 0.1s;
+            transition: transform 0.05s, background-color 0.05s;
             position: relative;
             z-index: 5;
             touch-action: manipulation;
         }
 
-        /* Hover isolation logic for computers */
         @media (hover: hover) {
             button.action-btn:hover { 
                 background-color: var(--primary-hover); 
             }
         }
 
-        /* Clean mechanical downward click response */
         button.action-btn:active,
         button.action-btn.is-active { 
-            transform: translateY(3px) scale(0.98) !important;
+            transform: translateY(2px) scale(0.99) !important;
             background-color: var(--primary-hover) !important;
             box-shadow: 0 2px 4px rgba(37, 99, 235, 0.1) !important;
         }
         
+        /* Forces clean processing view allocation */
         .result-box { display: none; margin-top: 15px; background: var(--success-bg); border: 1px solid var(--success-border); padding: 15px; border-radius: 16px; text-align: left; position: relative; z-index: 10; }
         .result-box h3 { color: var(--success-text); margin-bottom: 12px; font-size: 14px; text-transform: uppercase; text-align: center; border-bottom: 1px dashed rgba(16, 185, 129, 0.3); padding-bottom: 6px; }
         .result-item { display: flex; justify-content: space-between; margin-bottom: 8px; color: var(--success-text); font-size: 14px; }
@@ -138,7 +137,7 @@
             </div>
             
             <div class="form-group">
-                <label>Percentages per Person (Must sum to 100%)</label>
+                <label>Percentages per Person (Must sum to 100% Total)</label>
                 <div class="grid-5">
                     <div>
                         <label>P1 %</label>
@@ -200,6 +199,9 @@
     </div>
 
     <script>
-        // Touch Handler ensures smooth click behavior without color locking
-        document.querySelectorAll('.action-btn').forEach(btn => {
-            btn.addEventListener('touchstart', function() {
+        // Dual-Engine Handler: Bypasses browser timing intercept blocks
+        function bindProcessEngine(elementId, calculationCallback) {
+            const element = document.getElementById(elementId);
+            if (!element) return;
+
+            // Direct Execution wrapper
