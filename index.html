@@ -113,11 +113,16 @@
         </section>
     </div>
 
+    <!-- AUTOMATIC YEAR FOOTER -->
     <footer>
-        <p>© 2026 Split Bill Calculator | <a href="privacy.html">Privacy Policy</a></p>
+        <p>© <span id="currentYear"></span> Split Bill Calculator | <a href="privacy.html">Privacy Policy</a></p>
     </footer>
 
     <script>
+        // AUTOMATIC YEAR SCRIPT
+        document.getElementById("currentYear").textContent = new Date().getFullYear();
+
+        // TOOL 1 FUNCTION
         function calculateSplit() {
             const bill = parseFloat(document.getElementById('totalBill').value);
             const people = parseInt(document.getElementById('peopleCount').value);
@@ -136,6 +141,7 @@
             document.getElementById('split-results').style.display = "block";
         }
 
+        // TOOL 2 FUNCTION
         function calculatePercentageCut() {
             const bill = parseFloat(document.getElementById('percentageTotalBill').value);
             const percentage = parseFloat(document.getElementById('customPercentage').value);
