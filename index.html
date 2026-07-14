@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Split Bill, Tax & Currency Dashboard</title>
+    <title>Split Bill & Tax Calculator</title>
     <style>
         :root {
             --primary: #2563eb;
@@ -31,28 +31,13 @@
         label { display: block; font-weight: 600; margin-bottom: 8px; color: #475569; font-size: 13px; text-transform: uppercase; }
         input, select { padding: 14px 16px; font-size: 16px; border-radius: 12px; border: 1px solid var(--border); width: 100%; box-sizing: border-box; background: #fff; color: var(--text-title); }
         
-        /* FIXED TACTILE BUTTONS: Prevents mobile freezing and allows visual movement */
-        button.action-btn { 
-            padding: 16px; 
-            font-size: 16px; 
-            border-radius: 12px; 
-            border: none; 
-            width: 100%; 
-            font-weight: 700; 
-            cursor: pointer; 
-            background-color: var(--primary); 
-            color: white; 
-            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2); 
-            transition: background 0.1s, transform 0.1s; 
-            -webkit-tap-highlight-color: transparent;
-        }
+        button.action-btn { padding: 16px; font-size: 16px; border-radius: 12px; border: none; width: 100%; font-weight: 700; cursor: pointer; background-color: var(--primary); color: white; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2); transition: background 0.2s; }
         button.action-btn:hover { background-color: var(--primary-hover); }
-        button.action-btn:active { transform: scale(0.97); }
         
         .result-box { display: none; margin-top: 20px; background: var(--success-bg); border: 1px solid var(--success-border); padding: 20px; border-radius: 16px; text-align: left; }
         .result-box h3 { color: var(--success-text); margin-bottom: 14px; font-size: 15px; text-transform: uppercase; text-align: center; border-bottom: 1px dashed rgba(16, 185, 129, 0.3); padding-bottom: 6px; }
         .result-item { display: flex; justify-content: space-between; margin-bottom: 10px; color: var(--success-text); font-size: 15px; }
-        .result-total { font-size: 22px; font-weight: 800; border-top: 1px dashed #10b981; padding-top: 12px; margin-top: 12px; color: #064e3b; display: flex; justify-content: space-between; }
+        .result-total { font-size: 22px; font-weight: 800; border-top: 1px dashed #10b981; padding-top: 12px; margin-top: 12px; color: #064e3b; }
         
         footer { margin-top: auto; padding: 24px 0 10px 0; font-size: 13px; color: #64748b; text-align: center; }
     </style>
@@ -65,7 +50,7 @@
             <p>Smart, simple calculation tools designed for daily finance.</p>
         </header>
 
-        <!-- TOOL 1: BILL SPLITTER -->
+        <!-- TOOL 1: BILL SPLITTER (ALWAYS VISIBLE) -->
         <section>
             <h2>👥 Bill Splitter Tool</h2>
             <div class="form-group">
@@ -102,7 +87,7 @@
         <!-- VISUAL SECTION DIVIDER -->
         <div class="section-divider"></div>
 
-        <!-- TOOL 2: INCOME TAX TOOL -->
+        <!-- TOOL 2: INCOME TAX TOOL (ALWAYS VISIBLE) -->
         <section>
             <h2>💰 Income Tax Tool</h2>
             <div class="form-group">
@@ -183,6 +168,7 @@
             </div>
             <button class="action-btn" onclick="calculateConversion()">Convert Currency</button>
             
+            <!-- FIXED: Added missing results cards to prevent script crashes -->
             <div id="convert-results" class="result-box">
                 <h3>Conversion Results</h3>
                 <div id="convertContent"></div>
@@ -193,4 +179,10 @@
     <footer>
         <p>© 2026 Split Bill Calculator</p>
     </footer>
+
+    <script>
+        function calculateSplit() {
+            const bill = parseFloat(document.getElementById('totalBill').value);
+            const people = parseInt(document.getElementById('peopleCount').value);
+            const currency = document.getElementById('currencySelect').value;
 
