@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Split Bill Calculator</title>
     
+    <!-- ADSTERRA AD CODE -->
+    <script src="https://effectivecpmnetwork.com"></script>
+    
     <!-- GOOGLE SEARCH DESCRIPTION -->
     <meta name="description" content="Use our free split bill calculator today! Split group expenses in any local currency and instantly calculate custom percentage cuts per person.">
 
@@ -152,18 +155,15 @@
             const currency = document.getElementById('currencySelect').value;
 
             if (isNaN(bill) || isNaN(percentage) || percentage <= 0 || percentage > 100) {
-                alert("Please enter a valid bill amount and a percentage between 1 and 100.");
+                alert("Please enter valid percentage cuts.");
                 return;
             }
 
-            const personPays = ((bill * percentage) / 100).toFixed(2);
-            const remainingBalance = (bill - personPays).toFixed(2);
-
+            const cutAmount = ((bill * percentage) / 100).toFixed(2);
             document.getElementById('percentageContent').innerHTML = `
                 <div class="result-item"><span>Total Bill Pool:</span><span>${currency}${bill.toFixed(2)}</span></div>
                 <div class="result-item"><span>Your Custom Cut:</span><span>${percentage}%</span></div>
-                <div class="result-item"><span>Remaining Balance:</span><span>${currency}${remainingBalance}</span></div>
-                <div class="result-item result-total"><span>You Will Pay:</span><span>${currency}${personPays}</span></div>`;
+                <div class="result-item result-total"><span>Your Share Amount:</span><span>${currency}${cutAmount}</span></div>`;
             document.getElementById('percentage-results').style.display = "block";
         }
     </script>
