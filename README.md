@@ -1,2 +1,2 @@
 # Splitbillcalculator
-Use our free split bill calculator today! Split group expenses in any local currency and instantly calculate custom percentage cuts per person
+Free currency converter, receipt scanner, bill splitter and percentage calculator. Supporting 100+ currencies.
