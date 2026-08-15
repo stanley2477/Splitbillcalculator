@@ -2,180 +2,1700 @@
 <html lang="en">
 <head>
 <script>(function(s){s.dataset.zone='11574243',s.src='https://nap5k.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
+
 <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-2233H42QE8"></script>
 <script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-2233H42QE8');
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-2233H42QE8');
 </script>
+
 <title>Split Bill Calculator</title>
-  
-    <!-- GOOGLE SEARCH DESCRIPTION -->
-    <meta name="description" content="Use our free split bill calculator today! Split group expenses in any local currency and instantly calculate custom percentage cuts per person.">
 
-    <style>
-        :root {
-            --primary: #2563eb;
-            --primary-hover: #1d4ed8;
-            --bg-main: #f8fafc;
-            --card-bg: #ffffff;
-            --text-title: #0f172a;
-            --text-body: #334155;
-            --border: #e2e8f0;
-            --success-bg: #f0fdf4;
-            --success-border: #10b981;
-            --success-text: #166534;
-        }
+<meta name="description" content="Use our free split bill calculator today! Split group expenses in any local currency, scan receipts, create bills from receipt text, and share results.">
 
-        * { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; margin: 0; padding: 0; }
-        body { background-color: var(--bg-main); color: var(--text-body); padding: 20px 15px; display: flex; flex-direction: column; min-height: 100vh; }
-        .container { max-width: 520px; width: 100%; margin: 10px auto; background: var(--card-bg); padding: 30px 24px; border-radius: 24px; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05); }
-        header h1 { color: var(--text-title); font-size: 26px; font-weight: 800; margin-bottom: 6px; text-align: center; }
-        header p { color: #64748b; font-size: 14px; margin-bottom: 28px; text-align: center; }
-        
-        .section-divider { margin: 35px 0 25px 0; border-top: 2px solid #e2e8f0; padding-top: 25px; }
-        h2 { color: var(--text-title); font-size: 18px; margin-bottom: 15px; text-align: left; display: flex; align-items: center; gap: 6px; }
-        
-        .form-group { margin-bottom: 18px; text-align: left; }
-        label { display: block; font-weight: 600; margin-bottom: 8px; color: #475569; font-size: 13px; text-transform: uppercase; }
-        input, select { padding: 14px 16px; font-size: 16px; border-radius: 12px; border: 1px solid var(--border); width: 100%; box-sizing: border-box; background: #fff; color: var(--text-title); }
-        
-        button.action-btn { padding: 16px; font-size: 16px; border-radius: 12px; border: none; width: 100%; font-weight: 700; cursor: pointer; background-color: var(--primary); color: white; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2); transition: background 0.2s; }
-        button.action-btn:hover { background-color: var(--primary-hover); }
-        
-        .result-box { display: none; margin-top: 20px; background: var(--success-bg); border: 1px solid var(--success-border); padding: 20px; border-radius: 16px; text-align: left; }
-        .result-box h3 { color: var(--success-text); margin-bottom: 14px; font-size: 15px; text-transform: uppercase; text-align: center; border-bottom: 1px dashed rgba(16,185,129,0.3); padding-bottom: 6px; }
-        .result-item { display: flex; justify-content: space-between; margin-bottom: 10px; color: var(--success-text); font-size: 15px; }
-        .result-total { font-size: 22px; font-weight: 800; border-top: 1px dashed #10b981; padding-top: 12px; margin-top: 12px; color: #064e3b; }
-        
-        footer { margin-top: auto; padding: 24px 0 10px 0; font-size: 13px; color: #64748b; text-align: center; }
-        footer a { color: #2563eb; text-decoration: none; margin-left: 5px; font-weight: 600; }
-        footer a:hover { text-decoration: underline; }
-    </style>
+<!-- Receipt scanner library -->
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+
+<style>
+:root {
+    --primary: #2563eb;
+    --primary-hover: #1d4ed8;
+    --bg-main: #f8fafc;
+    --card-bg: #ffffff;
+    --text-title: #0f172a;
+    --text-body: #334155;
+    --border: #e2e8f0;
+    --success-bg: #f0fdf4;
+    --success-border: #10b981;
+    --success-text: #166534;
+}
+
+* {
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--bg-main);
+    color: var(--text-body);
+    padding: 20px 15px;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 520px;
+    width: 100%;
+    margin: 10px auto;
+    background: var(--card-bg);
+    padding: 30px 24px;
+    border-radius: 24px;
+    box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05);
+}
+
+header h1 {
+    color: var(--text-title);
+    font-size: 26px;
+    font-weight: 800;
+    margin-bottom: 6px;
+    text-align: center;
+}
+
+header p {
+    color: #64748b;
+    font-size: 14px;
+    margin-bottom: 28px;
+    text-align: center;
+}
+
+.section-divider {
+    margin: 35px 0 25px 0;
+    border-top: 2px solid #e2e8f0;
+    padding-top: 25px;
+}
+
+h2 {
+    color: var(--text-title);
+    font-size: 18px;
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+.form-group {
+    margin-bottom: 18px;
+    text-align: left;
+}
+
+label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #475569;
+    font-size: 13px;
+    text-transform: uppercase;
+}
+
+input,
+select,
+textarea {
+    padding: 14px 16px;
+    font-size: 16px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    width: 100%;
+    box-sizing: border-box;
+    background: #fff;
+    color: var(--text-title);
+}
+
+textarea {
+    min-height: 150px;
+    resize: vertical;
+}
+
+button.action-btn {
+    padding: 16px;
+    font-size: 16px;
+    border-radius: 12px;
+    border: none;
+    width: 100%;
+    font-weight: 700;
+    cursor: pointer;
+    background-color: var(--primary);
+    color: white;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+    transition: background 0.2s;
+    margin-top: 8px;
+}
+
+button.action-btn:hover {
+    background-color: var(--primary-hover);
+}
+
+button.secondary-btn {
+    padding: 14px;
+    font-size: 15px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    width: 100%;
+    font-weight: 700;
+    cursor: pointer;
+    background: #fff;
+    color: var(--text-title);
+    margin-top: 8px;
+}
+
+button.share-btn {
+    background: #16a34a;
+}
+
+button.share-btn:hover {
+    background: #15803d;
+}
+
+.result-box {
+    display: none;
+    margin-top: 20px;
+    background: var(--success-bg);
+    border: 1px solid var(--success-border);
+    padding: 20px;
+    border-radius: 16px;
+    text-align: left;
+}
+
+.result-box h3 {
+    color: var(--success-text);
+    margin-bottom: 14px;
+    font-size: 15px;
+    text-transform: uppercase;
+    text-align: center;
+    border-bottom: 1px dashed rgba(16,185,129,0.3);
+    padding-bottom: 6px;
+}
+
+.result-item {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 10px;
+    color: var(--success-text);
+    font-size: 15px;
+}
+
+.result-total {
+    font-size: 22px;
+    font-weight: 800;
+    border-top: 1px dashed #10b981;
+    padding-top: 12px;
+    margin-top: 12px;
+    color: #064e3b;
+}
+
+.receipt-description {
+    color: #64748b;
+    font-size: 13px;
+    line-height: 1.5;
+    margin-bottom: 15px;
+}
+
+.receipt-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.hidden-file {
+    display: none;
+}
+
+.status-message {
+    display: none;
+    margin-top: 12px;
+    padding: 12px;
+    border-radius: 10px;
+    font-size: 13px;
+    line-height: 1.4;
+    background: #eff6ff;
+    color: #1e40af;
+    border: 1px solid #bfdbfe;
+}
+
+.receipt-row {
+    display: grid;
+    grid-template-columns: 1fr 105px 38px;
+    gap: 7px;
+    margin-bottom: 8px;
+}
+
+.receipt-row input {
+    padding: 10px;
+    font-size: 14px;
+}
+
+.remove-item {
+    width: 38px;
+    height: 42px;
+    border: 1px solid #fecaca;
+    background: white;
+    color: #dc2626;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 20px;
+}
+
+footer {
+    margin-top: auto;
+    padding: 24px 0 10px 0;
+    font-size: 13px;
+    color: #64748b;
+    text-align: center;
+}
+
+footer a {
+    color: #2563eb;
+    text-decoration: none;
+    margin-left: 5px;
+    font-weight: 600;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 430px) {
+    .receipt-buttons {
+        grid-template-columns: 1fr;
+    }
+
+    .receipt-row {
+        grid-template-columns: 1fr 90px 38px;
+    }
+}
+</style>
 </head>
+
 <body>
 
-    <div class="container">
-        <header>
-            <h1>Split Bill Calculator</h1>
-            <p>Smart, simple calculation tools designed for daily finance.</p>
-        </header>
+<div class="container">
 
-        <!-- GLOBAL CURRENCY SELECTOR -->
-        <div class="form-group">
-            <label>Select Your Local Currency</label>
-            <select id="currencySelect">
-                <option value="$">🇺🇸 USD - Dollar ($)</option>
-                <option value="₦">🇳🇬 NGN - Naira (₦)</option>
-                <option value="₵">🇬🇭 GHS - Cedi (₵)</option>
-                <option value="£">🇬🇧 GBP - Pound (£)</option>
-                <option value="€">🇪🇺 EUR - Euro (€)</option>
-                <option value="KSh">🇰🇪 KES - Shilling (KSh)</option>
-                <option value="R">🇿🇦 ZAR - Rand (R)</option>
-                <option value="₹">🇮🇳 INR - Rupee (₹)</option>
-                <option value="C$">🇨🇦 CAD - Canadian Dollar (C$)</option>
-                <option value="A$">🇦🇺 AUD - Australian Dollar (A$)</option>
-            </select>
-        </div>
+<header>
+    <h1>Split Bill Calculator</h1>
+    <p>Smart, simple calculation tools designed for daily finance.</p>
+</header>
 
-        <div class="section-divider"></div>
+<!-- GLOBAL CURRENCY SELECTOR -->
 
-        <!-- TOOL 1: BILL SPLITTER TOOL -->
-        <section>
-            <h2>👥 Bill Splitter Tool</h2>
-            <div class="form-group">
-                <label>Total Bill Amount</label>
-                <input type="number" id="totalBill" placeholder="Example: 150">
-            </div>
-            <div class="form-group">
-                <label>Number of People</label>
-                <input type="number" id="peopleCount" placeholder="Example: 4">
-            </div>
-            <button type="button" class="action-btn" onclick="calculateSplit()">Calculate Split Amount</button>
-            
-            <div id="split-results" class="result-box">
-                <h3>Calculated Split Breakdown</h3>
-                <div id="splitContent"></div>
-            </div>
-        </section>
+<div class="form-group">
 
-        <!-- VISUAL SECTION DIVIDER -->
-        <div class="section-divider"></div>
+<label>Select Your Local Currency</label>
 
-        <!-- TOOL 2: DEFINE PERCENTAGE CUT PER PERSON -->
-        <section>
-            <h2>📊 Define Percentage Cut Per Person (%)</h2>
-            <div class="form-group">
-                <label>Total Bill Amount</label>
-                <input type="number" id="percentageTotalBill" placeholder="Example: 150">
-            </div>
-            <div class="form-group">
-                <label>Your Custom Cut Percentage (%)</label>
-                <input type="number" id="customPercentage" placeholder="Example: 25" min="1" max="100">
-            </div>
-            <button type="button" class="action-btn" onclick="calculatePercentageCut()">Calculate Percentage Cut</button>
-            
-            <div id="percentage-results" class="result-box">
-                <h3>Calculated Share Breakdown</h3>
-                <div id="percentageContent"></div>
-            </div>
-        </section>
-    </div>
+<select id="currencySelect">
 
-    <!-- AUTOMATIC YEAR FOOTER -->
-    <footer>
-        <p>© <span id="currentYear"></span> Split Bill Calculator | <a href="privacy.html">Privacy Policy</a></p>
-    </footer>
+<option value="$">🇺🇸 USD - Dollar ($)</option>
+<option value="₦">🇳🇬 NGN - Naira (₦)</option>
+<option value="₵">🇬🇭 GHS - Cedi (₵)</option>
+<option value="£">🇬🇧 GBP - Pound (£)</option>
+<option value="€">🇪🇺 EUR - Euro (€)</option>
+<option value="KSh">🇰🇪 KES - Shilling (KSh)</option>
+<option value="R">🇿🇦 ZAR - Rand (R)</option>
+<option value="₹">🇮🇳 INR - Rupee (₹)</option>
+<option value="C$">🇨🇦 CAD - Canadian Dollar (C$)</option>
+<option value="A$">🇦🇺 AUD - Australian Dollar (A$)</option>
 
-    <script>
-        // AUTOMATIC YEAR SCRIPT
-        document.getElementById("currentYear").textContent = new Date().getFullYear();
+</select>
 
-        // TOOL 1 FUNCTION
-        function calculateSplit() {
-            const bill = parseFloat(document.getElementById('totalBill').value);
-            const people = parseInt(document.getElementById('peopleCount').value);
-            const currency = document.getElementById('currencySelect').value;
+</div>
 
-            if (isNaN(bill) || isNaN(people) || people <= 0) {
-                alert("Please enter valid amounts and total number of people.");
-                return;
-            }
 
-            const share = (bill / people).toFixed(2);
-            document.getElementById('splitContent').innerHTML = `
-                <div class="result-item"><span>Total Bill Pool:</span><span>${currency}${bill.toFixed(2)}</span></div>
-                <div class="result-item"><span>Total Splitters:</span><span>${people} People</span></div>
-                <div class="result-item result-total"><span>Each Person Pays:</span><span>${currency}${share}</span></div>`;
-            document.getElementById('split-results').style.display = "block";
-        }
+<!-- RECEIPT SCANNER -->
 
-        // TOOL 2 FUNCTION
-        function calculatePercentageCut() {
-            const bill = parseFloat(document.getElementById('percentageTotalBill').value);
-            const percentage = parseFloat(document.getElementById('customPercentage').value);
-            const currency = document.getElementById('currencySelect').value;
+<div class="section-divider"></div>
 
-            if (isNaN(bill) || isNaN(percentage) || percentage <= 0 || percentage > 100) {
-                alert("Please enter a valid bill amount and a percentage between 1 and 100.");
-                return;
-            }
+<section>
 
-            const personPays = ((bill * percentage) / 100).toFixed(2);
-            const remainingBalance = (bill - personPays).toFixed(2);
+<h2>📷 Scan Receipt</h2>
 
-            document.getElementById('percentageContent').innerHTML = `
-                <div class="result-item"><span>Total Bill Pool:</span><span>${currency}${bill.toFixed(2)}</span></div>
-                <div class="result-item"><span>Your Custom Cut:</span><span>${percentage}%</span></div>
-                <div class="result-item"><span>Remaining Balance:</span><span>${currency}${remainingBalance}</span></div>
-                <div class="result-item result-total"><span>You Will Pay:</span><span>${currency}${personPays}</span></div>`;
-            document.getElementById('percentage-results').style.display = "block";
-        }
-    </script>
+<p class="receipt-description">
+Take a clear photo of a receipt or choose a receipt image.
+The text is read in your browser and converted into editable bill items.
+</p>
+
+<div class="receipt-buttons">
+
+<button type="button"
+class="action-btn"
+id="takePhotoButton">
+📷 TAKE PHOTO
+</button>
+
+<button type="button"
+class="secondary-btn"
+id="uploadReceiptButton">
+🖼️ UPLOAD RECEIPT
+</button>
+
+</div>
+
+<input
+type="file"
+id="receiptCamera"
+class="hidden-file"
+accept="image/*"
+capture="environment"
+>
+
+<input
+type="file"
+id="receiptImage"
+class="hidden-file"
+accept="image/*"
+>
+
+<div id="ocrStatus" class="status-message"></div>
+
+
+<div id="scanResults" class="result-box">
+
+<h3>Receipt Items</h3>
+
+<div id="scanItems"></div>
+
+<button
+type="button"
+class="secondary-btn"
+id="addScanItem">
++ Add Item
+</button>
+
+<div class="result-item result-total">
+
+<span>Receipt Total</span>
+
+<span id="scanTotal">$0.00</span>
+
+</div>
+
+<button
+type="button"
+class="action-btn share-btn"
+id="shareScan">
+🔗 Share Result
+</button>
+
+</div>
+
+</section>
+
+
+<!-- COPY PASTE RECEIPT -->
+
+<div class="section-divider"></div>
+
+<section>
+
+<h2>📋 Copy & Paste Receipt</h2>
+
+<p class="receipt-description">
+Paste receipt text from WhatsApp, Messages, email, or another app.
+We'll look for item names and prices.
+</p>
+
+<div class="form-group">
+
+<label>Receipt Text</label>
+
+<textarea
+id="receiptText"
+placeholder="Example:
+Jollof Rice 5000
+Chicken 3000
+Drinks 2000
+Total 10000"
+></textarea>
+
+</div>
+
+<button
+type="button"
+class="action-btn"
+id="createReceiptButton">
+Create Bill From Receipt
+</button>
+
+<div id="pasteStatus" class="status-message"></div>
+
+
+<div id="pasteResults" class="result-box">
+
+<h3>Receipt Items</h3>
+
+<div id="pasteItems"></div>
+
+<button
+type="button"
+class="secondary-btn"
+id="addPasteItem">
++ Add Item
+</button>
+
+<div class="result-item result-total">
+
+<span>Receipt Total</span>
+
+<span id="pasteTotal">$0.00</span>
+
+</div>
+
+<button
+type="button"
+class="action-btn share-btn"
+id="sharePaste">
+🔗 Share Result
+</button>
+
+</div>
+
+</section>
+
+
+<!-- TOOL 1: BILL SPLITTER -->
+
+<div class="section-divider"></div>
+
+<section>
+
+<h2>👥 Bill Splitter Tool</h2>
+
+<div class="form-group">
+
+<label>Total Bill Amount</label>
+
+<input
+type="number"
+id="totalBill"
+placeholder="Example: 150"
+>
+
+</div>
+
+
+<div class="form-group">
+
+<label>Number of People</label>
+
+<input
+type="number"
+id="peopleCount"
+placeholder="Example: 4"
+>
+
+</div>
+
+
+<button
+type="button"
+class="action-btn"
+id="calculateSplitButton">
+Calculate Split Amount
+</button>
+
+
+<div id="split-results" class="result-box">
+
+<h3>Calculated Split Breakdown</h3>
+
+<div id="splitContent"></div>
+
+<button
+type="button"
+class="action-btn share-btn"
+id="shareSplit">
+🔗 Share Result
+</button>
+
+</div>
+
+</section>
+
+
+<!-- TOOL 2: PERCENTAGE -->
+
+<div class="section-divider"></div>
+
+<section>
+
+<h2>📊 Define Percentage Cut Per Person (%)</h2>
+
+<div class="form-group">
+
+<label>Total Bill Amount</label>
+
+<input
+type="number"
+id="percentageTotalBill"
+placeholder="Example: 150"
+>
+
+</div>
+
+
+<div class="form-group">
+
+<label>Your Custom Cut Percentage (%)</label>
+
+<input
+type="number"
+id="customPercentage"
+placeholder="Example: 25"
+min="1"
+max="100"
+>
+
+</div>
+
+
+<button
+type="button"
+class="action-btn"
+id="calculatePercentageButton">
+Calculate Percentage Cut
+</button>
+
+
+<div id="percentage-results" class="result-box">
+
+<h3>Calculated Share Breakdown</h3>
+
+<div id="percentageContent"></div>
+
+<button
+type="button"
+class="action-btn share-btn"
+id="sharePercentage">
+🔗 Share Result
+</button>
+
+</div>
+
+</section>
+
+</div>
+
+
+<!-- FOOTER -->
+
+<footer>
+
+<p>
+© <span id="currentYear"></span>
+Split Bill Calculator |
+<a href="privacy.html">Privacy Policy</a>
+</p>
+
+</footer>
+
+
+<script>
+
+(function(){
+
+"use strict";
+
+
+/* AUTOMATIC YEAR */
+
+document.getElementById("currentYear").textContent =
+new Date().getFullYear();
+
+
+/* SHORTCUT */
+
+function getCurrency(){
+
+return document.getElementById("currencySelect").value;
+
+}
+
+
+/* =========================
+   BILL SPLITTER
+========================= */
+
+document.getElementById("calculateSplitButton")
+.addEventListener("click", function(){
+
+var bill =
+parseFloat(document.getElementById("totalBill").value);
+
+var people =
+parseInt(document.getElementById("peopleCount").value, 10);
+
+if(
+!Number.isFinite(bill) ||
+!Number.isFinite(people) ||
+people <= 0
+){
+
+alert(
+"Please enter valid amounts and total number of people."
+);
+
+return;
+
+}
+
+var share = bill / people;
+
+var currency = getCurrency();
+
+
+document.getElementById("splitContent").innerHTML =
+
+'<div class="result-item">' +
+'<span>Total Bill Pool:</span>' +
+'<span>' +
+currency +
+bill.toFixed(2) +
+'</span>' +
+'</div>' +
+
+'<div class="result-item">' +
+'<span>Total Splitters:</span>' +
+'<span>' +
+people +
+' People</span>' +
+'</div>' +
+
+'<div class="result-item result-total">' +
+'<span>Each Person Pays:</span>' +
+'<span>' +
+currency +
+share.toFixed(2) +
+'</span>' +
+'</div>';
+
+
+document.getElementById("split-results").style.display =
+"block";
+
+});
+
+
+/* =========================
+   PERCENTAGE CALCULATOR
+========================= */
+
+document.getElementById("calculatePercentageButton")
+.addEventListener("click", function(){
+
+var bill =
+parseFloat(
+document.getElementById("percentageTotalBill").value
+);
+
+var percentage =
+parseFloat(
+document.getElementById("customPercentage").value
+);
+
+if(
+!Number.isFinite(bill) ||
+!Number.isFinite(percentage) ||
+percentage <= 0 ||
+percentage > 100
+){
+
+alert(
+"Please enter a valid bill amount and a percentage between 1 and 100."
+);
+
+return;
+
+}
+
+var personPays =
+(bill * percentage) / 100;
+
+var remainingBalance =
+bill - personPays;
+
+var currency = getCurrency();
+
+
+document.getElementById("percentageContent").innerHTML =
+
+'<div class="result-item">' +
+'<span>Total Bill Pool:</span>' +
+'<span>' +
+currency +
+bill.toFixed(2) +
+'</span>' +
+'</div>' +
+
+'<div class="result-item">' +
+'<span>Your Custom Cut:</span>' +
+'<span>' +
+percentage +
+'%</span>' +
+'</div>' +
+
+'<div class="result-item">' +
+'<span>Remaining Balance:</span>' +
+'<span>' +
+currency +
+remainingBalance.toFixed(2) +
+'</span>' +
+'</div>' +
+
+'<div class="result-item result-total">' +
+'<span>You Will Pay:</span>' +
+'<span>' +
+currency +
+personPays.toFixed(2) +
+'</span>' +
+'</div>';
+
+
+document.getElementById("percentage-results")
+.style.display = "block";
+
+});
+
+
+/* =========================
+   SHARE FUNCTION
+========================= */
+
+function shareResult(text){
+
+if(navigator.share){
+
+navigator.share({
+
+title: "Split Bill Calculator",
+
+text: text
+
+}).catch(function(){});
+
+return;
+
+}
+
+
+if(
+navigator.clipboard &&
+window.isSecureContext
+){
+
+navigator.clipboard.writeText(text)
+.then(function(){
+
+alert("Result copied to clipboard.");
+
+})
+.catch(function(){
+
+fallbackCopy(text);
+
+});
+
+return;
+
+}
+
+fallbackCopy(text);
+
+}
+
+
+function fallbackCopy(text){
+
+var textarea =
+document.createElement("textarea");
+
+textarea.value = text;
+
+textarea.style.position = "fixed";
+
+textarea.style.left = "-9999px";
+
+document.body.appendChild(textarea);
+
+textarea.focus();
+
+textarea.select();
+
+try{
+
+document.execCommand("copy");
+
+alert("Result copied to clipboard.");
+
+}
+
+catch(error){
+
+alert(text);
+
+}
+
+document.body.removeChild(textarea);
+
+}
+
+
+/* =========================
+   SHARE SPLIT RESULT
+========================= */
+
+document.getElementById("shareSplit")
+.addEventListener("click", function(){
+
+var bill =
+parseFloat(document.getElementById("totalBill").value);
+
+var people =
+parseInt(document.getElementById("peopleCount").value, 10);
+
+if(
+!Number.isFinite(bill) ||
+!Number.isFinite(people) ||
+people <= 0
+){
+
+alert("Calculate the split first.");
+
+return;
+
+}
+
+var currency = getCurrency();
+
+var share = bill / people;
+
+
+shareResult(
+
+"👥 Split Bill Result\n\n" +
+
+"Total Bill: " +
+currency +
+bill.toFixed(2) +
+
+"\nPeople: " +
+people +
+
+"\nEach Person Pays: " +
+currency +
+share.toFixed(2)
+
+);
+
+});
+
+
+/* =========================
+   SHARE PERCENTAGE RESULT
+========================= */
+
+document.getElementById("sharePercentage")
+.addEventListener("click", function(){
+
+var bill =
+parseFloat(
+document.getElementById("percentageTotalBill").value
+);
+
+var percentage =
+parseFloat(
+document.getElementById("customPercentage").value
+);
+
+if(
+!Number.isFinite(bill) ||
+!Number.isFinite(percentage) ||
+percentage <= 0 ||
+percentage > 100
+){
+
+alert(
+"Calculate the percentage result first."
+);
+
+return;
+
+}
+
+var currency = getCurrency();
+
+var personPays =
+bill * percentage / 100;
+
+var remaining =
+bill - personPays;
+
+
+shareResult(
+
+"📊 Percentage Bill Result\n\n" +
+
+"Total Bill: " +
+currency +
+bill.toFixed(2) +
+
+"\nYour Share: " +
+percentage +
+"%" +
+
+"\nYou Will Pay: " +
+currency +
+personPays.toFixed(2) +
+
+"\nRemaining Balance: " +
+currency +
+remaining.toFixed(2)
+
+);
+
+});
+
+
+/* =========================
+   RECEIPT TEXT PARSER
+========================= */
+
+function extractReceiptItems(text){
+
+var lines =
+text.split(/\r?\n/);
+
+var items = [];
+
+
+lines.forEach(function(line){
+
+line =
+line.trim()
+.replace(/\s+/g, " ");
+
+if(!line){
+
+return;
+
+}
+
+
+/* Ignore common receipt totals */
+
+if(
+/^(total|grand total|subtotal|sub total|tax|vat|change|cash|card|balance due|amount due|discount|service charge)\b/i
+.test(line)
+){
+
+return;
+
+}
+
+
+/* Find a number at the end of the line */
+
+var match =
+line.match(
+/(?:[$€£₦₹₵]|KSh|C\$|A\$|R)?\s*(\d+(?:[,\s]\d{3})*(?:\.\d{1,2})?)\s*$/i
+);
+
+
+if(!match){
+
+return;
+
+}
+
+
+var price =
+parseFloat(
+match[1].replace(/[,\s]/g, "")
+);
+
+
+var name =
+line
+.slice(0, match.index)
+.replace(/[:=\-–—]+$/, "")
+.trim();
+
+
+if(
+name.length >= 2 &&
+Number.isFinite(price) &&
+price > 0
+){
+
+items.push({
+
+name: name,
+
+price: price
+
+});
+
+}
+
+});
+
+
+return items;
+
+}
+
+
+/* =========================
+   CREATE RECEIPT ROW
+========================= */
+
+function addReceiptItem(
+containerId,
+name,
+price
+){
+
+var container =
+document.getElementById(containerId);
+
+var row =
+document.createElement("div");
+
+row.className =
+"receipt-row";
+
+
+var nameInput =
+document.createElement("input");
+
+nameInput.type =
+"text";
+
+nameInput.placeholder =
+"Item name";
+
+nameInput.value =
+name || "";
+
+
+var priceInput =
+document.createElement("input");
+
+priceInput.type =
+"number";
+
+priceInput.step =
+"0.01";
+
+priceInput.min =
+"0";
+
+priceInput.placeholder =
+"Price";
+
+if(price !== undefined){
+
+priceInput.value =
+price;
+
+}
+
+
+var removeButton =
+document.createElement("button");
+
+removeButton.type =
+"button";
+
+removeButton.className =
+"remove-item";
+
+removeButton.textContent =
+"×";
+
+
+removeButton.addEventListener(
+"click",
+function(){
+
+row.remove();
+
+updateReceiptTotal(containerId);
+
+}
+);
+
+
+nameInput.addEventListener(
+"input",
+function(){
+
+updateReceiptTotal(containerId);
+
+}
+);
+
+
+priceInput.addEventListener(
+"input",
+function(){
+
+updateReceiptTotal(containerId);
+
+}
+);
+
+
+row.appendChild(nameInput);
+
+row.appendChild(priceInput);
+
+row.appendChild(removeButton);
+
+container.appendChild(row);
+
+}
+
+
+/* =========================
+   UPDATE RECEIPT TOTAL
+========================= */
+
+function updateReceiptTotal(containerId){
+
+var container =
+document.getElementById(containerId);
+
+var total = 0;
+
+
+container
+.querySelectorAll(".receipt-row")
+.forEach(function(row){
+
+var price =
+parseFloat(
+row.querySelector(
+'input[type="number"]'
+).value
+);
+
+if(Number.isFinite(price)){
+
+total += price;
+
+}
+
+});
+
+
+var totalElement;
+
+if(containerId === "scanItems"){
+
+totalElement =
+document.getElementById("scanTotal");
+
+}
+
+else{
+
+totalElement =
+document.getElementById("pasteTotal");
+
+}
+
+
+totalElement.textContent =
+getCurrency() +
+total.toFixed(2);
+
+}
+
+
+/* =========================
+   DISPLAY RECEIPT ITEMS
+========================= */
+
+function displayReceiptItems(
+containerId,
+items
+){
+
+var container =
+document.getElementById(containerId);
+
+container.innerHTML = "";
+
+
+items.forEach(function(item){
+
+addReceiptItem(
+containerId,
+item.name,
+item.price
+);
+
+});
+
+
+updateReceiptTotal(containerId);
+
+}
+
+
+/* =========================
+   COPY / PASTE RECEIPT
+========================= */
+
+document.getElementById("createReceiptButton")
+.addEventListener("click", function(){
+
+var text =
+document.getElementById("receiptText")
+.value
+.trim();
+
+var status =
+document.getElementById("pasteStatus");
+
+
+if(!text){
+
+status.style.display =
+"block";
+
+status.textContent =
+"Please paste your receipt text first.";
+
+return;
+
+}
+
+
+var items =
+extractReceiptItems(text);
+
+
+if(!items.length){
+
+status.style.display =
+"block";
+
+status.textContent =
+"No item prices were detected. Try: Jollof Rice 5000";
+
+return;
+
+}
+
+
+displayReceiptItems(
+"pasteItems",
+items
+);
+
+
+document.getElementById("pasteResults")
+.style.display =
+"block";
+
+
+status.style.display =
+"block";
+
+status.textContent =
+"Receipt converted successfully. Review the items before sharing.";
+
+});
+
+
+/* ADD PASTE ITEM */
+
+document.getElementById("addPasteItem")
+.addEventListener("click", function(){
+
+addReceiptItem(
+"pasteItems",
+"",
+""
+);
+
+updateReceiptTotal(
+"pasteItems"
+);
+
+});
+
+
+/* SHARE PASTE RECEIPT */
+
+document.getElementById("sharePaste")
+.addEventListener("click", function(){
+
+var rows =
+document.getElementById("pasteItems")
+.querySelectorAll(".receipt-row");
+
+var lines = [];
+
+var total = 0;
+
+
+rows.forEach(function(row){
+
+var name =
+row.querySelector(
+'input[type="text"]'
+).value.trim();
+
+var price =
+parseFloat(
+row.querySelector(
+'input[type="number"]'
+).value
+);
+
+
+if(Number.isFinite(price)){
+
+if(!name){
+
+name = "Item";
+
+}
+
+lines.push(
+name +
+": " +
+getCurrency() +
+price.toFixed(2)
+);
+
+total += price;
+
+}
+
+});
+
+
+if(!lines.length){
+
+alert(
+"Please add at least one item before sharing."
+);
+
+return;
+
+}
+
+
+shareResult(
+
+"🧾 Receipt\n\n" +
+
+lines.join("\n") +
+
+"\n\nTotal: " +
+
+getCurrency() +
+
+total.toFixed(2)
+
+);
+
+});
+
+
+/* =========================
+   RECEIPT SCANNER
+========================= */
+
+function scanReceipt(file){
+
+if(!file){
+
+return;
+
+}
+
+
+var status =
+document.getElementById("ocrStatus");
+
+
+status.style.display =
+"block";
+
+status.textContent =
+"Reading receipt...";
+
+
+if(!window.Tesseract){
+
+status.textContent =
+"Receipt scanner is unavailable. Please use Copy & Paste Receipt instead.";
+
+return;
+
+}
+
+
+Tesseract.recognize(
+file,
+"eng",
+{
+
+logger: function(info){
+
+if(
+info.status === "recognizing text" &&
+typeof info.progress === "number"
+){
+
+status.textContent =
+"Reading receipt... " +
+Math.round(info.progress * 100) +
+"%";
+
+}
+
+}
+
+}
+
+)
+
+.then(function(result){
+
+var text =
+result.data.text || "";
+
+var items =
+extractReceiptItems(text);
+
+
+if(!items.length){
+
+status.textContent =
+"No prices were detected. Please try a clearer receipt photo.";
+
+return;
+
+}
+
+
+displayReceiptItems(
+"scanItems",
+items
+);
+
+
+document.getElementById("scanResults")
+.style.display =
+"block";
+
+
+status.textContent =
+"Receipt scanned successfully. Review the items before sharing.";
+
+})
+
+
+.catch(function(){
+
+status.textContent =
+"The receipt could not be read. Try a clearer photo or use Copy & Paste Receipt.";
+
+});
+
+}
+
+
+/* TAKE PHOTO */
+
+document.getElementById("takePhotoButton")
+.addEventListener("click", function(){
+
+document.getElementById("receiptCamera")
+.click();
+
+});
+
+
+/* UPLOAD RECEIPT */
+
+document.getElementById("uploadReceiptButton")
+.addEventListener("click", function(){
+
+document.getElementById("receiptImage")
+.click();
+
+});
+
+
+/* CAMERA FILE */
+
+document.getElementById("receiptCamera")
+.addEventListener("change", function(event){
+
+if(event.target.files.length){
+
+scanReceipt(
+event.target.files[0]
+);
+
+}
+
+event.target.value = "";
+
+});
+
+
+/* UPLOAD FILE */
+
+document.getElementById("receiptImage")
+.addEventListener("change", function(event){
+
+if(event.target.files.length){
+
+scanReceipt(
+event.target.files[0]
+);
+
+}
+
+event.target.value = "";
+
+});
+
+
+/* ADD SCANNED ITEM */
+
+document.getElementById("addScanItem")
+.addEventListener("click", function(){
+
+addReceiptItem(
+"scanItems",
+"",
+""
+);
+
+updateReceiptTotal(
+"scanItems"
+);
+
+});
+
+
+/* SHARE SCANNED RECEIPT */
+
+document.getElementById("shareScan")
+.addEventListener("click", function(){
+
+var rows =
+document.getElementById("scanItems")
+.querySelectorAll(".receipt-row");
+
+var lines = [];
+
+var total = 0;
+
+
+rows.forEach(function(row){
+
+var name =
+row.querySelector(
+'input[type="text"]'
+).value.trim();
+
+var price =
+parseFloat(
+row.querySelector(
+'input[type="number"]'
+).value
+);
+
+
+if(Number.isFinite(price)){
+
+if(!name){
+
+name = "Item";
+
+}
+
+lines.push(
+name +
+": " +
+getCurrency() +
+price.toFixed(2)
+);
+
+total += price;
+
+}
+
+});
+
+
+if(!lines.length){
+
+alert(
+"Please add at least one item before sharing."
+);
+
+return;
+
+}
+
+
+shareResult(
+
+"🧾 Scanned Receipt\n\n" +
+
+lines.join("\n") +
+
+"\n\nTotal: " +
+
+getCurrency() +
+
+total.toFixed(2)
+
+);
+
+});
+
+
+/* UPDATE TOTAL WHEN CURRENCY CHANGES */
+
+document.getElementById("currencySelect")
+.addEventListener("change", function(){
+
+updateReceiptTotal("scanItems");
+
+updateReceiptTotal("pasteItems");
+
+});
+
+
+})();
+
+</script>
+
 </body>
 </html>
