@@ -2081,50 +2081,20 @@ function shareResult(text){
 if(navigator.share){
 
 navigator.share({
-    title: "Split Bill Calculator",
-    text: text
-})
-.then(function(){
 
-})
-.catch(function(error){
+title:"Split Bill Calculator",
 
-if(error.name === "AbortError"){
-    return;
+text:text
+
+}).catch(function(error){
+
+if(error && error.name === "AbortError"){
+return;
 }
 
 fallbackCopy(text);
 
 });
-
-return;
-}
-
-
-if(
-navigator.clipboard &&
-window.isSecureContext
-){
-
-navigator.clipboard
-.writeText(text)
-.then(function(){
-
-alert("Result copied to clipboard.");
-
-})
-.catch(function(){
-
-fallbackCopy(text);
-
-});
-
-return;
-
-}
-
-
-fallbackCopy(text);
 
 }
 
