@@ -2759,14 +2759,25 @@ if (enableRemindersButton) {
 
             try {
 
-                if (!("Notification" in window)) {
+                if (!window.isSecureContext) {
 
-                    reminderStatus.style.display = "block";
+    reminderStatus.style.display = "block";
 
-                    reminderStatus.textContent =
-                        "Notifications are not supported by this browser.";
+    reminderStatus.textContent =
+        "Notifications require a secure HTTPS connection.";
 
-                    return;
+    return;
+
+}
+
+if (!("Notification" in window)) {
+
+    reminderStatus.style.display = "block";
+
+    reminderStatus.textContent =
+        "Notifications are not available in this app environment.";
+
+    return;
 
                 }
 
