@@ -117,6 +117,34 @@ gtag('config', 'G-2233H42QE8');
 <!-- Receipt Scanner -->
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 
+<!-- Firebase Cloud Messaging -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+  import {
+    getMessaging,
+    getToken,
+    onMessage
+  } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-messaging.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCIh1YhOdSTiWxcj3czN09KmEP6xSmi_Sc",
+    authDomain: "split-bill-calculator-aad6b.firebaseapp.com",
+    projectId: "split-bill-calculator-aad6b",
+    storageBucket: "split-bill-calculator-aad6b.firebasestorage.app",
+    messagingSenderId: "398787092388",
+    appId: "1:398787092388:web:d5955869f846aa28eaab31"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const messaging = getMessaging(app);
+
+  window.splitBillMessaging = messaging;
+  window.splitBillGetToken = getToken;
+  window.splitBillOnMessage = onMessage;
+
+  console.log("Firebase Cloud Messaging initialized.");
+</script>
+
 <style>
 
 :root {
@@ -918,6 +946,38 @@ id="sharePercentage">
         <summary>Are currency exchange rates guaranteed?</summary>
         <p>No. Exchange rates can change and may differ from rates provided by banks, payment providers, and other financial institutions.</p>
     </details>
+</section>
+<!-- =========================
+     BILL REMINDERS
+========================= -->
+
+<section class="install-section" id="reminderSection">
+
+    <h2>🔔 Bill Reminders</h2>
+
+    <div class="install-card">
+
+        <h3>Never forget to split a bill</h3>
+
+        <p>
+            Get occasional reminders from Split Bill Calculator.
+            You can turn them off anytime in your browser settings.
+        </p>
+
+        <button
+            type="button"
+            class="action-btn"
+            id="enableRemindersButton">
+            🔔 Enable Reminders
+        </button>
+
+        <p
+            id="reminderStatus"
+            style="display:none; margin-top:10px; font-size:13px;">
+        </p>
+
+    </div>
+
 </section>
 <!-- =========================
      INSTALL SPLIT BILL CALCULATOR
@@ -2680,6 +2740,109 @@ window.addEventListener(
 
     }
 );
+
+/* =====================================================
+   FIREBASE PUSH NOTIFICATIONS
+===================================================== */
+
+const enableRemindersButton =
+    document.getElementById("enableRemindersButton");
+
+const reminderStatus =
+    document.getElementById("reminderStatus");
+
+if (enableRemindersButton) {
+
+    enableRemindersButton.addEventListener(
+        "click",
+        async function () {
+
+            try {
+
+                if (!("Notification" in window)) {
+
+                    reminderStatus.style.display = "block";
+
+                    reminderStatus.textContent =
+                        "Notifications are not supported by this browser.";
+
+                    return;
+
+                }
+
+                const permission =
+                    await Notification.requestPermission();
+
+                if (permission !== "granted") {
+
+                    reminderStatus.style.display = "block";
+
+                    reminderStatus.textContent =
+                        "Notifications were not enabled.";
+
+                    return;
+
+                }
+
+                const registration =
+                    await navigator.serviceWorker.ready;
+
+                const token =
+                    await window.splitBillGetToken(
+                        window.splitBillMessaging,
+                        {
+                            vapidKey:
+                                "BGlXv6idjycM27qjHWV8ogi4fBzV6DoxntOidp9H4ZdYSQJ03nuWGs0IcYfVqB8dU2pbea0sYAgNsxSLwsv8f-A",
+
+                            serviceWorkerRegistration:
+                                registration
+                        }
+                    );
+
+                console.log(
+                    "Firebase notification token:",
+                    token
+                );
+
+                if (!token) {
+
+                    throw new Error(
+                        "No Firebase notification token was returned."
+                    );
+
+                }
+
+                reminderStatus.style.display = "block";
+
+                reminderStatus.textContent =
+                    "✅ Reminders enabled successfully.";
+
+                enableRemindersButton.textContent =
+                    "✅ Reminders Enabled";
+
+                enableRemindersButton.disabled =
+                    true;
+
+            }
+
+            catch (error) {
+
+                console.error(
+                    "Firebase notification setup failed:",
+                    error
+                );
+
+                reminderStatus.style.display = "block";
+
+                reminderStatus.textContent =
+                    "Unable to enable reminders. Please try again.";
+
+            }
+
+        }
+    );
+
+}
 
 </script>
 
