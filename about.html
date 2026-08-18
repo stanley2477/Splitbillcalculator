@@ -1,32 +1,180 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About Us - Split Bill Calculator</title>
-    <style>
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; background: #f8fafc; padding: 30px 20px; color: #334155; }
-        .container { max-width: 600px; margin: 40px auto; background: white; padding: 35px 25px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); }
-        h1 { color: #0f172a; margin-bottom: 15px; font-size: 24px; font-weight: 800; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px; }
-        p { line-height: 1.7; margin-bottom: 15px; font-size: 15px; }
-        ul { padding-left: 20px; margin-bottom: 15px; }
-        li { margin-bottom: 8px; line-height: 1.6; font-size: 14px; }
-        a { color: #2563eb; font-weight: bold; text-decoration: none; display: inline-block; margin-top: 15px; }
-        a:hover { text-decoration: underline; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>About Us - Split Bill Calculator</title>
+
+<meta name="description" content="Learn more about Split Bill Calculator and the online tools we provide for bill splitting, receipt processing, percentage calculations, and currency conversion.">
+
+<style>
+:root{
+    --primary:#2563eb;
+    --bg:#f8fafc;
+    --card:#fff;
+    --text:#334155;
+    --title:#0f172a;
+    --border:#e2e8f0;
+}
+
+*{
+    box-sizing:border-box;
+    font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+    margin:0;
+    padding:0;
+}
+
+body{
+    background:var(--bg);
+    padding:40px 15px;
+    color:var(--text);
+}
+
+.container{
+    max-width:700px;
+    margin:auto;
+    background:var(--card);
+    padding:32px;
+    border-radius:20px;
+    box-shadow:0 10px 25px rgba(0,0,0,.06);
+}
+
+h1{
+    color:var(--title);
+    margin-bottom:12px;
+    border-bottom:2px solid var(--border);
+    padding-bottom:10px;
+}
+
+h2{
+    margin:25px 0 10px;
+    color:var(--title);
+    font-size:18px;
+}
+
+p{
+    line-height:1.7;
+    margin-bottom:15px;
+}
+
+ul{
+    margin:0 0 18px 22px;
+    line-height:1.7;
+}
+
+li{
+    margin-bottom:8px;
+}
+
+a.btn{
+    display:block;
+    text-align:center;
+    margin-top:25px;
+    padding:14px;
+    border:1px solid var(--border);
+    text-decoration:none;
+    color:var(--title);
+    border-radius:10px;
+    font-weight:bold;
+}
+
+footer{
+    border-top:1px solid var(--border);
+    margin-top:40px;
+    padding-top:20px;
+    text-align:center;
+    font-size:14px;
+    color:#64748b;
+    line-height:1.8;
+}
+
+footer a{
+    color:#64748b;
+    text-decoration:none;
+}
+
+footer a:hover{
+    text-decoration:underline;
+}
+</style>
 </head>
+
 <body>
-    <div class="container">
-        <h1>About Us</h1>
-        <p>Welcome to <strong>Split Bill Calculator</strong>, an online utility hub built to make everyday calculation processes fluid, highly responsive, and reliable.</p>
-        <p>Our dashboard provides optimized, high-fidelity responsive utility tools including:</p>
-        <ul>
-            <li><strong>Bill Splitter</strong> - Helps groups separate checks and divide costs fairly.</li>
-            <li><strong>Percentage Finder</strong> - Provides swift percentage valuations for financial analysis.</li>
-            <li><strong>Income Tax Tool</strong> - Projects custom wage evaluations across multi-currency pay schedules.</li>
-        </ul>
-        <p>For custom inquiries, contact our desk at <strong>calculatorsplitbill@gmail.com</strong>.</p>
-        <a href="index.html">← Back to Calculator</a>
-    </div>
+
+<div class="container">
+
+<h1>About Us</h1>
+
+<p>
+Welcome to <strong>Split Bill Calculator</strong>, a free online utility website designed to make everyday calculations simple, convenient, and easy to understand.
+</p>
+
+<p>
+Our goal is to provide practical tools that help users quickly calculate bills, work with percentages, process receipts, and convert currencies from one convenient place.
+</p>
+
+<h2>Our Tools</h2>
+
+<p>
+Split Bill Calculator provides several useful tools, including:
+</p>
+
+<ul>
+<li><strong>Bill Splitter:</strong> Divide a bill between multiple people and see how much each person should pay.</li>
+
+<li><strong>Percentage Calculator:</strong> Calculate a percentage of a bill and determine an individual share or percentage cut.</li>
+
+<li><strong>Receipt Scanner:</strong> Scan or upload a receipt image and convert detected items and prices into an editable bill.</li>
+
+<li><strong>Copy &amp; Paste Receipt:</strong> Paste receipt text from another application and create an editable bill from the detected items and prices.</li>
+
+<li><strong>Currency Converter:</strong> Convert amounts between supported currencies using current exchange-rate data.</li>
+</ul>
+
+<h2>Our Purpose</h2>
+
+<p>
+We aim to make everyday financial calculations easier by providing simple, accessible, and responsive online tools that can be used on phones, tablets, and computers.
+</p>
+
+<p>
+The tools are provided for general informational and calculation purposes. Users should verify important financial, payment, tax, or currency information with the appropriate source or qualified professional when necessary.
+</p>
+
+<h2>About the Website</h2>
+
+<p>
+Split Bill Calculator is operated by <strong>Split Calculator Services</strong>.
+</p>
+
+<p>
+We continue to improve the website, its calculators, and its features to provide a better experience for users.
+</p>
+
+<h2>Contact</h2>
+
+<p>
+For questions, feedback, or inquiries about the website, please visit our Contact page.
+</p>
+
+<footer>
+
+&copy; <span id="year"></span> Split Bill Calculator |
+<a href="privacy.html">Privacy Policy</a> |
+<a href="terms.html">Terms of Use</a> |
+<a href="about.html">About Us</a> |
+<a href="contact.html">Contact</a>
+
+</footer>
+
+<a class="btn" href="index.html">← Back to Calculator</a>
+
+</div>
+
+<script>
+document.getElementById("year").textContent = new Date().getFullYear();
+</script>
+
 </body>
 </html>
