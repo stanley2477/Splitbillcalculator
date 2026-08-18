@@ -1,7 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1181290202717177"
+     crossorigin="anonymous"></script>
 <link rel="icon" type="image/png" href="/favicon.png">
+
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#2563eb">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Split Bill">
 <style>
 .faq-section {
     margin-top: 10px;
@@ -49,12 +57,49 @@
     font-size: 14px;
     color: var(--text-body);
 }
+
+/* =====================================================
+   PWA INSTALL SECTION
+===================================================== */
+
+.install-section {
+    margin-top: 30px;
+    text-align: left;
+}
+
+.install-section h2 {
+    margin-bottom: 15px;
+}
+
+.install-card {
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    background: #fff;
+    padding: 18px;
+    margin-bottom: 12px;
+}
+
+.install-card h3 {
+    color: var(--text-title);
+    font-size: 16px;
+    margin-bottom: 8px;
+}
+
+.install-card p {
+    color: var(--text-body);
+    font-size: 14px;
+    line-height: 1.5;
+    margin-bottom: 6px;
+}
+
+.install-card .action-btn {
+    margin-top: 12px;
+}
 </style>
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1181290202717177"
-     crossorigin="anonymous"></script>
+
 <!-- Google tag -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-2233H42QE8"></script>
 
@@ -874,7 +919,51 @@ id="sharePercentage">
         <p>No. Exchange rates can change and may differ from rates provided by banks, payment providers, and other financial institutions.</p>
     </details>
 </section>
+<!-- =========================
+     INSTALL SPLIT BILL CALCULATOR
+========================= -->
 
+<section class="install-section" id="installSection">
+
+    <h2>📱 Install Split Bill Calculator</h2>
+
+    <div class="install-card" id="androidInstall">
+
+        <h3>📱 Android Users</h3>
+
+        <p>
+            <strong>Install Split Bill Calculator</strong>
+        </p>
+
+        <p>
+            Tap <strong>Install</strong> → <strong>Install App</strong>
+        </p>
+
+        <button
+            type="button"
+            class="action-btn"
+            id="installAppButton">
+            📱 Install App
+        </button>
+
+    </div>
+
+
+    <div class="install-card" id="iphoneInstall">
+
+        <h3>🍎 iPhone Users</h3>
+
+        <p>
+            <strong>Add to Home Screen</strong>
+        </p>
+
+        <p>
+            Tap <strong>Share</strong> → <strong>Add to Home Screen</strong>
+        </p>
+
+    </div>
+
+</section>
 <footer>
 
 <p>
@@ -2483,6 +2572,114 @@ updateReceiptTotal("scanItems");
 document.getElementById("currentYear")
 .textContent =
 new Date().getFullYear();
+
+/* =====================================================
+   PWA SERVICE WORKER
+===================================================== */
+
+if ("serviceWorker" in navigator) {
+
+    window.addEventListener("load", function() {
+
+        navigator.serviceWorker
+            .register("/sw.js")
+            .then(function(registration) {
+
+                console.log(
+                    "PWA service worker registered:",
+                    registration.scope
+                );
+
+            })
+            .catch(function(error) {
+
+                console.log(
+                    "PWA service worker registration failed:",
+                    error
+                );
+
+            });
+
+    });
+
+}
+
+
+/* =====================================================
+   PWA INSTALL PROMPT
+===================================================== */
+
+let deferredInstallPrompt = null;
+
+const installButton =
+    document.getElementById("installAppButton");
+
+
+window.addEventListener(
+    "beforeinstallprompt",
+    function(event) {
+
+        event.preventDefault();
+
+        deferredInstallPrompt = event;
+
+        if (installButton) {
+
+            installButton.style.display =
+                "block";
+
+        }
+
+    }
+);
+
+
+if (installButton) {
+
+    installButton.addEventListener(
+        "click",
+        async function() {
+
+            if (!deferredInstallPrompt) {
+
+                alert(
+                    "If the install option does not appear, open your browser menu and choose Install App or Add to Home Screen."
+                );
+
+                return;
+
+            }
+
+            deferredInstallPrompt.prompt();
+
+            const choice =
+                await deferredInstallPrompt.userChoice;
+
+            console.log(
+                "PWA installation choice:",
+                choice.outcome
+            );
+
+            deferredInstallPrompt = null;
+
+        }
+    );
+
+}
+
+
+window.addEventListener(
+    "appinstalled",
+    function() {
+
+        console.log(
+            "Split Bill Calculator was installed."
+        );
+
+        deferredInstallPrompt = null;
+
+    }
+);
 
 </script>
 
