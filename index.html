@@ -1506,34 +1506,11 @@ if(
 
 }
 
-
-var converted =
-amount * data.rate;
-
-if(!response.ok){
-
-throw new Error(
-"Exchange rate unavailable"
-);
-
-}
-
-
-var data =
-await response.json();
-
 var converted =
 amount * data.rate;
 
 var toSymbol =
 getCurrencyData(to)[2];
-
-var fromName =
-getCurrencyData(from)[1];
-
-var toName =
-getCurrencyData(to)[1];
-
 
 output.textContent =
 toSymbol +
