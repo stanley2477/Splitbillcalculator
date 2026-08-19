@@ -1423,14 +1423,92 @@ resultBox.style.display =
 
 try{
 
-var response =
-await fetch(
-"https://api.frankfurter.dev/v2/rate/" +
-encodeURIComponent(from) +
-"/" +
-encodeURIComponent(to)
-);
+var cacheKey =
+"sbc_exchange_rate_" +
+from +
+"_" +
+to;
 
+var cachedRate = null;
+
+try {
+
+    cachedRate =
+        JSON.parse(
+            localStorage.getItem(cacheKey)
+        );
+
+} catch(error) {
+
+    cachedRate = null;
+
+}
+
+
+var data;
+
+
+if(
+    cachedRate &&
+    cachedRate.rate &&
+    cachedRate.timestamp &&
+    (Date.now() - cachedRate.timestamp)
+        < 12 * 60 * 60 * 1000
+){
+
+    data = {
+        rate: cachedRate.rate,
+        date: cachedRate.date
+    };
+
+} else {
+
+    var response =
+        await fetch(
+            "https://api.frankfurter.dev/v2/rate/" +
+            encodeURIComponent(from) +
+            "/" +
+            encodeURIComponent(to)
+        );
+
+
+    if(!response.ok){
+
+        throw new Error(
+            "Exchange rate unavailable"
+        );
+
+    }
+
+
+    data =
+        await response.json();
+
+
+    try {
+
+        localStorage.setItem(
+            cacheKey,
+            JSON.stringify({
+                rate: data.rate,
+                date: data.date,
+                timestamp: Date.now()
+            })
+        );
+
+    } catch(error) {
+
+        console.log(
+            "Exchange-rate caching unavailable."
+        );
+
+    }
+
+}
+
+
+var converted =
+amount * data.rate;
 
 if(!response.ok){
 
