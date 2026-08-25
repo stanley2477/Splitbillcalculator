@@ -4,121 +4,27 @@
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1181290202717177"
      crossorigin="anonymous"></script>
 <link rel="icon" type="image/png" href="/favicon.png">
-
 <link rel="manifest" href="/manifest.json">
 <meta name="theme-color" content="#2563eb">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Split Bill">
-<style>
-.faq-section {
-    margin-top: 10px;
-    text-align: left;
-}
-
-.faq-section h2 {
-    margin-bottom: 15px;
-}
-
-.faq-section details {
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    margin-bottom: 10px;
-    background: #fff;
-    overflow: hidden;
-}
-
-.faq-section summary {
-    padding: 15px;
-    cursor: pointer;
-    font-weight: 700;
-    color: var(--text-title);
-    list-style: none;
-}
-
-.faq-section summary::-webkit-details-marker {
-    display: none;
-}
-
-.faq-section summary::after {
-    content: "+";
-    float: right;
-    font-size: 20px;
-    color: var(--primary);
-}
-
-.faq-section details[open] summary::after {
-    content: "−";
-}
-
-.faq-section details p {
-    padding: 0 15px 15px;
-    line-height: 1.6;
-    font-size: 14px;
-    color: var(--text-body);
-}
-
-/* =====================================================
-   PWA INSTALL SECTION
-===================================================== */
-
-.install-section {
-    margin-top: 30px;
-    text-align: left;
-}
-
-.install-section h2 {
-    margin-bottom: 15px;
-}
-
-.install-card {
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    background: #fff;
-    padding: 18px;
-    margin-bottom: 12px;
-}
-
-.install-card h3 {
-    color: var(--text-title);
-    font-size: 16px;
-    margin-bottom: 8px;
-}
-
-.install-card p {
-    color: var(--text-body);
-    font-size: 14px;
-    line-height: 1.5;
-    margin-bottom: 6px;
-}
-
-.install-card .action-btn {
-    margin-top: 12px;
-}
-</style>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<!-- Google tag -->
+<!-- Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-2233H42QE8"></script>
-
 <script>
 window.dataLayer = window.dataLayer || [];
-function gtag(){dataLayer.push(arguments);}
+function gtag(){
+    dataLayer.push(arguments);
+}
 gtag('js', new Date());
 gtag('config', 'G-2233H42QE8');
 </script>
-
 <title>Split Bill Calculator | Online Bill Splitting</title>
-
-<meta name="description" content="Free bill splitter, receipt scanner, and currency converter supporting 100+ currencies. Copy and paste text receipts and calculate percentages easily.">
-
-<!-- Receipt Scanner -->
-<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
-
+<meta name="description"
+content="Free bill splitter, receipt scanner, currency converter and expense calculators. Explore tools for bills, travel, groups, business and everyday expenses.">
 <style>
-
 :root {
     --primary: #2563eb;
     --primary-hover: #1d4ed8;
@@ -127,18 +33,13 @@ gtag('config', 'G-2233H42QE8');
     --text-title: #0f172a;
     --text-body: #334155;
     --border: #e2e8f0;
-    --success-bg: #f0fdf4;
-    --success-border: #10b981;
-    --success-text: #166534;
 }
-
 * {
     box-sizing: border-box;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     margin: 0;
     padding: 0;
 }
-
 body {
     background-color: var(--bg-main);
     color: var(--text-body);
@@ -147,7 +48,6 @@ body {
     flex-direction: column;
     min-height: 100vh;
 }
-
 .container {
     max-width: 520px;
     width: 100%;
@@ -157,418 +57,31 @@ body {
     border-radius: 24px;
     box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05);
 }
-
-header h1 {
-    color: var(--text-title);
-    font-size: 26px;
-    font-weight: 800;
-    margin-bottom: 6px;
+header {
     text-align: center;
 }
-
+header h1 {
+    color: var(--text-title);
+    font-size: 28px;
+    font-weight: 800;
+    margin-bottom: 8px;
+}
 header p {
     color: #64748b;
     font-size: 14px;
+    line-height: 1.6;
     margin-bottom: 28px;
-    text-align: center;
 }
-
-.section-divider {
-    margin: 35px 0 25px 0;
-    border-top: 2px solid #e2e8f0;
-    padding-top: 25px;
-}
-
-h2 {
-    color: var(--text-title);
-    font-size: 18px;
-    margin-bottom: 15px;
-    text-align: left;
-}
-
-.form-group {
-    margin-bottom: 18px;
-    text-align: left;
-}
-
-label {
-    display: block;
-    font-weight: 600;
-    margin-bottom: 8px;
-    color: #475569;
-    font-size: 13px;
-    text-transform: uppercase;
-}
-
-input,
-select,
-textarea {
-    padding: 14px 16px;
-    font-size: 16px;
-    border-radius: 12px;
-    border: 1px solid var(--border);
-    width: 100%;
-    background: #fff;
-    color: var(--text-title);
-}
-
-textarea {
-    min-height: 150px;
-    resize: vertical;
-}
-
-button.action-btn {
-    padding: 16px;
-    font-size: 16px;
-    border-radius: 12px;
-    border: none;
-    width: 100%;
-    font-weight: 700;
-    cursor: pointer;
-    background-color: var(--primary);
-    color: white;
-    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
-    transition: background 0.2s;
-    margin-top: 8px;
-}
-
-button.action-btn:hover {
-    background-color: var(--primary-hover);
-}
-
-button.secondary-btn {
-    padding: 14px;
-    font-size: 15px;
-    border-radius: 12px;
-    border: 1px solid var(--border);
-    width: 100%;
-    font-weight: 700;
-    cursor: pointer;
-    background: #fff;
-    color: var(--text-title);
-    margin-top: 8px;
-}
-
-button.share-btn {
-    background: #16a34a;
-}
-
-button.share-btn:hover {
-    background: #15803d;
-}
-
-.result-box {
-    display: none;
-    margin-top: 20px;
-    background: var(--success-bg);
-    border: 1px solid var(--success-border);
-    padding: 20px;
-    border-radius: 16px;
-    text-align: left;
-}
-
-.result-box h3 {
-    color: var(--success-text);
-    margin-bottom: 14px;
-    font-size: 15px;
-    text-transform: uppercase;
-    text-align: center;
-    border-bottom: 1px dashed rgba(16,185,129,0.3);
-    padding-bottom: 6px;
-}
-
-.result-item {
-    display: flex;
-    justify-content: space-between;
-    gap: 10px;
-    margin-bottom: 10px;
-    color: var(--success-text);
-    font-size: 15px;
-}
-
-.result-total {
-    font-size: 22px;
-    font-weight: 800;
-    border-top: 1px dashed #10b981;
-    padding-top: 12px;
-    margin-top: 12px;
-    color: #064e3b;
-}
-
-.receipt-description {
-    color: #64748b;
-    font-size: 13px;
-    line-height: 1.5;
-    margin-bottom: 15px;
-}
-
-.receipt-buttons {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-}
-
-.hidden-file {
-    display: none;
-}
-
-.status-message {
-    display: none;
-    margin-top: 12px;
-    padding: 12px;
-    border-radius: 10px;
-    font-size: 13px;
-    line-height: 1.4;
-    background: #eff6ff;
-    color: #1e40af;
-    border: 1px solid #bfdbfe;
-}
-
-.receipt-row {
-    display: grid;
-    grid-template-columns: 1fr 105px 38px;
-    gap: 7px;
-    margin-bottom: 8px;
-}
-
-.receipt-row input {
-    padding: 10px;
-    font-size: 14px;
-}
-
-.remove-item {
-    width: 38px;
-    height: 42px;
-    border: 1px solid #fecaca;
-    background: white;
-    color: #dc2626;
-    border-radius: 10px;
-    cursor: pointer;
-    font-size: 20px;
-}
-
-.currency-search {
-    margin-bottom: 8px;
-}
-
-.currency-search input {
-    padding: 12px 14px;
-}
-
-.converter-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-}
-
-.swap-btn {
-    width: 100%;
-    margin-top: 8px;
-    padding: 12px;
-    border: 1px solid var(--border);
-    background: #fff;
-    border-radius: 12px;
-    cursor: pointer;
-    font-weight: 700;
-    color: var(--primary);
-}
-
-.converter-result {
-    text-align: center;
-    font-size: 25px;
-    font-weight: 800;
-    color: #064e3b;
-    margin-top: 10px;
-}
-
-.rate-text {
-    text-align: center;
-    font-size: 13px;
-    color: #64748b;
-    margin-top: 8px;
-}
-
 /* =====================================================
-   SAVED HISTORY
-===================================================== */
-
-.saved-history-item {
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 15px;
-    margin-bottom: 12px;
-    background: #fff;
-}
-
-.saved-history-item h3 {
-    color: var(--text-title);
-    font-size: 15px;
-    margin-bottom: 8px;
-}
-
-.saved-history-item p {
-    color: var(--text-body);
-    font-size: 14px;
-    line-height: 1.5;
-    white-space: pre-line;
-    margin-bottom: 12px;
-}
-
-.history-actions {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 8px;
-}
-
-.history-share-btn {
-    background: #16a34a !important;
-}
-
-.history-delete-btn {
-    background: #dc2626 !important;
-}
-
-.no-history {
-    text-align: center;
-    padding: 20px 10px;
-    color: #64748b;
-    font-size: 14px;
-}
-
-/* =====================================================
-   SAVE / DELETE / HISTORY
-===================================================== */
-
-.result-actions {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 8px;
-    margin-top: 12px;
-}
-
-.result-actions button {
-    padding: 12px 8px;
-    border-radius: 10px;
-    border: none;
-    font-weight: 700;
-    cursor: pointer;
-    font-size: 13px;
-}
-
-.save-btn {
-    background: #2563eb;
-    color: white;
-}
-
-.save-btn:hover {
-    background: #1d4ed8;
-}
-
-.delete-btn {
-    background: #fee2e2;
-    color: #b91c1c;
-}
-
-.delete-btn:hover {
-    background: #fecaca;
-}
-
-.history-section {
-    margin-top: 35px;
-    text-align: left;
-}
-
-.history-card {
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 15px;
-    margin-bottom: 10px;
-    background: #fff;
-}
-
-.history-card h3 {
-    font-size: 15px;
-    color: var(--text-title);
-    margin-bottom: 8px;
-}
-
-.history-card p {
-    font-size: 13px;
-    line-height: 1.5;
-    color: var(--text-body);
-    white-space: pre-line;
-}
-
-.history-delete {
-    margin-top: 10px;
-    padding: 9px 12px;
-    border: none;
-    border-radius: 9px;
-    background: #fee2e2;
-    color: #b91c1c;
-    font-weight: 700;
-    cursor: pointer;
-}
-
-.clear-history-btn {
-    padding: 12px;
-    border: 1px solid #fecaca;
-    border-radius: 10px;
-    background: #fff;
-    color: #b91c1c;
-    font-weight: 700;
-    cursor: pointer;
-    width: 100%;
-    margin-top: 8px;
-}
-
-@media (max-width: 430px) {
-
-    .receipt-buttons {
-        grid-template-columns: 1fr;
-    }
-
-    .receipt-row {
-        grid-template-columns: 1fr 90px 38px;
-    }
-
-    .converter-grid {
-        grid-template-columns: 1fr;
-    }
-
-}
-
-footer {
-    margin-top: auto;
-    padding: 24px 0 10px 0;
-    font-size: 13px;
-    color: #64748b;
-    text-align: center;
-}
-
-footer a {
-    color: #2563eb;
-    text-decoration: none;
-    margin-left: 5px;
-    font-weight: 600;
-}
-
-footer a:hover {
-    text-decoration: underline;
-}
-
-1. Add this CSS
-
-Place this inside your existing <style> section:
-
-/* =====================================================
-   EXPANDED TOOL SECTIONS
+   EXPLORE MORE TOOLS
 ===================================================== */
 .tool-sections {
-    margin-bottom: 25px;
+    margin-bottom: 30px;
     text-align: left;
 }
 .tool-sections h2 {
+    color: var(--text-title);
+    font-size: 20px;
     margin-bottom: 14px;
 }
 .tool-section-list {
@@ -587,8 +100,10 @@ Place this inside your existing <style> section:
     border-radius: 14px;
     text-decoration: none;
     color: var(--text-title);
-    transition: transform 0.15s ease, box-shadow 0.15s ease,
-                border-color 0.15s ease;
+    transition:
+        transform 0.15s ease,
+        box-shadow 0.15s ease,
+        border-color 0.15s ease;
 }
 .tool-section-card:hover {
     transform: translateY(-1px);
@@ -620,3459 +135,562 @@ Place this inside your existing <style> section:
     font-size: 12px;
     color: #64748b;
     margin-top: 3px;
+    line-height: 1.4;
 }
 .tool-section-arrow {
     color: var(--primary);
     font-size: 20px;
     font-weight: 700;
+    flex-shrink: 0;
 }
-
-2. Replace your current Advanced Bill Splitting button
-
-Find this at the beginning of your <body>:
-
-<a href="advanced-split.html"
-   class="action-btn"
-   style="display:block;text-align:center;text-decoration:none;">
-    ⚖️ Advanced Bill Splitting
-</a>
-
-Delete it and put this in its place:
-
-<section class="tool-sections">
-    <h2>🧭 Explore More Tools</h2>
-    <div class="tool-section-list">
-        <a href="index.html" class="tool-section-card">
-            <div class="tool-section-left">
-                <div class="tool-section-icon">
-                    🧮
-                </div>
-                <div>
-                    <div class="tool-section-title">
-                        Main Calculator
-                    </div>
-                    <div class="tool-section-description">
-                        Currency, receipts, bill splitting and percentages
-                    </div>
-                </div>
-            </div>
-            <div class="tool-section-arrow">
-                →
-            </div>
-        </a>
-        <a href="advanced-split.html"
-           class="tool-section-card">
-            <div class="tool-section-left">
-                <div class="tool-section-icon">
-                    ⚖️
-                </div>
-                <div>
-                    <div class="tool-section-title">
-                        Advanced Bill Splitting
-                    </div>
-                    <div class="tool-section-description">
-                        Proportional, item-based, tax, tip and unequal splits
-                    </div>
-                </div>
-            </div>
-            <div class="tool-section-arrow">
-                →
-            </div>
-        </a>
-        <a href="travel-budget.html"
-           class="tool-section-card">
-            <div class="tool-section-left">
-                <div class="tool-section-icon">
-                    ✈️
-                </div>
-                <div>
-                    <div class="tool-section-title">
-                        Travel Budget
-                    </div>
-                    <div class="tool-section-description">
-                        Plan trip, accommodation, food and transportation costs
-                    </div>
-                </div>
-            </div>
-            <div class="tool-section-arrow">
-                →
-            </div>
-        </a>
-        <a href="group-expenses.html"
-           class="tool-section-card">
-            <div class="tool-section-left">
-                <div class="tool-section-icon">
-                    👥
-                </div>
-                <div>
-                    <div class="tool-section-title">
-                        Group Expenses
-                    </div>
-                    <div class="tool-section-description">
-                        Manage roommate, vacation, event and group costs
-                    </div>
-                </div>
-            </div>
-            <div class="tool-section-arrow">
-                →
-            </div>
-        </a>
-        <a href="business-expenses.html"
-           class="tool-section-card">
-            <div class="tool-section-left">
-                <div class="tool-section-icon">
-                    💼
-                </div>
-                <div>
-                    <div class="tool-section-title">
-                        Business Expenses
-                    </div>
-                    <div class="tool-section-description">
-                        Business travel, invoices, freight and import costs
-                    </div>
-                </div>
-            </div>
-            <div class="tool-section-arrow">
-                →
-            </div>
-        </a>
-        <a href="student-living.html"
-           class="tool-section-card">
-            <div class="tool-section-left">
-                <div class="tool-section-icon">
-                    🎓
-                </div>
-                <div>
-                    <div class="tool-section-title">
-                        Student & Living Costs
-                    </div>
-                    <div class="tool-section-description">
-                        Housing, rent, utilities, meals and study abroad budgets
-                    </div>
-                </div>
-            </div>
-            <div class="tool-section-arrow">
-                →
-            </div>
-        </a>
-    </div>
-</section>
-
-3. Your page structure
-
-The beginning of your page will now look like:
-
-<body>
-<div class="container">
-<header>
-<section class="tool-sections">
-    ...
-</section>
-<h1>Split Bill Calculator</h1>
-<p>
-Smart, simple calculation tools designed for daily finance.
-</p>
-</header>
-<!-- YOUR EXISTING CURRENCY CONVERTER -->
-<!-- YOUR EXISTING RECEIPT SCANNER -->
-<!-- YOUR EXISTING BILL SPLITTER -->
-<!-- YOUR EXISTING PERCENTAGE TOOL -->
-<!-- YOUR EXISTING SAVED HISTORY -->
-<!-- YOUR EXISTING FAQ -->
-<!-- YOUR EXISTING PWA INSTALL SECTION -->
-</div>
-
-Nothing else in your current JavaScript needs to change.
-
-One thing to remember: the five destination files must actually exist in your Vercel project, otherwise clicking their cards will produce a 404 until we create those pages.
-
+/* =====================================================
+   FAQ
+===================================================== */
+.faq-section {
+    margin-top: 35px;
+    text-align: left;
+}
+.faq-section h2 {
+    color: var(--text-title);
+    margin-bottom: 15px;
+    font-size: 20px;
+}
+.faq-section details {
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    margin-bottom: 10px;
+    background: #fff;
+    overflow: hidden;
+}
+.faq-section summary {
+    padding: 15px;
+    cursor: pointer;
+    font-weight: 700;
+    color: var(--text-title);
+    list-style: none;
+    font-size: 14px;
+}
+.faq-section summary::-webkit-details-marker {
+    display: none;
+}
+.faq-section summary::after {
+    content: "+";
+    float: right;
+    font-size: 20px;
+    color: var(--primary);
+}
+.faq-section details[open] summary::after {
+    content: "−";
+}
+.faq-section details p {
+    padding: 0 15px 15px;
+    line-height: 1.6;
+    font-size: 14px;
+    color: var(--text-body);
+}
+/* =====================================================
+   PWA INSTALL SECTION
+===================================================== */
+.install-section {
+    margin-top: 30px;
+    text-align: left;
+}
+.install-section h2 {
+    color: var(--text-title);
+    margin-bottom: 15px;
+    font-size: 20px;
+}
+.install-card {
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    background: #fff;
+    padding: 18px;
+    margin-bottom: 12px;
+}
+.install-card h3 {
+    color: var(--text-title);
+    font-size: 16px;
+    margin-bottom: 8px;
+}
+.install-card p {
+    color: var(--text-body);
+    font-size: 14px;
+    line-height: 1.5;
+    margin-bottom: 6px;
+}
+.action-btn {
+    display: block;
+    padding: 14px 16px;
+    font-size: 15px;
+    border-radius: 12px;
+    border: none;
+    width: 100%;
+    font-weight: 700;
+    cursor: pointer;
+    background-color: var(--primary);
+    color: white;
+    text-decoration: none;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.20);
+    transition: background 0.2s;
+    margin-top: 12px;
+}
+.action-btn:hover {
+    background-color: var(--primary-hover);
+}
+#installAppButton {
+    display: none;
+}
+/* =====================================================
+   FOOTER
+===================================================== */
+footer {
+    margin-top: 30px;
+    padding: 24px 0 10px 0;
+    font-size: 13px;
+    color: #64748b;
+    text-align: center;
+    line-height: 1.8;
+}
+footer a {
+    color: #2563eb;
+    text-decoration: none;
+    margin-left: 5px;
+    font-weight: 600;
+}
+footer a:hover {
+    text-decoration: underline;
+}
 </style>
 </head>
-
 <body>
-
 <div class="container">
-
+<!-- =====================================================
+     HEADER
+===================================================== -->
 <header>
-
-<section class="tool-sections">
-
-    <h2>🧭 Explore More Tools</h2>
-
-    <div class="tool-section-list">
-
-        <a href="index.html" class="tool-section-card">
-
-            <div class="tool-section-left">
-
-                <div class="tool-section-icon">
-                    🧮
-                </div>
-
-                <div>
-
-                    <div class="tool-section-title">
-                        Main Calculator
-                    </div>
-
-                    <div class="tool-section-description">
-                        Currency, receipts, bill splitting and percentages
-                    </div>
-
-                </div>
-
-            </div>
-
-            <div class="tool-section-arrow">
-                →
-            </div>
-
-        </a>
-
-
-        <a href="advanced-split.html"
-           class="tool-section-card">
-
-            <div class="tool-section-left">
-
-                <div class="tool-section-icon">
-                    ⚖️
-                </div>
-
-                <div>
-
-                    <div class="tool-section-title">
-                        Advanced Bill Splitting
-                    </div>
-
-                    <div class="tool-section-description">
-                        Proportional, item-based, tax, tip and unequal splits
-                    </div>
-
-                </div>
-
-            </div>
-
-            <div class="tool-section-arrow">
-                →
-            </div>
-
-        </a>
-
-
-        <a href="travel-budget.html"
-           class="tool-section-card">
-
-            <div class="tool-section-left">
-
-                <div class="tool-section-icon">
-                    ✈️
-                </div>
-
-                <div>
-
-                    <div class="tool-section-title">
-                        Travel Budget
-                    </div>
-
-                    <div class="tool-section-description">
-                        Plan trip, accommodation, food and transportation costs
-                    </div>
-
-                </div>
-
-            </div>
-
-            <div class="tool-section-arrow">
-                →
-            </div>
-
-        </a>
-
-
-        <a href="group-expenses.html"
-           class="tool-section-card">
-
-            <div class="tool-section-left">
-
-                <div class="tool-section-icon">
-                    👥
-                </div>
-
-                <div>
-
-                    <div class="tool-section-title">
-                        Group Expenses
-                    </div>
-
-                    <div class="tool-section-description">
-                        Manage roommate, vacation, event and group costs
-                    </div>
-
-                </div>
-
-            </div>
-
-            <div class="tool-section-arrow">
-                →
-            </div>
-
-        </a>
-
-
-        <a href="business-expenses.html"
-           class="tool-section-card">
-
-            <div class="tool-section-left">
-
-                <div class="tool-section-icon">
-                    💼
-                </div>
-
-                <div>
-
-                    <div class="tool-section-title">
-                        Business Expenses
-                    </div>
-
-                    <div class="tool-section-description">
-                        Business travel, invoices, freight and import costs
-                    </div>
-
-                </div>
-
-            </div>
-
-            <div class="tool-section-arrow">
-                →
-            </div>
-
-        </a>
-
-
-        <a href="student-living.html"
-           class="tool-section-card">
-
-            <div class="tool-section-left">
-
-                <div class="tool-section-icon">
-                    🎓
-                </div>
-
-                <div>
-
-                    <div class="tool-section-title">
-                        Student & Living Costs
-                    </div>
-
-                    <div class="tool-section-description">
-                        Housing, rent, utilities, meals and study abroad budgets
-                    </div>
-
-                </div>
-
-            </div>
-
-            <div class="tool-section-arrow">
-                →
-            </div>
-
-        </a>
-
-    </div>
-
-</section>
-
 <h1>Split Bill Calculator</h1>
-
 <p>
-Smart, simple calculation tools designed for daily finance.
+Smart, simple calculation tools for splitting bills,
+converting currencies, managing expenses and planning costs.
 </p>
-
 </header>
-
-
-<!-- =========================
-     CURRENCY CONVERTER
-========================= -->
-
-<section>
-
-<h2>💱 Currency Converter</h2>
-
-<p class="receipt-description">
-Convert between 100+ currencies using current exchange-rate data.
-</p>
-
-<div class="form-group">
-
-<label>Amount</label>
-
-<input
-type="number"
-id="converterAmount"
-placeholder="Example: 1000"
-min="0"
-step="any"
->
-
+<!-- =====================================================
+     EXPLORE MORE TOOLS
+===================================================== -->
+<section class="tool-sections">
+<h2>🧭 Explore More Tools</h2>
+<div class="tool-section-list">
+<!-- CURRENCY CONVERTER -->
+<a href="currency-converter.html"
+   class="tool-section-card">
+    <div class="tool-section-left">
+        <div class="tool-section-icon">
+            💱
+        </div>
+        <div>
+            <div class="tool-section-title">
+                Currency Converter
+            </div>
+            <div class="tool-section-description">
+                Convert between 100+ currencies using current exchange-rate data
+            </div>
+        </div>
+    </div>
+    <div class="tool-section-arrow">
+        →
+    </div>
+</a>
+<!-- MAIN CALCULATOR -->
+<a href="main-calculator.html"
+   class="tool-section-card">
+    <div class="tool-section-left">
+        <div class="tool-section-icon">
+            🧮
+        </div>
+        <div>
+            <div class="tool-section-title">
+                Main Calculator
+            </div>
+            <div class="tool-section-description">
+                Scan receipts, split bills, calculate percentages and save results
+            </div>
+        </div>
+    </div>
+    <div class="tool-section-arrow">
+        →
+    </div>
+</a>
+<!-- ADVANCED BILL SPLITTING -->
+<a href="advanced-split.html"
+   class="tool-section-card">
+    <div class="tool-section-left">
+        <div class="tool-section-icon">
+            ⚖️
+        </div>
+        <div>
+            <div class="tool-section-title">
+                Advanced Bill Splitting
+            </div>
+            <div class="tool-section-description">
+                Proportional, item-based, tax, tip and unequal splits
+            </div>
+        </div>
+    </div>
+    <div class="tool-section-arrow">
+        →
+    </div>
+</a>
+<!-- TRAVEL BUDGET -->
+<a href="travel-budget.html"
+   class="tool-section-card">
+    <div class="tool-section-left">
+        <div class="tool-section-icon">
+            ✈️
+        </div>
+        <div>
+            <div class="tool-section-title">
+                Travel Budget
+            </div>
+            <div class="tool-section-description">
+                Plan trip, accommodation, food and transportation costs
+            </div>
+        </div>
+    </div>
+    <div class="tool-section-arrow">
+        →
+    </div>
+</a>
+<!-- GROUP EXPENSES -->
+<a href="group-expenses.html"
+   class="tool-section-card">
+    <div class="tool-section-left">
+        <div class="tool-section-icon">
+            👥
+        </div>
+        <div>
+            <div class="tool-section-title">
+                Group Expenses
+            </div>
+            <div class="tool-section-description">
+                Manage roommate, vacation, event and group costs
+            </div>
+        </div>
+    </div>
+    <div class="tool-section-arrow">
+        →
+    </div>
+</a>
+<!-- BUSINESS EXPENSES -->
+<a href="business-expenses.html"
+   class="tool-section-card">
+    <div class="tool-section-left">
+        <div class="tool-section-icon">
+            💼
+        </div>
+        <div>
+            <div class="tool-section-title">
+                Business Expenses
+            </div>
+            <div class="tool-section-description">
+                Business travel, invoices, freight and import costs
+            </div>
+        </div>
+    </div>
+    <div class="tool-section-arrow">
+        →
+    </div>
+</a>
+<!-- STUDENT & LIVING COSTS -->
+<a href="student-living.html"
+   class="tool-section-card">
+    <div class="tool-section-left">
+        <div class="tool-section-icon">
+            🎓
+        </div>
+        <div>
+            <div class="tool-section-title">
+                Student & Living Costs
+            </div>
+            <div class="tool-section-description">
+                Housing, rent, utilities, meals and study abroad budgets
+            </div>
+        </div>
+    </div>
+    <div class="tool-section-arrow">
+        →
+    </div>
+</a>
 </div>
-
-
-<div class="converter-grid">
-
-<div class="form-group">
-
-<label>From Currency</label>
-
-<div class="currency-search">
-
-<input
-type="text"
-id="fromSearch"
-placeholder="🔎 Search currency or country"
-autocomplete="off"
->
-
-</div>
-
-<select id="fromCurrency"></select>
-
-</div>
-
-
-<div class="form-group">
-
-<label>To Currency</label>
-
-<div class="currency-search">
-
-<input
-type="text"
-id="toSearch"
-placeholder="🔎 Search currency or country"
-autocomplete="off"
->
-
-</div>
-
-<select id="toCurrency"></select>
-
-</div>
-
-</div>
-
-
-<button
-type="button"
-class="swap-btn"
-id="swapCurrency">
-↔️ Swap Currencies
-</button>
-
-
-<button
-type="button"
-class="action-btn"
-id="convertButton">
-Convert Currency
-</button>
-
-
-<div
-id="converterResults"
-class="result-box">
-
-<h3>Conversion Result</h3>
-
-<div
-id="converterOutput"
-class="converter-result">
-</div>
-
-<div
-id="rateOutput"
-class="rate-text">
-</div>
-
-<div class="result-actions">
-
-<button
-type="button"
-class="save-btn"
-id="saveConversion">
-💾 Save
-</button>
-
-<button
-type="button"
-class="save-btn"
-id="shareConversion">
-🔗 Share
-</button>
-
-<button
-type="button"
-class="delete-btn"
-id="deleteConversion">
-🗑️ Delete
-</button>
-
-</div>
-
 </section>
-
-
-<!-- =========================
-     GLOBAL CURRENCY
-========================= -->
-
-<div class="section-divider"></div>
-
-<div class="form-group">
-
-<label>Select Your Local Currency</label>
-
-<div class="currency-search">
-
-<input
-type="text"
-id="mainCurrencySearch"
-placeholder="🔎 Search country, currency or code"
-autocomplete="off"
->
-
-</div>
-
-<select id="currencySelect"></select>
-
-</div>
-
-
-<!-- =========================
-     SCAN RECEIPT
-========================= -->
-
-<div class="section-divider"></div>
-
-<section>
-
-<h2>📷 Scan Receipt</h2>
-
-<p class="receipt-description">
-Take a clear photo of a receipt or choose a receipt image.
-The text is read in your browser and converted into editable bill items.
-</p>
-
-<div class="receipt-buttons">
-
-<button
-type="button"
-class="action-btn"
-id="takePhotoButton">
-📷 TAKE PHOTO
-</button>
-
-<button
-type="button"
-class="secondary-btn"
-id="uploadReceiptButton">
-🖼️ UPLOAD RECEIPT
-</button>
-
-</div>
-
-
-<input
-type="file"
-id="receiptCamera"
-class="hidden-file"
-accept="image/*"
-capture="environment"
->
-
-<input
-type="file"
-id="receiptImage"
-class="hidden-file"
-accept="image/*"
->
-
-
-<div
-id="ocrStatus"
-class="status-message">
-</div>
-
-
-<div
-id="scanResults"
-class="result-box">
-
-<h3>Receipt Items</h3>
-
-<div id="scanItems"></div>
-
-<button
-type="button"
-class="secondary-btn"
-id="addScanItem">
-+ Add Item
-</button>
-
-<div class="result-item result-total">
-
-<span>Receipt Total</span>
-
-<span id="scanTotal">₦0.00</span>
-
-</div>
-
-<div class="result-actions">
-
-<button
-type="button"
-class="save-btn"
-id="saveScan">
-💾 Save
-</button>
-
-<button
-type="button"
-class="save-btn"
-id="shareScan">
-🔗 Share
-</button>
-
-<button
-type="button"
-class="delete-btn"
-id="deleteScan">
-🗑️ Delete
-</button>
-
-</div>
-
-</section>
-
-
-<!-- =========================
-     COPY PASTE RECEIPT
-========================= -->
-
-<div class="section-divider"></div>
-
-<section>
-
-<h2>📋 Copy & Paste Receipt</h2>
-
-<p class="receipt-description">
-Paste receipt text from WhatsApp, Messages, email, or another app.
-We'll look for item names and prices.
-</p>
-
-<div class="form-group">
-
-<label>Receipt Text</label>
-
-<textarea
-id="receiptText"
-placeholder="Example:
-Jollof Rice 5000
-Chicken 3000
-Drinks 2000
-Total 10000">
-</textarea>
-
-</div>
-
-
-<button
-type="button"
-class="action-btn"
-id="createReceiptButton">
-Create Bill From Receipt
-</button>
-
-
-<div
-id="pasteStatus"
-class="status-message">
-</div>
-
-
-<div
-id="pasteResults"
-class="result-box">
-
-<h3>Receipt Items</h3>
-
-<div id="pasteItems"></div>
-
-<button
-type="button"
-class="secondary-btn"
-id="addPasteItem">
-+ Add Item
-</button>
-
-<div class="result-item result-total">
-
-<span>Receipt Total</span>
-
-<span id="pasteTotal">₦0.00</span>
-
-</div>
-
-<div class="result-actions">
-
-<button
-type="button"
-class="save-btn"
-id="savePaste">
-💾 Save
-</button>
-
-<button
-type="button"
-class="save-btn"
-id="sharePaste">
-🔗 Share
-</button>
-
-<button
-type="button"
-class="delete-btn"
-id="deletePaste">
-🗑️ Delete
-</button>
-
-</div>
-
-</section>
-
-
-<!-- =========================
-     BILL SPLITTER
-========================= -->
-
-<div class="section-divider"></div>
-
-<section>
-
-<h2>👥 Bill Splitter Tool</h2>
-
-<div class="form-group">
-
-<label>Total Bill Amount</label>
-
-<input
-type="number"
-id="totalBill"
-placeholder="Example: 150"
->
-
-</div>
-
-
-<div class="form-group">
-
-<label>Number of People</label>
-
-<input
-type="number"
-id="peopleCount"
-placeholder="Example: 4"
->
-
-</div>
-
-
-<button
-type="button"
-class="action-btn"
-id="calculateSplitButton">
-Calculate Split Amount
-</button>
-
-
-<div
-id="split-results"
-class="result-box">
-
-<h3>Calculated Split Breakdown</h3>
-
-<div id="splitContent"></div>
-
-<div class="result-actions">
-
-<button
-type="button"
-class="save-btn"
-id="saveSplit">
-💾 Save
-</button>
-
-<button
-type="button"
-class="save-btn"
-id="shareSplit">
-🔗 Share
-</button>
-
-<button
-type="button"
-class="delete-btn"
-id="deleteSplit">
-🗑️ Delete
-</button>
-
-</div>
-
-</div>
-
-</section>
-
-
-<!-- =========================
-     PERCENTAGE
-========================= -->
-
-<div class="section-divider"></div>
-
-<section>
-
-<h2>📊 Define Percentage Cut Per Person (%)</h2>
-
-<div class="form-group">
-
-<label>Total Bill Amount</label>
-
-<input
-type="number"
-id="percentageTotalBill"
-placeholder="Example: 150"
->
-
-</div>
-
-
-<div class="form-group">
-
-<label>Your Custom Cut Percentage (%)</label>
-
-<input
-type="number"
-id="customPercentage"
-placeholder="Example: 25"
-min="1"
-max="100"
->
-
-</div>
-
-
-<button
-type="button"
-class="action-btn"
-id="calculatePercentageButton">
-Calculate Percentage Cut
-</button>
-
-
-<div
-id="percentage-results"
-class="result-box">
-
-<h3>Calculated Share Breakdown</h3>
-
-<div id="percentageContent"></div>
-
-<div class="result-actions">
-
-<button
-type="button"
-class="save-btn"
-id="savePercentage">
-💾 Save
-</button>
-
-<button
-type="button"
-class="save-btn"
-id="sharePercentage">
-🔗 Share
-</button>
-
-<button
-type="button"
-class="delete-btn"
-id="deletePercentage">
-🗑️ Delete
-</button>
-
-</div>
-
-</section>
-
-<!-- =========================
-     SAVED CALCULATION HISTORY
-========================= -->
-
-<div class="section-divider"></div>
-
-<section id="savedHistorySection">
-
-    <h2>💾 Saved Calculation History</h2>
-
-    <p class="receipt-description">
-        Your saved calculations are stored on this device. You can review,
-        share, or delete them anytime.
-    </p>
-
-    <div id="savedHistory"></div>
-
-    <button
-        type="button"
-        class="secondary-btn"
-        id="clearHistoryButton"
-        style="display:none;">
-        🗑️ Clear All History
-    </button>
-
-</section>
-
-</div>
-<!-- FREQUENTLY ASKED QUESTIONS -->
-
-</div>
-<!-- FREQUENTLY ASKED QUESTIONS -->
-<div class="section-divider"></div>
-
+<!-- =====================================================
+     FAQ
+===================================================== -->
 <section class="faq-section" id="faq">
-    <h2>❓ Frequently Asked Questions</h2>
-
-    <details>
-        <summary>How does the bill splitter work?</summary>
-        <p>Enter the total bill and number of people. The calculator divides the bill equally and shows how much each person pays.</p>
-    </details>
-
-    <details>
-        <summary>Can I scan a receipt?</summary>
-        <p>Yes. You can take a photo or upload a receipt image and use the receipt tool to identify items and prices.</p>
-    </details>
-
-    <details>
-        <summary>Can I copy and paste a receipt?</summary>
-        <p>Yes. You can paste receipt text into the receipt tool and create an editable bill from the information.</p>
-    </details>
-
-    <details>
-        <summary>Can I convert currencies?</summary>
-        <p>Yes. The currency converter supports many currencies and allows you to search for the currency you need.</p>
-    </details>
-
-    <details>
-        <summary>Can I share my calculation?</summary>
-        <p>Yes. You can use the available sharing option on your device to share your calculation or receipt result.</p>
-    </details>
-
-    <details>
-        <summary>Are currency exchange rates guaranteed?</summary>
-        <p>No. Exchange rates can change and may differ from rates provided by banks, payment providers, and other financial institutions.</p>
-    </details>
+<h2>❓ Frequently Asked Questions</h2>
 <details>
-    <summary>How do I split a bill between different numbers of people?</summary>
-    <p>Enter the total bill amount and the number of people sharing the bill. Split Bill Calculator divides the amount according to the number of people you enter and shows how much each person should pay.</p>
+<summary>How does the bill splitter work?</summary>
+<p>
+Enter the total bill and number of people.
+The calculator divides the bill equally and shows
+how much each person pays.
+</p>
 </details>
-
 <details>
-    <summary>How do I calculate a percentage of a bill?</summary>
-    <p>Enter the bill amount and the percentage you want to calculate. For example, 30% of $120 is $36. The Percentage Cut tool calculates the percentage amount for you.</p>
+<summary>Can I scan a receipt?</summary>
+<p>
+Yes. You can take a photo or upload a receipt image
+and use the receipt tool to identify items and prices.
+</p>
 </details>
-
 <details>
-    <summary>Can I add or remove receipt items?</summary>
-    <p>Yes. After a receipt has been scanned, uploaded, or processed from pasted text, you can review the itemized list. You can edit available items, add missing items, or remove items that should not be included before checking the final receipt total.</p>
+<summary>Can I copy and paste a receipt?</summary>
+<p>
+Yes. You can paste receipt text into the receipt tool
+and create an editable bill from the information.
+</p>
 </details>
-
 <details>
-    <summary>What should I do if the receipt scanner misses an item?</summary>
-    <p>Review the scanned receipt carefully. If an item or price is missing or incorrect, use the available editing controls to add or correct the information manually. Always check the edited receipt before relying on the calculated total.</p>
+<summary>Can I convert currencies?</summary>
+<p>
+Yes. The Currency Converter supports many currencies
+and allows you to search for the currency you need.
+</p>
 </details>
-
 <details>
-    <summary>How do I change the currency used for my bill?</summary>
-    <p>Select your preferred currency from the currency selection option before calculating your bill. Choose the currency that matches the bill you are working with so the displayed amounts use the appropriate currency.</p>
+<summary>Can I share my calculation?</summary>
+<p>
+Yes. You can use the available sharing option on your
+device to share your calculation or receipt result.
+</p>
 </details>
-
 <details>
-    <summary>How do I use the currency converter?</summary>
-    <p>Enter the amount you want to convert, select the From Currency and To Currency, and then calculate the conversion. You can also use the currency swap option to reverse the conversion direction.</p>
-    <p>Exchange rates can change over time, so the displayed conversion may differ from the rate used by your bank, card provider, or other financial institution.</p>
+<summary>Are currency exchange rates guaranteed?</summary>
+<p>
+No. Exchange rates can change and may differ from rates
+provided by banks, payment providers and other financial
+institutions.
+</p>
 </details>
-
 <details>
-    <summary>How can I check my calculation before paying?</summary>
-    <p>Compare the calculator result with the original receipt before making a payment. Check the bill amount, selected currency, number of people, item prices, and percentage calculations. If you scanned or uploaded a receipt, review the detected information and correct any mistakes before relying on the result.</p>
+<summary>How do I split a bill between different numbers of people?</summary>
+<p>
+Enter the total bill amount and the number of people
+sharing the bill. Split Bill Calculator divides the
+amount according to the number of people you enter and
+shows how much each person should pay.
+</p>
 </details>
-
 <details>
-    <summary>Can I install Split Bill Calculator on my phone?</summary>
-    <p>Yes. Split Bill Calculator can be installed as a Progressive Web App (PWA) on supported devices and browsers.</p>
-    <p>On supported Android devices, use the browser's available Install or Add to Home Screen option. On iPhone, use the browser's Share option and select Add to Home Screen when available.</p>
+<summary>How do I calculate a percentage of a bill?</summary>
+<p>
+Enter the bill amount and the percentage you want to
+calculate. For example, 30% of $120 is $36.
+The Percentage Cut tool calculates the percentage amount
+for you.
+</p>
+</details>
+<details>
+<summary>Can I add or remove receipt items?</summary>
+<p>
+Yes. After a receipt has been scanned, uploaded or
+processed from pasted text, you can review the itemized
+list. You can edit available items, add missing items
+or remove items that should not be included before
+checking the final receipt total.
+</p>
+</details>
+<details>
+<summary>What should I do if the receipt scanner misses an item?</summary>
+<p>
+Review the scanned receipt carefully. If an item or price
+is missing or incorrect, use the available editing controls
+to add or correct the information manually. Always check
+the edited receipt before relying on the calculated total.
+</p>
+</details>
+<details>
+<summary>How do I change the currency used for my bill?</summary>
+<p>
+Select your preferred currency from the currency selection
+option before calculating your bill. Choose the currency
+that matches the bill you are working with so the displayed
+amounts use the appropriate currency.
+</p>
+</details>
+<details>
+<summary>How do I use the currency converter?</summary>
+<p>
+Enter the amount you want to convert, select the From Currency
+and To Currency, and then calculate the conversion. You can
+also use the currency swap option to reverse the conversion
+direction.
+</p>
+<p>
+Exchange rates can change over time, so the displayed
+conversion may differ from the rate used by your bank,
+card provider or other financial institution.
+</p>
+</details>
+<details>
+<summary>How can I check my calculation before paying?</summary>
+<p>
+Compare the calculator result with the original receipt before
+making a payment. Check the bill amount, selected currency,
+number of people, item prices and percentage calculations.
+If you scanned or uploaded a receipt, review the detected
+information and correct any mistakes before relying on the result.
+</p>
+</details>
+<details>
+<summary>Can I install Split Bill Calculator on my phone?</summary>
+<p>
+Yes. Split Bill Calculator can be installed as a Progressive
+Web App (PWA) on supported devices and browsers.
+</p>
+<p>
+On supported Android devices, use the browser's available
+Install or Add to Home Screen option. On iPhone, use the
+browser's Share option and select Add to Home Screen when available.
+</p>
 </details>
 </section>
-<!-- =========================
+<!-- =====================================================
      INSTALL SPLIT BILL CALCULATOR
-========================= -->
-
+===================================================== -->
 <section class="install-section" id="installSection">
-
-    <h2>📱 Install Split Bill Calculator</h2>
-
-    <div class="install-card" id="androidInstall">
-
-        <h3>📱 Android Users</h3>
-
-        <p>
-            <strong>Install Split Bill Calculator</strong>
-        </p>
-
-        <p>
-            Tap <strong>Install</strong> → <strong>Install App</strong>
-        </p>
-
-        <button
-            type="button"
-            class="action-btn"
-            id="installAppButton">
-            📱 Install App
-        </button>
-
-    </div>
-
-
-    <div class="install-card" id="iphoneInstall">
-
-        <h3>🍎 iPhone Users</h3>
-
-        <p>
-            <strong>Add to Home Screen</strong>
-        </p>
-
-        <p>
-            Tap <strong>Share</strong> → <strong>Add to Home Screen</strong>
-        </p>
-
-    </div>
-
+<h2>📱 Install Split Bill Calculator</h2>
+<div class="install-card" id="androidInstall">
+<h3>📱 Android Users</h3>
+<p>
+<strong>Install Split Bill Calculator</strong>
+</p>
+<p>
+Tap <strong>Install</strong> → <strong>Install App</strong>
+</p>
+<button
+    type="button"
+    class="action-btn"
+    id="installAppButton">
+    📱 Install App
+</button>
+</div>
+<div class="install-card" id="iphoneInstall">
+<h3>🍎 iPhone Users</h3>
+<p>
+<strong>Add to Home Screen</strong>
+</p>
+<p>
+Tap <strong>Share</strong> → <strong>Add to Home Screen</strong>
+</p>
+</div>
 </section>
+<!-- =====================================================
+     FOOTER
+===================================================== -->
 <footer>
-
 <p>
 © <span id="currentYear"></span>
 Split Bill Calculator |
-<a href="guide.html">How to Use</a> |
-<a href="#faq">FAQ</a> |
-<a href="privacy.html">Privacy Policy</a> |
-<a href="terms.html">Terms of Use</a> |
-<a href="about.html">About Us</a> |
-<a href="contact.html">Contact</a>
+<a href="guide.html">
+How to Use
+</a> |
+<a href="#faq">
+FAQ
+</a> |
+<a href="privacy.html">
+Privacy Policy
+</a> |
+<a href="terms.html">
+Terms of Use
+</a> |
+<a href="about.html">
+About Us
+</a> |
+<a href="contact.html">
+Contact
+</a>
 </p>
-
 </footer>
-
-
+</div>
+<!-- =====================================================
+     PWA SERVICE WORKER + INSTALL PROMPT
+===================================================== -->
 <script>
-
 "use strict";
-
-
-/* =====================================================
-   100+ CURRENCIES
-   Sorted alphabetically by country/currency name
-===================================================== */
-
-const currencies = [
-
-["AFN","Afghanistan — Afghan Afghani","؋"],
-["ALL","Albania — Albanian Lek","L"],
-["DZD","Algeria — Algerian Dinar","دج"],
-["AOA","Angola — Angolan Kwanza","Kz"],
-["ARS","Argentina — Argentine Peso","$"],
-["AMD","Armenia — Armenian Dram","֏"],
-["AWG","Aruba — Aruban Florin","ƒ"],
-["AUD","Australia — Australian Dollar","A$"],
-["AZN","Azerbaijan — Azerbaijani Manat","₼"],
-
-["BSD","Bahamas — Bahamian Dollar","$"],
-["BHD","Bahrain — Bahraini Dinar","د.ب"],
-["BDT","Bangladesh — Bangladeshi Taka","৳"],
-["BBD","Barbados — Barbadian Dollar","$"],
-["BYN","Belarus — Belarusian Ruble","Br"],
-["BZD","Belize — Belize Dollar","BZ$"],
-["BMD","Bermuda — Bermudian Dollar","$"],
-["BTN","Bhutan — Bhutanese Ngultrum","Nu."],
-["BOB","Bolivia — Bolivian Boliviano","Bs."],
-["BAM","Bosnia and Herzegovina — Convertible Mark","KM"],
-["BWP","Botswana — Botswana Pula","P"],
-["BRL","Brazil — Brazilian Real","R$"],
-["BND","Brunei — Brunei Dollar","B$"],
-["BGN","Bulgaria — Bulgarian Lev","лв"],
-["BIF","Burundi — Burundian Franc","FBu"],
-
-["KHR","Cambodia — Cambodian Riel","៛"],
-["CAD","Canada — Canadian Dollar","C$"],
-["CVE","Cape Verde — Cape Verdean Escudo","$"],
-["KYD","Cayman Islands — Cayman Islands Dollar","CI$"],
-["XAF","Central African CFA Franc","FCFA"],
-["CLP","Chile — Chilean Peso","$"],
-["CNY","China — Chinese Yuan","¥"],
-["COP","Colombia — Colombian Peso","$"],
-["KMF","Comoros — Comorian Franc","CF"],
-["CDF","Congo — Congolese Franc","FC"],
-["CRC","Costa Rica — Costa Rican Colón","₡"],
-["XOF","West African CFA Franc","CFA"],
-["CUP","Cuba — Cuban Peso","$"],
-["CZK","Czechia — Czech Koruna","Kč"],
-
-["DKK","Denmark — Danish Krone","kr"],
-["DJF","Djibouti — Djiboutian Franc","Fdj"],
-["DOP","Dominican Republic — Dominican Peso","RD$"],
-
-["EGP","Egypt — Egyptian Pound","£"],
-["ERN","Eritrea — Eritrean Nakfa","Nfk"],
-["ETB","Ethiopia — Ethiopian Birr","Br"],
-["EUR","European Union — Euro","€"],
-
-["FKP","Falkland Islands — Falkland Pound","£"],
-["FJD","Fiji — Fijian Dollar","FJ$"],
-["XPF","French Pacific Franc","₣"],
-
-["GMD","Gambia — Gambian Dalasi","D"],
-["GEL","Georgia — Georgian Lari","₾"],
-["GHS","Ghana — Ghanaian Cedi","₵"],
-["GIP","Gibraltar — Gibraltar Pound","£"],
-["GTQ","Guatemala — Guatemalan Quetzal","Q"],
-["GNF","Guinea — Guinean Franc","FG"],
-["GYD","Guyana — Guyanese Dollar","G$"],
-
-["HTG","Haiti — Haitian Gourde","G"],
-["HNL","Honduras — Honduran Lempira","L"],
-["HKD","Hong Kong — Hong Kong Dollar","HK$"],
-["HUF","Hungary — Hungarian Forint","Ft"],
-
-["ISK","Iceland — Icelandic Króna","kr"],
-["INR","India — Indian Rupee","₹"],
-["IDR","Indonesia — Indonesian Rupiah","Rp"],
-["IRR","Iran — Iranian Rial","﷼"],
-["IQD","Iraq — Iraqi Dinar","ع.د"],
-["ILS","Israel — Israeli New Shekel","₪"],
-
-["JMD","Jamaica — Jamaican Dollar","J$"],
-["JPY","Japan — Japanese Yen","¥"],
-["JOD","Jordan — Jordanian Dinar","د.ا"],
-
-["KZT","Kazakhstan — Kazakhstani Tenge","₸"],
-["KES","Kenya — Kenyan Shilling","KSh"],
-["KWD","Kuwait — Kuwaiti Dinar","د.ك"],
-["KGS","Kyrgyzstan — Kyrgyzstani Som","с"],
-
-["LAK","Laos — Lao Kip","₭"],
-["LBP","Lebanon — Lebanese Pound","ل.ل"],
-["LSL","Lesotho — Lesotho Loti","L"],
-["LRD","Liberia — Liberian Dollar","L$"],
-["LYD","Libya — Libyan Dinar","ل.د"],
-
-["MOP","Macau — Macanese Pataca","MOP$"],
-["MKD","North Macedonia — Macedonian Denar","ден"],
-["MGA","Madagascar — Malagasy Ariary","Ar"],
-["MWK","Malawi — Malawian Kwacha","MK"],
-["MYR","Malaysia — Malaysian Ringgit","RM"],
-["MVR","Maldives — Maldivian Rufiyaa","Rf"],
-["MRU","Mauritania — Mauritanian Ouguiya","UM"],
-["MUR","Mauritius — Mauritian Rupee","₨"],
-["MXN","Mexico — Mexican Peso","$"],
-["MDL","Moldova — Moldovan Leu","L"],
-["MNT","Mongolia — Mongolian Tögrög","₮"],
-["MAD","Morocco — Moroccan Dirham","د.م."],
-["MZN","Mozambique — Mozambican Metical","MT"],
-
-["NAD","Namibia — Namibian Dollar","N$"],
-["NPR","Nepal — Nepalese Rupee","₨"],
-["XCG","Caribbean Guilder","Cg"],
-["NZD","New Zealand — New Zealand Dollar","NZ$"],
-["NIO","Nicaragua — Nicaraguan Córdoba","C$"],
-["NGN","Nigeria — Nigerian Naira","₦"],
-["NOK","Norway — Norwegian Krone","kr"],
-
-["OMR","Oman — Omani Rial","ر.ع."],
-
-["PKR","Pakistan — Pakistani Rupee","₨"],
-["PAB","Panama — Panamanian Balboa","B/."],
-["PGK","Papua New Guinea — Kina","K"],
-["PYG","Paraguay — Paraguayan Guaraní","₲"],
-["PEN","Peru — Peruvian Sol","S/"],
-["PHP","Philippines — Philippine Peso","₱"],
-["PLN","Poland — Polish Złoty","zł"],
-["QAR","Qatar — Qatari Riyal","ر.ق"],
-
-["RON","Romania — Romanian Leu","lei"],
-["RUB","Russia — Russian Ruble","₽"],
-["RWF","Rwanda — Rwandan Franc","FRw"],
-
-["SHP","Saint Helena — Saint Helena Pound","£"],
-["WST","Samoa — Samoan Tala","T"],
-["STN","São Tomé and Príncipe — Dobra","Db"],
-["SAR","Saudi Arabia — Saudi Riyal","ر.س"],
-["RSD","Serbia — Serbian Dinar","дин"],
-["SCR","Seychelles — Seychellois Rupee","₨"],
-["SGD","Singapore — Singapore Dollar","S$"],
-["SBD","Solomon Islands — Solomon Islands Dollar","SI$"],
-["SOS","Somalia — Somali Shilling","Sh"],
-["ZAR","South Africa — South African Rand","R"],
-["KRW","South Korea — South Korean Won","₩"],
-["SSP","South Sudan — South Sudanese Pound","£"],
-["LKR","Sri Lanka — Sri Lankan Rupee","₨"],
-["SDG","Sudan — Sudanese Pound","ج.س."],
-["SRD","Suriname — Surinamese Dollar","$"],
-["SZL","Eswatini — Swazi Lilangeni","E"],
-["SEK","Sweden — Swedish Krona","kr"],
-["CHF","Switzerland — Swiss Franc","CHF"],
-["SYP","Syria — Syrian Pound","£"],
-
-["TWD","Taiwan — New Taiwan Dollar","NT$"],
-["TJS","Tajikistan — Somoni","SM"],
-["TZS","Tanzania — Tanzanian Shilling","TSh"],
-["THB","Thailand — Thai Baht","฿"],
-["TOP","Tonga — Tongan Paʻanga","T$"],
-["TTD","Trinidad and Tobago — Dollar","TT$"],
-["TND","Tunisia — Tunisian Dinar","د.ت"],
-["TRY","Turkey — Turkish Lira","₺"],
-["TMT","Turkmenistan — Turkmenistan Manat","m"],
-["UGX","Uganda — Ugandan Shilling","USh"],
-["UAH","Ukraine — Ukrainian Hryvnia","₴"],
-["AED","United Arab Emirates — Dirham","د.إ"],
-["GBP","United Kingdom — British Pound","£"],
-["USD","United States — US Dollar","$"],
-["UYU","Uruguay — Uruguayan Peso","$U"],
-["UZS","Uzbekistan — Uzbekistani Som","лв"],
-
-["VUV","Vanuatu — Vanuatu Vatu","VT"],
-["VES","Venezuela — Venezuelan Bolívar","Bs."],
-["VND","Vietnam — Vietnamese Dong","₫"],
-
-["XCG","Caribbean Guilder","Cg"],
-
-["YER","Yemen — Yemeni Rial","﷼"],
-["ZMW","Zambia — Zambian Kwacha","ZK"],
-["ZWL","Zimbabwe — Zimbabwe Dollar","Z$"]
-
-];
-
-
-/* =====================================================
-   CURRENCY HELPERS
-===================================================== */
-
-function currencyLabel(item){
-
-return item[1] + " (" + item[0] + ")";
-
-}
-
-
-function getCurrencyData(code){
-
-return currencies.find(function(item){
-
-return item[0] === code;
-
-}) || currencies[0];
-
-}
-
-
-function getCurrencySymbol(){
-
-return getCurrencyData(
-document.getElementById("currencySelect").value
-)[2];
-
-}
-
-
-/* =====================================================
-   POPULATE CURRENCY SELECTS
-===================================================== */
-
-function populateCurrencySelect(
-selectId,
-searchId
-){
-
-var select =
-document.getElementById(selectId);
-
-select.innerHTML = "";
-
-currencies.forEach(function(item){
-
-var option =
-document.createElement("option");
-
-option.value =
-item[0];
-
-option.textContent =
-currencyLabel(item);
-
-select.appendChild(option);
-
-});
-
-
-var search =
-document.getElementById(searchId);
-
-
-search.addEventListener(
-"input",
-function(){
-
-var query =
-search.value
-.toLowerCase()
-.trim();
-
-select.innerHTML = "";
-
-currencies
-.filter(function(item){
-
-return (
-item[0].toLowerCase().includes(query) ||
-item[1].toLowerCase().includes(query)
-);
-
-})
-.forEach(function(item){
-
-var option =
-document.createElement("option");
-
-option.value =
-item[0];
-
-option.textContent =
-currencyLabel(item);
-
-select.appendChild(option);
-
-});
-
-});
-
-}
-
-
-/* =====================================================
-   CREATE ALL CURRENCY SELECTS
-===================================================== */
-
-populateCurrencySelect(
-"currencySelect",
-"mainCurrencySearch"
-);
-
-populateCurrencySelect(
-"fromCurrency",
-"fromSearch"
-);
-
-populateCurrencySelect(
-"toCurrency",
-"toSearch"
-);
-
-
-/* Default currencies */
-
-document.getElementById("currencySelect").value =
-"USD";
-
-document.getElementById("fromCurrency").value =
-"USD";
-
-document.getElementById("toCurrency").value =
-"GBP";
-
-/* =====================================================
-   CURRENCY CONVERTER
-===================================================== */
-
-document.getElementById("convertButton")
-.addEventListener("click", async function(){
-
-var amount =
-parseFloat(
-document.getElementById("converterAmount").value
-);
-
-var from =
-document.getElementById("fromCurrency").value;
-
-var to =
-document.getElementById("toCurrency").value;
-
-var resultBox =
-document.getElementById("converterResults");
-
-var output =
-document.getElementById("converterOutput");
-
-var rateOutput =
-document.getElementById("rateOutput");
-
-
-if(
-!Number.isFinite(amount) ||
-amount < 0
-){
-
-alert("Please enter a valid amount.");
-
-return;
-
-}
-
-
-if(from === to){
-
-var sameSymbol =
-getCurrencyData(from)[2];
-
-output.textContent =
-sameSymbol +
-amount.toLocaleString(
-undefined,
-{
-minimumFractionDigits: 2,
-maximumFractionDigits: 2
-}
-);
-
-rateOutput.textContent =
-"1 " + from + " = 1 " + to;
-
-resultBox.style.display =
-"block";
-
-return;
-
-}
-
-
-output.textContent =
-"Converting...";
-
-rateOutput.textContent =
-"Getting current exchange rate...";
-
-resultBox.style.display =
-"block";
-
-
-try{
-
-var cacheKey =
-"sbc_exchange_rate_" +
-from +
-"_" +
-to;
-
-var cachedRate = null;
-
-try {
-
-    cachedRate =
-        JSON.parse(
-            localStorage.getItem(cacheKey)
-        );
-
-} catch(error) {
-
-    cachedRate = null;
-
-}
-
-
-var data;
-
-
-if(
-    cachedRate &&
-    cachedRate.rate &&
-    cachedRate.timestamp &&
-    (Date.now() - cachedRate.timestamp)
-        < 12 * 60 * 60 * 1000
-){
-
-    data = {
-        rate: cachedRate.rate,
-        date: cachedRate.date
-    };
-
-} else {
-
-    var response =
-        await fetch(
-            "https://api.frankfurter.dev/v2/rate/" +
-            encodeURIComponent(from) +
-            "/" +
-            encodeURIComponent(to)
-        );
-
-
-    if(!response.ok){
-
-        throw new Error(
-            "Exchange rate unavailable"
-        );
-
-    }
-
-
-    data =
-        await response.json();
-
-
-    try {
-
-        localStorage.setItem(
-            cacheKey,
-            JSON.stringify({
-                rate: data.rate,
-                date: data.date,
-                timestamp: Date.now()
-            })
-        );
-
-    } catch(error) {
-
-        console.log(
-            "Exchange-rate caching unavailable."
-        );
-
-    }
-
-}
-
-var converted =
-amount * data.rate;
-
-var toSymbol =
-getCurrencyData(to)[2];
-
-output.textContent =
-toSymbol +
-converted.toLocaleString(
-undefined,
-{
-minimumFractionDigits: 2,
-maximumFractionDigits: 6
-}
-) +
-" " +
-to;
-
-
-rateOutput.textContent =
-"1 " +
-from +
-" = " +
-data.rate +
-" " +
-to +
-" • " +
-data.date;
-
-
-}
-
-catch(error){
-
-output.textContent =
-"Conversion unavailable";
-
-rateOutput.textContent =
-"Please check your internet connection and try again.";
-
-}
-
-});
-
-
-/* =====================================================
-   SWAP CURRENCIES
-===================================================== */
-
-document.getElementById("swapCurrency")
-.addEventListener("click", function(){
-
-var from =
-document.getElementById("fromCurrency");
-
-var to =
-document.getElementById("toCurrency");
-
-var oldFrom =
-from.value;
-
-from.value =
-to.value;
-
-to.value =
-oldFrom;
-
-});
-
-
-/* =====================================================
-   MAIN CURRENCY
-===================================================== */
-
-document.getElementById("currencySelect")
-.addEventListener("change", function(){
-
-updateReceiptTotal("scanItems");
-
-updateReceiptTotal("pasteItems");
-
-});
-
-
-/* =====================================================
-   RECEIPT TOTAL
-===================================================== */
-
-function updateReceiptTotal(containerId){
-
-var container =
-document.getElementById(containerId);
-
-var total = 0;
-
-container
-.querySelectorAll(".receipt-row")
-.forEach(function(row){
-
-var input =
-row.querySelector(
-'input[type="number"]'
-);
-
-if(input){
-
-var price =
-parseFloat(input.value);
-
-if(Number.isFinite(price)){
-
-total += price;
-
-}
-
-}
-
-});
-
-
-var element =
-containerId === "scanItems"
-?
-document.getElementById("scanTotal")
-:
-document.getElementById("pasteTotal");
-
-
-element.textContent =
-getCurrencySymbol() +
-total.toFixed(2);
-
-}
-
-
-/* =====================================================
-   RECEIPT ITEM
-===================================================== */
-
-function addReceiptItem(
-containerId,
-name,
-price
-){
-
-var container =
-document.getElementById(containerId);
-
-var row =
-document.createElement("div");
-
-row.className =
-"receipt-row";
-
-
-var nameInput =
-document.createElement("input");
-
-nameInput.type =
-"text";
-
-nameInput.placeholder =
-"Item name";
-
-nameInput.value =
-name || "";
-
-
-var priceInput =
-document.createElement("input");
-
-priceInput.type =
-"number";
-
-priceInput.step =
-"0.01";
-
-priceInput.min =
-"0";
-
-priceInput.placeholder =
-"Price";
-
-if(price !== undefined){
-
-priceInput.value =
-price;
-
-}
-
-
-var removeButton =
-document.createElement("button");
-
-removeButton.type =
-"button";
-
-removeButton.className =
-"remove-item";
-
-removeButton.textContent =
-"×";
-
-
-removeButton.addEventListener(
-"click",
-function(){
-
-row.remove();
-
-updateReceiptTotal(containerId);
-
-});
-
-
-nameInput.addEventListener(
-"input",
-function(){
-
-updateReceiptTotal(containerId);
-
-});
-
-
-priceInput.addEventListener(
-"input",
-function(){
-
-updateReceiptTotal(containerId);
-
-});
-
-
-row.appendChild(nameInput);
-
-row.appendChild(priceInput);
-
-row.appendChild(removeButton);
-
-container.appendChild(row);
-
-}
-
-
-/* =====================================================
-   RECEIPT PARSER
-===================================================== */
-
-function extractReceiptItems(text){
-
-var lines =
-text.split(/\r?\n/);
-
-var items = [];
-
-
-lines.forEach(function(line){
-
-line =
-line.trim()
-.replace(/\s+/g, " ");
-
-
-if(!line){
-
-return;
-
-}
-
-
-if(
-/^(total|grand total|subtotal|sub total|tax|vat|change|cash|card|balance due|amount due|discount|service charge)\b/i
-.test(line)
-){
-
-return;
-
-}
-
-
-var match =
-line.match(
-/(?:[$€£₦₹₵]|KSh|C\$|A\$|R)?\s*(\d+(?:[,\s]\d{3})*(?:\.\d{1,2})?)\s*$/i
-);
-
-
-if(!match){
-
-return;
-
-}
-
-
-var price =
-parseFloat(
-match[1]
-.replace(/[,\s]/g,"")
-);
-
-
-var name =
-line
-.slice(0, match.index)
-.replace(/[:=\-–—]+$/, "")
-.trim();
-
-
-if(
-name.length >= 2 &&
-Number.isFinite(price) &&
-price > 0
-){
-
-items.push({
-
-name:name,
-price:price
-
-});
-
-}
-
-});
-
-
-return items;
-
-}
-
-
-/* =====================================================
-   DISPLAY RECEIPT ITEMS
-===================================================== */
-
-function displayReceiptItems(
-containerId,
-items
-){
-
-var container =
-document.getElementById(containerId);
-
-container.innerHTML = "";
-
-items.forEach(function(item){
-
-addReceiptItem(
-containerId,
-item.name,
-item.price
-);
-
-});
-
-updateReceiptTotal(containerId);
-
-}
-
-
-/* =====================================================
-   COPY / PASTE RECEIPT
-===================================================== */
-
-document.getElementById("createReceiptButton")
-.addEventListener("click", function(){
-
-var text =
-document.getElementById("receiptText")
-.value
-.trim();
-
-var status =
-document.getElementById("pasteStatus");
-
-
-if(!text){
-
-status.style.display =
-"block";
-
-status.textContent =
-"Please paste your receipt text first.";
-
-return;
-
-}
-
-
-var items =
-extractReceiptItems(text);
-
-
-if(!items.length){
-
-status.style.display =
-"block";
-
-status.textContent =
-"No item prices were detected. Try: Jollof Rice 5000";
-
-return;
-
-}
-
-
-displayReceiptItems(
-"pasteItems",
-items
-);
-
-
-document.getElementById("pasteResults")
-.style.display =
-"block";
-
-
-status.style.display =
-"block";
-
-status.textContent =
-"Receipt converted successfully. Review the items before sharing.";
-
-});
-
-
-/* =====================================================
-   ADD PASTE ITEM
-===================================================== */
-
-document.getElementById("addPasteItem")
-.addEventListener("click", function(){
-
-addReceiptItem(
-"pasteItems",
-"",
-""
-);
-
-updateReceiptTotal("pasteItems");
-
-});
-
-
-/* =====================================================
-   CAMERA / UPLOAD
-===================================================== */
-
-document.getElementById("takePhotoButton")
-.addEventListener("click", function(){
-
-document.getElementById("receiptCamera").click();
-
-});
-
-
-document.getElementById("uploadReceiptButton")
-.addEventListener("click", function(){
-
-document.getElementById("receiptImage").click();
-
-});
-
-
-document.getElementById("receiptCamera")
-.addEventListener("change", function(event){
-
-if(event.target.files.length){
-
-scanReceipt(
-event.target.files[0]
-);
-
-}
-
-event.target.value = "";
-
-});
-
-
-document.getElementById("receiptImage")
-.addEventListener("change", function(event){
-
-if(event.target.files.length){
-
-scanReceipt(
-event.target.files[0]
-);
-
-}
-
-event.target.value = "";
-
-});
-
-
-/* =====================================================
-   SCAN RECEIPT
-===================================================== */
-
-function scanReceipt(file){
-
-if(!file){
-
-return;
-
-}
-
-
-var status =
-document.getElementById("ocrStatus");
-
-
-status.style.display =
-"block";
-
-status.textContent =
-"Reading receipt...";
-
-
-if(!window.Tesseract){
-
-status.textContent =
-"Receipt scanner is unavailable. Please use Copy & Paste Receipt instead.";
-
-return;
-
-}
-
-
-Tesseract.recognize(
-file,
-"eng",
-{
-
-logger:function(info){
-
-if(
-info.status === "recognizing text" &&
-typeof info.progress === "number"
-){
-
-status.textContent =
-"Reading receipt... " +
-Math.round(info.progress * 100) +
-"%";
-
-}
-
-}
-
-}
-)
-
-.then(function(result){
-
-var text =
-result.data.text || "";
-
-var items =
-extractReceiptItems(text);
-
-
-if(!items.length){
-
-status.textContent =
-"No prices were detected. Please try a clearer receipt photo.";
-
-return;
-
-}
-
-
-displayReceiptItems(
-"scanItems",
-items
-);
-
-
-document.getElementById("scanResults")
-.style.display =
-"block";
-
-
-status.textContent =
-"Receipt scanned successfully. Review the items before sharing.";
-
-})
-
-.catch(function(){
-
-status.textContent =
-"The receipt could not be read. Try a clearer photo or use Copy & Paste Receipt.";
-
-});
-
-}
-
-
-/* =====================================================
-   BILL SPLITTER
-===================================================== */
-
-document.getElementById("calculateSplitButton")
-.addEventListener("click", function(){
-
-var bill =
-parseFloat(
-document.getElementById("totalBill").value
-);
-
-var people =
-parseInt(
-document.getElementById("peopleCount").value,
-10
-);
-
-
-if(
-!Number.isFinite(bill) ||
-!Number.isFinite(people) ||
-people <= 0
-){
-
-alert(
-"Please enter valid amounts and total number of people."
-);
-
-return;
-
-}
-
-
-var share =
-bill / people;
-
-var currency =
-getCurrencySymbol();
-
-
-document.getElementById("splitContent").innerHTML =
-
-'<div class="result-item">' +
-'<span>Total Bill Pool:</span>' +
-'<span>' +
-currency +
-bill.toFixed(2) +
-'</span>' +
-'</div>' +
-
-'<div class="result-item">' +
-'<span>Total Splitters:</span>' +
-'<span>' +
-people +
-' People</span>' +
-'</div>' +
-
-'<div class="result-item result-total">' +
-'<span>Each Person Pays:</span>' +
-'<span>' +
-currency +
-share.toFixed(2) +
-'</span>' +
-'</div>';
-
-
-document.getElementById("split-results")
-.style.display =
-"block";
-
-});
-
-
-/* =====================================================
-   PERCENTAGE
-===================================================== */
-
-document.getElementById("calculatePercentageButton")
-.addEventListener("click", function(){
-
-var bill =
-parseFloat(
-document.getElementById("percentageTotalBill").value
-);
-
-var percentage =
-parseFloat(
-document.getElementById("customPercentage").value
-);
-
-
-if(
-!Number.isFinite(bill) ||
-!Number.isFinite(percentage) ||
-percentage <= 0 ||
-percentage > 100
-){
-
-alert(
-"Please enter a valid bill amount and a percentage between 1 and 100."
-);
-
-return;
-
-}
-
-
-var personPays =
-bill * percentage / 100;
-
-var remaining =
-bill - personPays;
-
-var currency =
-getCurrencySymbol();
-
-
-document.getElementById("percentageContent").innerHTML =
-
-'<div class="result-item">' +
-'<span>Total Bill Pool:</span>' +
-'<span>' +
-currency +
-bill.toFixed(2) +
-'</span>' +
-'</div>' +
-
-'<div class="result-item">' +
-'<span>Your Custom Cut:</span>' +
-'<span>' +
-percentage +
-'%</span>' +
-'</div>' +
-
-'<div class="result-item">' +
-'<span>Remaining Balance:</span>' +
-'<span>' +
-currency +
-remaining.toFixed(2) +
-'</span>' +
-'</div>' +
-
-'<div class="result-item result-total">' +
-'<span>You Will Pay:</span>' +
-'<span>' +
-currency +
-personPays.toFixed(2) +
-'</span>' +
-'</div>';
-
-
-document.getElementById("percentage-results")
-.style.display =
-"block";
-
-});
-
-
-/* =====================================================
-   SHARE FUNCTION
-===================================================== */
-
-function shareResult(text){
-
-if(navigator.share){
-
-navigator.share({
-
-title:"Split Bill Calculator",
-
-text:text
-
-}).catch(function(error){
-
-if(error && error.name === "AbortError"){
-return;
-}
-
-fallbackCopy(text);
-
-});
-
-}
-
-
-if(
-navigator.clipboard &&
-window.isSecureContext
-){
-
-navigator.clipboard
-.writeText(text)
-.then(function(){
-
-alert(
-"Result copied to clipboard."
-);
-
-})
-.catch(function(){
-
-fallbackCopy(text);
-
-});
-
-return;
-
-}
-
-
-fallbackCopy(text);
-
-}
-
-
-function fallbackCopy(text){
-
-var textarea =
-document.createElement("textarea");
-
-textarea.value =
-text;
-
-textarea.style.position =
-"fixed";
-
-textarea.style.left =
-"-9999px";
-
-document.body.appendChild(textarea);
-
-textarea.focus();
-
-textarea.select();
-
-
-try{
-
-document.execCommand("copy");
-
-alert(
-"Result copied to clipboard."
-);
-
-}
-
-catch(error){
-
-alert(text);
-
-}
-
-
-document.body.removeChild(textarea);
-
-}
-
-
-/* =====================================================
-   SHARE CURRENCY CONVERSION
-===================================================== */
-
-/* =====================================================
-   SAVE CURRENCY CONVERSION
-===================================================== */
-
-document.getElementById("saveConversion")
-.addEventListener("click", function(){
-
-    const amount =
-        parseFloat(
-            document.getElementById("converterAmount").value
-        );
-
-    const from =
-        document.getElementById("fromCurrency").value;
-
-    const to =
-        document.getElementById("toCurrency").value;
-
-    const output =
-        document.getElementById("converterOutput").textContent;
-
-    if(!Number.isFinite(amount)){
-
-        alert("Calculate a conversion first.");
-
-        return;
-
-    }
-
-    saveToHistory(
-        "💱 Currency Conversion",
-        amount + " " + from +
-        " = " + output + " " + to
-    );
-
-});
-
-document.getElementById("shareConversion")
-.addEventListener("click", function(){
-
-var amount =
-parseFloat(
-document.getElementById("converterAmount").value
-);
-
-var from =
-document.getElementById("fromCurrency").value;
-
-var to =
-document.getElementById("toCurrency").value;
-
-var output =
-document.getElementById("converterOutput").textContent;
-
-
-if(!Number.isFinite(amount)){
-
-alert(
-"Please calculate a conversion first."
-);
-
-return;
-
-}
-
-
-shareResult(
-
-"💱 Currency Conversion\n\n" +
-
-amount +
-" " +
-from +
-
-" = " +
-
-output +
-" " +
-to +
-
-"\n\nSplit Bill Calculator"
-
-);
-
-});
-
-
-/* =====================================================
-   SHARE SPLIT
-===================================================== */
-
-document.getElementById("saveSplit")
-.addEventListener("click", function(){
-
-    const bill =
-        parseFloat(
-            document.getElementById("totalBill").value
-        );
-
-    const people =
-        parseInt(
-            document.getElementById("peopleCount").value,
-            10
-        );
-
-    if(
-        !Number.isFinite(bill) ||
-        !Number.isFinite(people) ||
-        people <= 0
-    ){
-
-        alert("Calculate the split first.");
-
-        return;
-
-    }
-
-    const share =
-        bill / people;
-
-    saveToHistory(
-        "👥 Bill Split",
-        "Total Bill: " +
-        getCurrencySymbol() +
-        bill.toFixed(2) +
-
-        "\nPeople: " +
-        people +
-
-        "\nEach Person Pays: " +
-        getCurrencySymbol() +
-        share.toFixed(2)
-    );
-
-});
-
-
-document.getElementById("deleteSplit")
-.addEventListener("click", function(){
-
-    document.getElementById("split-results")
-        .style.display = "none";
-
-});
-
-document.getElementById("shareSplit")
-.addEventListener("click", function(){
-
-var bill =
-parseFloat(
-document.getElementById("totalBill").value
-);
-
-var people =
-parseInt(
-document.getElementById("peopleCount").value,
-10
-);
-
-
-if(
-!Number.isFinite(bill) ||
-!Number.isFinite(people) ||
-people <= 0
-){
-
-alert(
-"Calculate the split first."
-);
-
-return;
-
-}
-
-
-var share =
-bill / people;
-
-
-shareResult(
-
-"👥 Split Bill Result\n\n" +
-
-"Total Bill: " +
-getCurrencySymbol() +
-bill.toFixed(2) +
-
-"\nPeople: " +
-people +
-
-"\nEach Person Pays: " +
-getCurrencySymbol() +
-share.toFixed(2)
-
-);
-
-});
-
-
-/* =====================================================
-   SHARE PERCENTAGE
-===================================================== */
-
-document.getElementById("savePercentage")
-.addEventListener("click", function(){
-
-    const bill =
-        parseFloat(
-            document.getElementById(
-                "percentageTotalBill"
-            ).value
-        );
-
-    const percentage =
-        parseFloat(
-            document.getElementById(
-                "customPercentage"
-            ).value
-        );
-
-    if(
-        !Number.isFinite(bill) ||
-        !Number.isFinite(percentage)
-    ){
-
-        alert(
-            "Calculate the percentage first."
-        );
-
-        return;
-
-    }
-
-    const pays =
-        bill * percentage / 100;
-
-    const remaining =
-        bill - pays;
-
-
-    saveToHistory(
-        "📊 Percentage Cut",
-        "Total Bill: " +
-        getCurrencySymbol() +
-        bill.toFixed(2) +
-
-        "\nPercentage: " +
-        percentage +
-        "%" +
-
-        "\nYou Will Pay: " +
-        getCurrencySymbol() +
-        pays.toFixed(2) +
-
-        "\nRemaining: " +
-        getCurrencySymbol() +
-        remaining.toFixed(2)
-    );
-
-});
-
-
-document.getElementById("deletePercentage")
-.addEventListener("click", function(){
-
-    document.getElementById(
-        "percentage-results"
-    ).style.display = "none";
-
-});
-
-document.getElementById("sharePercentage")
-.addEventListener("click", function(){
-
-var bill =
-parseFloat(
-document.getElementById("percentageTotalBill").value
-);
-
-var percentage =
-parseFloat(
-document.getElementById("customPercentage").value
-);
-
-
-if(
-!Number.isFinite(bill) ||
-!Number.isFinite(percentage)
-){
-
-alert(
-"Calculate the percentage result first."
-);
-
-return;
-
-}
-
-
-var pays =
-bill * percentage / 100;
-
-var remaining =
-bill - pays;
-
-
-shareResult(
-
-"📊 Percentage Bill Result\n\n" +
-
-"Total Bill: " +
-getCurrencySymbol() +
-bill.toFixed(2) +
-
-"\nYour Share: " +
-percentage +
-"%" +
-
-"\nYou Will Pay: " +
-getCurrencySymbol() +
-pays.toFixed(2) +
-
-"\nRemaining Balance: " +
-getCurrencySymbol() +
-remaining.toFixed(2)
-
-);
-
-});
-
-
-/* =====================================================
-   SHARE SCANNED RECEIPT
-===================================================== */
-
-document.getElementById("shareScan")
-.addEventListener("click", function(){
-
-shareReceiptItems(
-"scanItems",
-"🧾 Scanned Receipt"
-);
-
-});
-
-/* =====================================================
-   SAVE SCANNED RECEIPT
-===================================================== */
-
-document.getElementById("saveScan")
-.addEventListener("click", function(){
-
-    var rows =
-        document.getElementById("scanItems")
-        .querySelectorAll(".receipt-row");
-
-    var lines = [];
-
-    var total = 0;
-
-    rows.forEach(function(row){
-
-        var name =
-            row.querySelector(
-                'input[type="text"]'
-            ).value.trim();
-
-        var price =
-            parseFloat(
-                row.querySelector(
-                    'input[type="number"]'
-                ).value
-            );
-
-        if(Number.isFinite(price)){
-
-            if(!name){
-
-                name = "Item";
-
-            }
-
-            lines.push(
-                name +
-                ": " +
-                getCurrencySymbol() +
-                price.toFixed(2)
-            );
-
-            total += price;
-
-        }
-
-    });
-
-    if(!lines.length){
-
-        alert(
-            "Please scan or add at least one item before saving."
-        );
-
-        return;
-
-    }
-
-    saveToHistory(
-        "📷 Scanned Receipt",
-        lines.join("\n") +
-        "\n\nTotal: " +
-        getCurrencySymbol() +
-        total.toFixed(2)
-    );
-
-});
-
-
-/* =====================================================
-   DELETE SCANNED RECEIPT
-===================================================== */
-
-document.getElementById("deleteScan")
-.addEventListener("click", function(){
-
-    document.getElementById("scanResults")
-        .style.display = "none";
-
-    document.getElementById("scanItems")
-        .innerHTML = "";
-
-    document.getElementById("ocrStatus")
-        .style.display = "none";
-
-});
-
-/* =====================================================
-   SHARE PASTED RECEIPT
-===================================================== */
-
-document.getElementById("sharePaste")
-.addEventListener("click", function(){
-
-shareReceiptItems(
-"pasteItems",
-"🧾 Receipt"
-);
-
-});
-
-
-function shareReceiptItems(
-containerId,
-title
-){
-
-var rows =
-document.getElementById(containerId)
-.querySelectorAll(".receipt-row");
-
-var lines = [];
-
-var total = 0;
-
-
-rows.forEach(function(row){
-
-var name =
-row.querySelector(
-'input[type="text"]'
-).value.trim();
-
-var price =
-parseFloat(
-row.querySelector(
-'input[type="number"]'
-).value
-);
-
-
-if(Number.isFinite(price)){
-
-if(!name){
-
-name = "Item";
-
-}
-
-lines.push(
-name +
-": " +
-getCurrencySymbol() +
-price.toFixed(2)
-);
-
-total += price;
-
-}
-
-});
-
-
-if(!lines.length){
-
-alert(
-"Please add at least one item before sharing."
-);
-
-return;
-
-}
-
-
-shareResult(
-
-title +
-"\n\n" +
-
-lines.join("\n") +
-
-"\n\nTotal: " +
-
-getCurrencySymbol() +
-total.toFixed(2)
-
-);
-
-}
-
-/* =====================================================
-   SAVE PASTED RECEIPT
-===================================================== */
-
-document.getElementById("savePaste")
-.addEventListener("click", function(){
-
-    var rows =
-        document.getElementById("pasteItems")
-        .querySelectorAll(".receipt-row");
-
-    var lines = [];
-
-    var total = 0;
-
-    rows.forEach(function(row){
-
-        var name =
-            row.querySelector(
-                'input[type="text"]'
-            ).value.trim();
-
-        var price =
-            parseFloat(
-                row.querySelector(
-                    'input[type="number"]'
-                ).value
-            );
-
-        if(Number.isFinite(price)){
-
-            if(!name){
-
-                name = "Item";
-
-            }
-
-            lines.push(
-                name +
-                ": " +
-                getCurrencySymbol() +
-                price.toFixed(2)
-            );
-
-            total += price;
-
-        }
-
-    });
-
-    if(!lines.length){
-
-        alert(
-            "Please add at least one item before saving."
-        );
-
-        return;
-
-    }
-
-    saveToHistory(
-        "📋 Copy & Paste Receipt",
-        lines.join("\n") +
-        "\n\nTotal: " +
-        getCurrencySymbol() +
-        total.toFixed(2)
-    );
-
-});
-
-/* =====================================================
-   DELETE PASTED RECEIPT
-===================================================== */
-
-document.getElementById("deletePaste")
-.addEventListener("click", function(){
-
-    document.getElementById("pasteResults")
-        .style.display = "none";
-
-    document.getElementById("pasteItems")
-        .innerHTML = "";
-
-    document.getElementById("receiptText")
-        .value = "";
-
-    document.getElementById("pasteStatus")
-        .style.display = "none";
-
-});
-
-/* =====================================================
-   ADD RECEIPT ITEM BUTTONS
-===================================================== */
-
-/* =====================================================
-   SAVED CALCULATION HISTORY
-===================================================== */
-
-/* =====================================================
-   SAVED CALCULATION HISTORY
-===================================================== */
-
-const HISTORY_KEY = "splitBillCalculatorHistory";
-
-
-function getSavedHistory(){
-
-    try {
-
-        return JSON.parse(
-            localStorage.getItem(HISTORY_KEY)
-        ) || [];
-
-    } catch(error) {
-
-        return [];
-
-    }
-
-}
-
-
-function saveToHistory(tool, result){
-
-    const history =
-        getSavedHistory();
-
-    const savedItem = {
-
-        id:
-            Date.now().toString() +
-            Math.random().toString(36).slice(2),
-
-        tool: tool,
-
-        result: result,
-
-        date:
-            new Date().toLocaleString()
-
-    };
-
-
-    history.unshift(savedItem);
-
-
-    try {
-
-        localStorage.setItem(
-            HISTORY_KEY,
-            JSON.stringify(history)
-        );
-
-    } catch(error) {
-
-        alert(
-            "Unable to save this calculation on your device."
-        );
-
-        return;
-
-    }
-
-
-    renderSavedHistory();
-
-    alert(
-        "Calculation saved successfully."
-    );
-
-}
-
-
-function deleteHistoryItem(id){
-
-    const history =
-        getSavedHistory()
-        .filter(function(item){
-
-            return item.id !== id;
-
-        });
-
-
-    localStorage.setItem(
-        HISTORY_KEY,
-        JSON.stringify(history)
-    );
-
-
-    renderSavedHistory();
-
-}
-
-
-function clearAllHistory(){
-
-    if(!confirm(
-        "Delete all saved calculations?"
-    )){
-
-        return;
-
-    }
-
-
-    localStorage.removeItem(
-        HISTORY_KEY
-    );
-
-
-    renderSavedHistory();
-
-}
-
-
-function shareSavedHistory(result){
-
-    shareResult(result);
-
-}
-
-
-function renderSavedHistory(){
-
-    const container =
-        document.getElementById(
-            "savedHistory"
-        );
-
-    const clearButton =
-        document.getElementById(
-            "clearHistoryButton"
-        );
-
-
-    if(!container){
-
-        return;
-
-    }
-
-
-    const history =
-        getSavedHistory();
-
-
-    container.innerHTML = "";
-
-
-    if(!history.length){
-
-        container.innerHTML =
-            '<div class="no-history">' +
-            'No saved calculations yet.' +
-            '</div>';
-
-        if(clearButton){
-
-            clearButton.style.display =
-                "none";
-
-        }
-
-        return;
-
-    }
-
-
-    if(clearButton){
-
-        clearButton.style.display =
-            "block";
-
-    }
-
-
-    history.forEach(function(item){
-
-        const card =
-            document.createElement("div");
-
-        card.className =
-            "saved-history-item";
-
-
-        const title =
-            document.createElement("h3");
-
-        title.textContent =
-            "📌 " + item.tool;
-
-
-        const result =
-            document.createElement("p");
-
-        result.textContent =
-            item.result +
-            "\n\nSaved: " +
-            item.date;
-
-
-        const actions =
-            document.createElement("div");
-
-        actions.className =
-            "history-actions";
-
-
-        const shareButton =
-            document.createElement("button");
-
-        shareButton.type =
-            "button";
-
-        shareButton.className =
-            "action-btn history-share-btn";
-
-        shareButton.textContent =
-            "🔗 Share";
-
-
-        shareButton.addEventListener(
-            "click",
-            function(){
-
-                shareSavedHistory(
-                    item.result
-                );
-
-            }
-        );
-
-
-        const deleteButton =
-            document.createElement("button");
-
-        deleteButton.type =
-            "button";
-
-        deleteButton.className =
-            "action-btn history-delete-btn";
-
-        deleteButton.textContent =
-            "🗑️ Delete";
-
-
-        deleteButton.addEventListener(
-            "click",
-            function(){
-
-                deleteHistoryItem(
-                    item.id
-                );
-
-            }
-        );
-
-
-        actions.appendChild(
-            shareButton
-        );
-
-        actions.appendChild(
-            deleteButton
-        );
-
-
-        card.appendChild(title);
-
-        card.appendChild(result);
-
-        card.appendChild(actions);
-
-
-        container.appendChild(card);
-
-    });
-
-}
-
-
-document.getElementById(
-    "clearHistoryButton"
-)
-.addEventListener(
-    "click",
-    clearAllHistory
-);
-
-
-renderSavedHistory();
-
-
-/* =====================================================
-   ADD RECEIPT ITEM BUTTONS
-===================================================== */
-
 /* =====================================================
    YEAR
 ===================================================== */
-
-document.getElementById("currentYear")
-.textContent =
-new Date().getFullYear();
-
+document.getElementById("currentYear").textContent =
+    new Date().getFullYear();
 /* =====================================================
    PWA SERVICE WORKER
 ===================================================== */
-
 if ("serviceWorker" in navigator) {
-
     window.addEventListener("load", function() {
-
         navigator.serviceWorker
             .register("/sw.js")
             .then(function(registration) {
-
                 console.log(
                     "PWA service worker registered:",
                     registration.scope
                 );
-
             })
             .catch(function(error) {
-
                 console.log(
                     "PWA service worker registration failed:",
                     error
                 );
-
             });
-
     });
-
 }
-
-
 /* =====================================================
    PWA INSTALL PROMPT
 ===================================================== */
-
 let deferredInstallPrompt = null;
-
 const installButton =
     document.getElementById("installAppButton");
-
-
 window.addEventListener(
     "beforeinstallprompt",
     function(event) {
-
         event.preventDefault();
-
         deferredInstallPrompt = event;
-
         if (installButton) {
-
             installButton.style.display =
                 "block";
-
         }
-
     }
 );
-
-
 if (installButton) {
-
     installButton.addEventListener(
         "click",
         async function() {
-
             if (!deferredInstallPrompt) {
-
                 alert(
                     "If the install option does not appear, open your browser menu and choose Install App or Add to Home Screen."
                 );
-
                 return;
-
             }
-
             deferredInstallPrompt.prompt();
-
             const choice =
                 await deferredInstallPrompt.userChoice;
-
             console.log(
                 "PWA installation choice:",
                 choice.outcome
             );
-
             deferredInstallPrompt = null;
-
         }
     );
-
 }
-
-
 window.addEventListener(
     "appinstalled",
     function() {
-
         console.log(
             "Split Bill Calculator was installed."
         );
-
         deferredInstallPrompt = null;
-
     }
 );
-
 </script>
-
 </body>
 </html>
