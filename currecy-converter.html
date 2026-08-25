@@ -1,0 +1,1024 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#2563eb">
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Split Bill">
+
+<title>Currency Converter | Split Bill Calculator</title>
+
+<meta name="description"
+content="Free currency converter supporting 100+ currencies with current exchange-rate data. Convert currencies quickly and easily.">
+
+<style>
+:root {
+    --primary: #2563eb;
+    --primary-hover: #1d4ed8;
+    --bg-main: #f8fafc;
+    --card-bg: #ffffff;
+    --text-title: #0f172a;
+    --text-body: #334155;
+    --border: #e2e8f0;
+    --muted: #64748b;
+}
+
+* {
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--bg-main);
+    color: var(--text-body);
+    padding: 20px 15px;
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 520px;
+    width: 100%;
+    margin: 10px auto;
+    background: var(--card-bg);
+    padding: 30px 24px;
+    border-radius: 24px;
+    box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05);
+}
+
+header {
+    text-align: center;
+}
+
+header h1 {
+    color: var(--text-title);
+    font-size: 28px;
+    font-weight: 800;
+    margin-bottom: 8px;
+}
+
+header p {
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 28px;
+}
+
+.field {
+    margin-bottom: 16px;
+}
+
+.field label {
+    display: block;
+    color: var(--text-title);
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 7px;
+}
+
+input,
+select {
+    width: 100%;
+    padding: 14px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: #fff;
+    color: var(--text-title);
+    font-size: 16px;
+    outline: none;
+}
+
+input:focus,
+select:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(37,99,235,0.10);
+}
+
+.swap-container {
+    display: flex;
+    justify-content: center;
+    margin: -4px 0 12px;
+}
+
+.swap-btn {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    background: #eff6ff;
+    color: var(--primary);
+    font-size: 22px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.swap-btn:hover {
+    background: #dbeafe;
+}
+
+.convert-btn {
+    width: 100%;
+    padding: 15px;
+    margin-top: 5px;
+    border: none;
+    border-radius: 12px;
+    background: var(--primary);
+    color: white;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.convert-btn:hover {
+    background: var(--primary-hover);
+}
+
+.convert-btn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+.result {
+    display: none;
+    margin-top: 22px;
+    padding: 22px 18px;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    background: #f8fafc;
+    text-align: center;
+}
+
+.result-label {
+    color: var(--muted);
+    font-size: 13px;
+    margin-bottom: 7px;
+}
+
+.result-amount {
+    color: var(--text-title);
+    font-size: 30px;
+    font-weight: 800;
+    word-break: break-word;
+}
+
+.rate-text {
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.6;
+    margin-top: 10px;
+}
+
+.status {
+    text-align: center;
+    color: var(--muted);
+    font-size: 12px;
+    margin-top: 12px;
+    line-height: 1.5;
+}
+
+.error {
+    display: none;
+    margin-top: 12px;
+    padding: 10px;
+    border-radius: 10px;
+    background: #fef2f2;
+    color: #dc2626;
+    font-size: 13px;
+    text-align: center;
+    line-height: 1.5;
+}
+
+.info {
+    margin-top: 24px;
+    padding: 15px;
+    border-radius: 14px;
+    background: #eff6ff;
+    color: #334155;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.info strong {
+    color: var(--text-title);
+}
+
+.back-link {
+    display: block;
+    text-align: center;
+    margin-top: 22px;
+    color: var(--primary);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.back-link:hover {
+    text-decoration: underline;
+}
+
+footer {
+    margin-top: 28px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.7;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<header>
+    <h1>Currency Converter</h1>
+
+    <p>
+        Convert between 100+ currencies using current exchange-rate data.
+    </p>
+</header>
+
+<div class="field">
+    <label for="amount">Amount</label>
+
+    <input
+        type="number"
+        id="amount"
+        min="0"
+        step="any"
+        value="1"
+        placeholder="Enter amount"
+        inputmode="decimal"
+    >
+</div>
+
+<div class="field">
+    <label for="fromCurrency">From Currency</label>
+
+    <select id="fromCurrency"></select>
+</div>
+
+<div class="swap-container">
+    <button
+        type="button"
+        class="swap-btn"
+        id="swapBtn"
+        aria-label="Swap currencies"
+        title="Swap currencies">
+        ⇅
+    </button>
+</div>
+
+<div class="field">
+    <label for="toCurrency">To Currency</label>
+
+    <select id="toCurrency"></select>
+</div>
+
+<button
+    type="button"
+    class="convert-btn"
+    id="convertBtn">
+    Convert
+</button>
+
+<div class="error" id="errorMessage"></div>
+
+<div class="result" id="resultBox">
+
+    <div class="result-label">
+        Converted Amount
+    </div>
+
+    <div class="result-amount" id="resultAmount">
+        —
+    </div>
+
+    <div class="rate-text" id="rateText">
+        —
+    </div>
+
+</div>
+
+<div class="status" id="statusMessage"></div>
+
+<div class="info">
+    <strong>Exchange rates:</strong>
+    Rates are provided for informational purposes and may differ
+    from rates used by banks, card providers, payment services
+    and other financial institutions.
+</div>
+
+<a href="index.html" class="back-link">
+    ← Back to Split Bill Calculator
+</a>
+
+<footer>
+    © <span id="currentYear"></span> Split Bill Calculator
+</footer>
+
+</div>
+
+<script>
+"use strict";
+
+/* =====================================================
+   CURRENCY LIST
+===================================================== */
+
+const currencies = {
+    AED: "UAE Dirham",
+    AFN: "Afghan Afghani",
+    ALL: "Albanian Lek",
+    AMD: "Armenian Dram",
+    ANG: "Netherlands Antillean Guilder",
+    AOA: "Angolan Kwanza",
+    ARS: "Argentine Peso",
+    AUD: "Australian Dollar",
+    AWG: "Aruban Florin",
+    AZN: "Azerbaijani Manat",
+
+    BAM: "Bosnia-Herzegovina Convertible Mark",
+    BBD: "Barbadian Dollar",
+    BDT: "Bangladeshi Taka",
+    BGN: "Bulgarian Lev",
+    BHD: "Bahraini Dinar",
+    BIF: "Burundian Franc",
+    BMD: "Bermudian Dollar",
+    BND: "Brunei Dollar",
+    BOB: "Bolivian Boliviano",
+    BRL: "Brazilian Real",
+    BSD: "Bahamian Dollar",
+    BTN: "Bhutanese Ngultrum",
+    BWP: "Botswanan Pula",
+    BYN: "Belarusian Ruble",
+    BZD: "Belize Dollar",
+
+    CAD: "Canadian Dollar",
+    CDF: "Congolese Franc",
+    CHF: "Swiss Franc",
+    CLP: "Chilean Peso",
+    CNY: "Chinese Yuan",
+    COP: "Colombian Peso",
+    CRC: "Costa Rican Colón",
+    CUP: "Cuban Peso",
+    CVE: "Cape Verdean Escudo",
+    CZK: "Czech Koruna",
+
+    DJF: "Djiboutian Franc",
+    DKK: "Danish Krone",
+    DOP: "Dominican Peso",
+    DZD: "Algerian Dinar",
+
+    EGP: "Egyptian Pound",
+    ERN: "Eritrean Nakfa",
+    ETB: "Ethiopian Birr",
+    EUR: "Euro",
+
+    FJD: "Fijian Dollar",
+    FKP: "Falkland Islands Pound",
+
+    GBP: "British Pound",
+    GEL: "Georgian Lari",
+    GHS: "Ghanaian Cedi",
+    GIP: "Gibraltar Pound",
+    GMD: "Gambian Dalasi",
+    GNF: "Guinean Franc",
+    GTQ: "Guatemalan Quetzal",
+    GYD: "Guyanaese Dollar",
+
+    HKD: "Hong Kong Dollar",
+    HNL: "Honduran Lempira",
+    HRK: "Croatian Kuna",
+    HTG: "Haitian Gourde",
+    HUF: "Hungarian Forint",
+
+    IDR: "Indonesian Rupiah",
+    ILS: "Israeli New Shekel",
+    INR: "Indian Rupee",
+    IQD: "Iraqi Dinar",
+    IRR: "Iranian Rial",
+    ISK: "Icelandic Króna",
+
+    JMD: "Jamaican Dollar",
+    JOD: "Jordanian Dinar",
+    JPY: "Japanese Yen",
+
+    KES: "Kenyan Shilling",
+    KGS: "Kyrgyzstani Som",
+    KHR: "Cambodian Riel",
+    KMF: "Comorian Franc",
+    KPW: "North Korean Won",
+    KRW: "South Korean Won",
+    KWD: "Kuwaiti Dinar",
+    KYD: "Cayman Islands Dollar",
+    KZT: "Kazakhstani Tenge",
+
+    LAK: "Laotian Kip",
+    LBP: "Lebanese Pound",
+    LKR: "Sri Lankan Rupee",
+    LRD: "Liberian Dollar",
+    LSL: "Lesotho Loti",
+    LYD: "Libyan Dinar",
+
+    MAD: "Moroccan Dirham",
+    MDL: "Moldovan Leu",
+    MGA: "Malagasy Ariary",
+    MKD: "Macedonian Denar",
+    MMK: "Myanmar Kyat",
+    MNT: "Mongolian Tugrik",
+    MOP: "Macanese Pataca",
+    MRU: "Mauritanian Ouguiya",
+    MUR: "Mauritian Rupee",
+    MVR: "Maldivian Rufiyaa",
+    MWK: "Malawian Kwacha",
+    MXN: "Mexican Peso",
+    MYR: "Malaysian Ringgit",
+    MZN: "Mozambican Metical",
+
+    NAD: "Namibian Dollar",
+    NGN: "Nigerian Naira",
+    NIO: "Nicaraguan Córdoba",
+    NOK: "Norwegian Krone",
+    NPR: "Nepalese Rupee",
+    NZD: "New Zealand Dollar",
+
+    OMR: "Omani Rial",
+
+    PAB: "Panamanian Balboa",
+    PEN: "Peruvian Sol",
+    PGK: "Papua New Guinean Kina",
+    PHP: "Philippine Peso",
+    PKR: "Pakistani Rupee",
+    PLN: "Polish Zloty",
+    PYG: "Paraguayan Guarani",
+
+    QAR: "Qatari Rial",
+
+    RON: "Romanian Leu",
+    RSD: "Serbian Dinar",
+    RUB: "Russian Ruble",
+    RWF: "Rwandan Franc",
+
+    SAR: "Saudi Riyal",
+    SBD: "Solomon Islands Dollar",
+    SCR: "Seychellois Rupee",
+    SDG: "Sudanese Pound",
+    SEK: "Swedish Krona",
+    SGD: "Singapore Dollar",
+    SHP: "Saint Helena Pound",
+    SLE: "Sierra Leonean Leone",
+    SOS: "Somali Shilling",
+    SRD: "Surinamese Dollar",
+    SSP: "South Sudanese Pound",
+    STN: "São Tomé & Príncipe Dobra",
+    SVC: "Salvadoran Colón",
+    SYP: "Syrian Pound",
+    SZL: "Eswatini Lilangeni",
+
+    THB: "Thai Baht",
+    TJS: "Tajikistani Somoni",
+    TMT: "Turkmenistani Manat",
+    TND: "Tunisian Dinar",
+    TOP: "Tongan Paʻanga",
+    TRY: "Turkish Lira",
+    TTD: "Trinidad & Tobago Dollar",
+    TWD: "New Taiwan Dollar",
+    TZS: "Tanzanian Shilling",
+
+    UAH: "Ukrainian Hryvnia",
+    UGX: "Ugandan Shilling",
+    USD: "US Dollar",
+    UYU: "Uruguayan Peso",
+    UZS: "Uzbekistani Som",
+
+    VES: "Venezuelan Bolívar",
+    VND: "Vietnamese Dong",
+    VUV: "Vanuatu Vatu",
+
+    WST: "Samoan Tala",
+
+    XAF: "Central African CFA Franc",
+    XCD: "East Caribbean Dollar",
+    XOF: "West African CFA Franc",
+    XPF: "CFP Franc",
+
+    YER: "Yemeni Rial",
+
+    ZAR: "South African Rand",
+    ZMW: "Zambian Kwacha",
+    ZWL: "Zimbabwean Dollar"
+};
+
+
+/* =====================================================
+   ELEMENTS
+===================================================== */
+
+const amountInput =
+    document.getElementById("amount");
+
+const fromCurrency =
+    document.getElementById("fromCurrency");
+
+const toCurrency =
+    document.getElementById("toCurrency");
+
+const convertBtn =
+    document.getElementById("convertBtn");
+
+const swapBtn =
+    document.getElementById("swapBtn");
+
+const resultBox =
+    document.getElementById("resultBox");
+
+const resultAmount =
+    document.getElementById("resultAmount");
+
+const rateText =
+    document.getElementById("rateText");
+
+const errorMessage =
+    document.getElementById("errorMessage");
+
+const statusMessage =
+    document.getElementById("statusMessage");
+
+document.getElementById("currentYear").textContent =
+    new Date().getFullYear();
+
+
+/* =====================================================
+   CREATE CURRENCY OPTIONS
+===================================================== */
+
+Object.entries(currencies)
+    .sort((a, b) =>
+        a[1].localeCompare(b[1])
+    )
+    .forEach(([code, name]) => {
+
+        const optionFrom =
+            document.createElement("option");
+
+        optionFrom.value = code;
+        optionFrom.textContent =
+            `${code} — ${name}`;
+
+        fromCurrency.appendChild(optionFrom);
+
+        const optionTo =
+            document.createElement("option");
+
+        optionTo.value = code;
+        optionTo.textContent =
+            `${code} — ${name}`;
+
+        toCurrency.appendChild(optionTo);
+    });
+
+
+/* =====================================================
+   DEFAULT CURRENCIES
+===================================================== */
+
+fromCurrency.value = "USD";
+toCurrency.value = "EUR";
+
+
+/* =====================================================
+   12-HOUR CACHE
+===================================================== */
+
+const CACHE_DURATION =
+    12 * 60 * 60 * 1000;
+
+
+function getCacheKey(from, to) {
+
+    return `splitBillExchangeRate_${from}_${to}`;
+
+}
+
+
+function getCachedRate(from, to) {
+
+    try {
+
+        const key =
+            getCacheKey(from, to);
+
+        const saved =
+            localStorage.getItem(key);
+
+        if (!saved) {
+            return null;
+        }
+
+        const data =
+            JSON.parse(saved);
+
+        if (
+            !data ||
+            typeof data.rate !== "number" ||
+            !data.timestamp
+        ) {
+            localStorage.removeItem(key);
+            return null;
+        }
+
+        const age =
+            Date.now() - data.timestamp;
+
+        if (age >= CACHE_DURATION) {
+
+            localStorage.removeItem(key);
+
+            return null;
+        }
+
+        return data;
+
+    } catch (error) {
+
+        return null;
+
+    }
+
+}
+
+
+function saveRate(from, to, rate, date) {
+
+    try {
+
+        const key =
+            getCacheKey(from, to);
+
+        localStorage.setItem(
+            key,
+            JSON.stringify({
+                rate: rate,
+                date: date || null,
+                timestamp: Date.now()
+            })
+        );
+
+    } catch (error) {
+
+        console.log(
+            "Could not save exchange rate cache."
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   FETCH EXCHANGE RATE
+===================================================== */
+
+async function getExchangeRate(from, to) {
+
+    if (from === to) {
+
+        return {
+            rate: 1,
+            date: null,
+            cached: false
+        };
+
+    }
+
+
+    const cached =
+        getCachedRate(from, to);
+
+
+    if (cached) {
+
+        return {
+            rate: cached.rate,
+            date: cached.date,
+            cached: true
+        };
+
+    }
+
+
+    const response =
+        await fetch(
+            `https://api.frankfurter.dev/v2/rate/${from}/${to}`
+        );
+
+
+    if (!response.ok) {
+
+        throw new Error(
+            "Unable to retrieve exchange rate."
+        );
+
+    }
+
+
+    const data =
+        await response.json();
+
+
+    if (
+        !data ||
+        typeof data.rate !== "number"
+    ) {
+
+        throw new Error(
+            "Invalid exchange-rate response."
+        );
+
+    }
+
+
+    saveRate(
+        from,
+        to,
+        data.rate,
+        data.date
+    );
+
+
+    return {
+
+        rate: data.rate,
+
+        date: data.date || null,
+
+        cached: false
+
+    };
+
+}
+
+
+/* =====================================================
+   NUMBER FORMAT
+===================================================== */
+
+function formatNumber(value) {
+
+    return new Intl.NumberFormat(
+        undefined,
+        {
+            maximumFractionDigits: 6
+        }
+    ).format(value);
+
+}
+
+
+/* =====================================================
+   CONVERT
+===================================================== */
+
+async function convertCurrency() {
+
+    errorMessage.style.display = "none";
+    errorMessage.textContent = "";
+
+    resultBox.style.display = "none";
+
+    statusMessage.textContent =
+        "Getting exchange rate...";
+
+    convertBtn.disabled = true;
+
+    const amount =
+        Number(amountInput.value);
+
+    const from =
+        fromCurrency.value;
+
+    const to =
+        toCurrency.value;
+
+
+    if (
+        !Number.isFinite(amount) ||
+        amount < 0
+    ) {
+
+        errorMessage.textContent =
+            "Please enter a valid amount.";
+
+        errorMessage.style.display =
+            "block";
+
+        statusMessage.textContent = "";
+
+        convertBtn.disabled = false;
+
+        return;
+
+    }
+
+
+    try {
+
+        const exchange =
+            await getExchangeRate(
+                from,
+                to
+            );
+
+
+        const converted =
+            amount * exchange.rate;
+
+
+        resultAmount.textContent =
+            `${formatNumber(converted)} ${to}`;
+
+
+        rateText.textContent =
+            `1 ${from} = ${formatNumber(exchange.rate)} ${to}`;
+
+
+        if (exchange.date) {
+
+            rateText.textContent +=
+                ` · Rate date: ${exchange.date}`;
+
+        }
+
+
+        resultBox.style.display =
+            "block";
+
+
+        if (exchange.cached) {
+
+            statusMessage.textContent =
+                "Using the exchange rate saved within the last 12 hours.";
+
+        } else {
+
+            statusMessage.textContent =
+                "Exchange rate retrieved and saved for 12 hours.";
+
+        }
+
+    } catch (error) {
+
+        console.error(error);
+
+        errorMessage.textContent =
+            "Unable to get the exchange rate right now. Please try again.";
+
+        errorMessage.style.display =
+            "block";
+
+        statusMessage.textContent = "";
+
+    } finally {
+
+        convertBtn.disabled = false;
+
+    }
+
+}
+
+
+/* =====================================================
+   CONVERT BUTTON
+===================================================== */
+
+convertBtn.addEventListener(
+    "click",
+    convertCurrency
+);
+
+
+/* =====================================================
+   SWAP CURRENCIES
+===================================================== */
+
+swapBtn.addEventListener(
+    "click",
+    function() {
+
+        const oldFrom =
+            fromCurrency.value;
+
+        fromCurrency.value =
+            toCurrency.value;
+
+        toCurrency.value =
+            oldFrom;
+
+
+        if (amountInput.value !== "") {
+
+            convertCurrency();
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   ENTER KEY
+===================================================== */
+
+amountInput.addEventListener(
+    "keydown",
+    function(event) {
+
+        if (event.key === "Enter") {
+
+            convertCurrency();
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   AUTO UPDATE AFTER CURRENCY CHANGE
+===================================================== */
+
+fromCurrency.addEventListener(
+    "change",
+    function() {
+
+        if (amountInput.value !== "") {
+
+            convertCurrency();
+
+        }
+
+    }
+);
+
+
+toCurrency.addEventListener(
+    "change",
+    function() {
+
+        if (amountInput.value !== "") {
+
+            convertCurrency();
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   PWA SERVICE WORKER
+===================================================== */
+
+if ("serviceWorker" in navigator) {
+
+    window.addEventListener(
+        "load",
+        function() {
+
+            navigator.serviceWorker
+                .register("/sw.js")
+                .then(function(registration) {
+
+                    console.log(
+                        "PWA service worker registered:",
+                        registration.scope
+                    );
+
+                })
+                .catch(function(error) {
+
+                    console.log(
+                        "PWA service worker registration failed:",
+                        error
+                    );
+
+                });
+
+        }
+    );
+
+}
+</script>
+
+</body>
+</html>
