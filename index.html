@@ -811,11 +811,28 @@ id="addScanItem">
 
 </div>
 
+
+<div class="result-actions">
+
 <button
 type="button"
-class="action-btn share-btn"
-id="shareScan">
-🔗 Share Result
+class="save-btn"
+id="savePaste">
+💾 Save
+</button>
+
+<button
+type="button"
+class="save-btn"
+id="sharePaste">
+🔗 Share
+</button>
+
+<button
+type="button"
+class="delete-btn"
+id="deletePaste">
+🗑️ Delete
 </button>
 
 </div>
@@ -3036,6 +3053,75 @@ total.toFixed(2)
 
 }
 
+/* =====================================================
+   SAVE PASTED RECEIPT
+===================================================== */
+
+document.getElementById("savePaste")
+.addEventListener("click", function(){
+
+    var rows =
+        document.getElementById("pasteItems")
+        .querySelectorAll(".receipt-row");
+
+    var lines = [];
+
+    var total = 0;
+
+    rows.forEach(function(row){
+
+        var name =
+            row.querySelector(
+                'input[type="text"]'
+            ).value.trim();
+
+        var price =
+            parseFloat(
+                row.querySelector(
+                    'input[type="number"]'
+                ).value
+            );
+
+        if(Number.isFinite(price)){
+
+            if(!name){
+
+                name = "Item";
+
+            }
+
+            lines.push(
+                name +
+                ": " +
+                getCurrencySymbol() +
+                price.toFixed(2)
+            );
+
+            total += price;
+
+        }
+
+    });
+
+    if(!lines.length){
+
+        alert(
+            "Please add at least one item before saving."
+        );
+
+        return;
+
+    }
+
+    saveToHistory(
+        "📋 Copy & Paste Receipt",
+        lines.join("\n") +
+        "\n\nTotal: " +
+        getCurrencySymbol() +
+        total.toFixed(2)
+    );
+
+});
 
 /* =====================================================
    ADD RECEIPT ITEM BUTTONS
