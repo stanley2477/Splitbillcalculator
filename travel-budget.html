@@ -1,0 +1,3362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="manifest" href="/manifest.json">
+
+<meta name="theme-color" content="#2563eb">
+
+<meta
+name="apple-mobile-web-app-capable"
+content="yes"
+>
+
+<meta
+name="apple-mobile-web-app-status-bar-style"
+content="default"
+>
+
+<meta
+name="apple-mobile-web-app-title"
+content="Split Bill"
+>
+
+<title>Travel Budget Planner | Split Bill Calculator</title>
+
+<meta
+name="description"
+content="Plan your travel budget with accommodation, food, transportation, daily travel, activities and entertainment costs."
+>
+
+<style>
+
+:root {
+    --primary: #2563eb;
+    --primary-hover: #1d4ed8;
+    --bg-main: #f8fafc;
+    --card-bg: #ffffff;
+    --text-title: #0f172a;
+    --text-body: #334155;
+    --border: #e2e8f0;
+    --muted: #64748b;
+    --success-bg: #f0fdf4;
+    --success-border: #10b981;
+    --success-text: #166534;
+}
+
+* {
+    box-sizing: border-box;
+
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        sans-serif;
+
+    margin: 0;
+    padding: 0;
+}
+
+body {
+
+    background: var(--bg-main);
+
+    color: var(--text-body);
+
+    padding: 20px 15px;
+
+    min-height: 100vh;
+
+}
+
+.container {
+
+    max-width: 520px;
+
+    width: 100%;
+
+    margin: 10px auto;
+
+    background: var(--card-bg);
+
+    padding: 30px 24px;
+
+    border-radius: 24px;
+
+    box-shadow:
+        0 10px 25px -5px rgba(0,0,0,0.05);
+
+}
+
+header {
+
+    text-align: center;
+
+}
+
+header h1 {
+
+    color: var(--text-title);
+
+    font-size: 27px;
+
+    font-weight: 800;
+
+    margin-bottom: 7px;
+
+}
+
+header p {
+
+    color: var(--muted);
+
+    font-size: 14px;
+
+    line-height: 1.6;
+
+    margin-bottom: 28px;
+
+}
+
+h2 {
+
+    color: var(--text-title);
+
+    font-size: 18px;
+
+    margin-bottom: 10px;
+
+}
+
+.description {
+
+    color: var(--muted);
+
+    font-size: 13px;
+
+    line-height: 1.5;
+
+    margin-bottom: 16px;
+
+}
+
+.section-divider {
+
+    margin: 35px 0 25px;
+
+    border-top: 2px solid var(--border);
+
+    padding-top: 25px;
+
+}
+
+.form-group {
+
+    margin-bottom: 16px;
+
+}
+
+label {
+
+    display: block;
+
+    color: #475569;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    margin-bottom: 7px;
+
+}
+
+input,
+select {
+
+    width: 100%;
+
+    padding: 14px 16px;
+
+    border-radius: 12px;
+
+    border: 1px solid var(--border);
+
+    background: #fff;
+
+    color: var(--text-title);
+
+    font-size: 16px;
+
+    outline: none;
+
+}
+
+input:focus,
+select:focus {
+
+    border-color: var(--primary);
+
+    box-shadow:
+        0 0 0 3px rgba(37,99,235,0.10);
+
+}
+
+.currency-search {
+
+    margin-bottom: 8px;
+
+}
+
+.currency-search input {
+
+    padding: 12px 14px;
+
+    font-size: 14px;
+
+}
+
+.action-btn {
+
+    width: 100%;
+
+    padding: 15px;
+
+    margin-top: 7px;
+
+    border: none;
+
+    border-radius: 12px;
+
+    background: var(--primary);
+
+    color: white;
+
+    font-size: 16px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 4px 12px rgba(37,99,235,0.18);
+
+}
+
+.action-btn:hover {
+
+    background: var(--primary-hover);
+
+}
+
+.secondary-btn {
+
+    width: 100%;
+
+    padding: 13px;
+
+    margin-top: 8px;
+
+    border: 1px solid var(--border);
+
+    border-radius: 12px;
+
+    background: white;
+
+    color: var(--text-title);
+
+    font-size: 15px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+}
+
+.result-box {
+
+    display: none;
+
+    margin-top: 20px;
+
+    padding: 20px;
+
+    border-radius: 16px;
+
+    background: var(--success-bg);
+
+    border: 1px solid var(--success-border);
+
+}
+
+.result-box h3 {
+
+    color: var(--success-text);
+
+    text-align: center;
+
+    font-size: 15px;
+
+    text-transform: uppercase;
+
+    margin-bottom: 14px;
+
+    padding-bottom: 7px;
+
+    border-bottom: 1px dashed
+        rgba(16,185,129,0.35);
+
+}
+
+.result-item {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    gap: 10px;
+
+    margin-bottom: 10px;
+
+    color: var(--success-text);
+
+    font-size: 15px;
+
+}
+
+.result-total {
+
+    border-top: 1px dashed #10b981;
+
+    padding-top: 12px;
+
+    margin-top: 12px;
+
+    font-size: 21px;
+
+    font-weight: 800;
+
+    color: #064e3b;
+
+}
+
+.result-actions {
+
+    display: grid;
+
+    grid-template-columns:
+        1fr 1fr 1fr;
+
+    gap: 8px;
+
+    margin-top: 15px;
+
+}
+
+.result-actions button {
+
+    padding: 11px 6px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    font-size: 13px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+}
+
+.save-btn {
+
+    background: #2563eb;
+
+    color: white;
+
+}
+
+.share-btn {
+
+    background: #16a34a;
+
+    color: white;
+
+}
+
+.delete-btn {
+
+    background: #fee2e2;
+
+    color: #b91c1c;
+
+}
+
+.travel-item {
+
+    display: grid;
+
+    grid-template-columns: 1fr 100px 38px;
+
+    gap: 7px;
+
+    margin-bottom: 8px;
+
+}
+
+.travel-item input {
+
+    padding: 11px;
+
+    font-size: 14px;
+
+}
+
+.remove-item {
+
+    width: 38px;
+
+    border: 1px solid #fecaca;
+
+    border-radius: 10px;
+
+    background: white;
+
+    color: #dc2626;
+
+    font-size: 20px;
+
+    cursor: pointer;
+
+}
+
+.history-card {
+
+    border: 1px solid var(--border);
+
+    border-radius: 14px;
+
+    padding: 15px;
+
+    margin-bottom: 10px;
+
+    background: white;
+
+}
+
+.history-card h3 {
+
+    color: var(--text-title);
+
+    font-size: 15px;
+
+    margin-bottom: 8px;
+
+}
+
+.history-card p {
+
+    font-size: 13px;
+
+    line-height: 1.5;
+
+    white-space: pre-line;
+
+    margin-bottom: 12px;
+
+}
+
+.history-actions {
+
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 8px;
+
+}
+
+.history-actions button {
+
+    padding: 10px;
+
+    border: none;
+
+    border-radius: 9px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+}
+
+.no-history {
+
+    text-align: center;
+
+    padding: 20px;
+
+    color: var(--muted);
+
+    font-size: 14px;
+
+}
+
+.notice {
+
+    margin-top: 25px;
+
+    padding: 15px;
+
+    border-radius: 14px;
+
+    background: #eff6ff;
+
+    color: var(--text-body);
+
+    font-size: 13px;
+
+    line-height: 1.6;
+
+    text-align: center;
+
+}
+
+.back-link {
+
+    display: block;
+
+    text-align: center;
+
+    margin-top: 22px;
+
+    color: var(--primary);
+
+    text-decoration: none;
+
+    font-size: 14px;
+
+    font-weight: 700;
+
+}
+
+.back-link:hover {
+
+    text-decoration: underline;
+
+}
+
+footer {
+
+    margin-top: 22px;
+
+    padding-top: 20px;
+
+    border-top: 1px solid var(--border);
+
+    text-align: center;
+
+    color: var(--muted);
+
+    font-size: 12px;
+
+    line-height: 1.6;
+
+}
+
+@media (max-width: 430px) {
+
+    .travel-item {
+
+        grid-template-columns:
+            1fr 85px 38px;
+
+    }
+
+    .result-actions {
+
+        grid-template-columns:
+            1fr 1fr 1fr;
+
+    }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<header>
+
+<h1>✈️ Travel Budget</h1>
+
+<p>
+Plan your trip, accommodation, food,
+transportation, activities and entertainment costs.
+</p>
+
+</header>
+
+
+<!-- =====================================================
+     CURRENCY
+===================================================== -->
+
+<section>
+
+<h2>💱 Currency</h2>
+
+<p class="description">
+Choose the currency you want to use for your travel budget.
+</p>
+
+<div class="currency-search">
+
+<input
+type="text"
+id="currencySearch"
+placeholder="🔎 Search currency or country"
+autocomplete="off"
+>
+
+</div>
+
+<select id="currencySelect"></select>
+
+</section>
+
+
+<!-- =====================================================
+     TRIP BUDGET
+===================================================== -->
+
+<div class="section-divider"></div>
+
+<section>
+
+<h2>🧳 Trip Budget</h2>
+
+<p class="description">
+Create an overall travel budget based on your trip
+duration and number of travelers.
+</p>
+
+<div class="form-group">
+
+<label>Trip Name</label>
+
+<input
+type="text"
+id="tripName"
+placeholder="Example: Summer Vacation"
+>
+
+</div>
+
+<div class="form-group">
+
+<label>Destination</label>
+
+<input
+type="text"
+id="destination"
+placeholder="Example: Paris"
+>
+
+</div>
+
+<div class="form-group">
+
+<label>Number of Travelers</label>
+
+<input
+type="number"
+id="tripTravelers"
+placeholder="Example: 2"
+min="1"
+step="1"
+>
+
+</div>
+
+<div class="form-group">
+
+<label>Number of Days</label>
+
+<input
+type="number"
+id="tripDays"
+placeholder="Example: 7"
+min="1"
+step="1"
+>
+
+</div>
+
+<div class="form-group">
+
+<label>Estimated Trip Budget</label>
+
+<input
+type="number"
+id="tripBudget"
+placeholder="Example: 2500"
+min="0"
+step="any"
+>
+
+</div>
+
+<button
+type="button"
+class="action-btn"
+id="calculateTripBudget">
+
+Calculate Trip Budget
+</button>
+
+<div
+id="tripBudgetResult"
+class="result-box">
+
+<h3>Trip Budget Result</h3>
+
+<div id="tripBudgetContent"></div>
+
+<div class="result-actions">
+
+<button
+type="button"
+class="save-btn"
+id="saveTripBudget">
+💾 Save
+</button>
+
+<button
+type="button"
+class="share-btn"
+id="shareTripBudget">
+🔗 Share
+</button>
+
+<button
+type="button"
+class="delete-btn"
+id="deleteTripBudget">
+🗑️ Delete
+</button>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     DAILY TRAVEL BUDGET
+===================================================== -->
+
+<div class="section-divider"></div>
+
+<section>
+
+<h2>📅 Daily Travel Budget</h2>
+
+<p class="description">
+Calculate how much you can spend per day during your trip.
+</p>
+
+<div class="form-group">
+
+<label>Total Travel Budget</label>
+
+<input
+type="number"
+id="dailyTotal"
+placeholder="Example: 2100"
+min="0"
+step="any"
+>
+
+</div>
+
+<div class="form-group">
+
+<label>Number of Days</label>
+
+<input
+type="number"
+id="dailyDays"
+placeholder="Example: 7"
+min="1"
+step="1"
+>
+
+</div>
+
+<div class="form-group">
+
+<label>Number of Travelers</label>
+
+<input
+type="number"
+id="dailyTravelers"
+placeholder="Example: 2"
+min="1"
+step="1"
+>
+
+</div>
+
+<button
+type="button"
+class="action-btn"
+id="calculateDaily">
+
+Calculate Daily Budget
+</button>
+
+<div
+id="dailyResult"
+class="result-box">
+
+<h3>Daily Travel Budget</h3>
+
+<div id="dailyContent"></div>
+
+<div class="result-actions">
+
+<button
+type="button"
+class="save-btn"
+id="saveDaily">
+💾 Save
+</button>
+
+<button
+type="button"
+class="share-btn"
+id="shareDaily">
+🔗 Share
+</button>
+
+<button
+type="button"
+class="delete-btn"
+id="deleteDaily">
+🗑️ Delete
+</button>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     ACCOMMODATION
+===================================================== -->
+
+<div class="section-divider"></div>
+
+<section>
+
+<h2>🏨 Accommodation Budget</h2>
+
+<p class="description">
+Estimate your hotel or accommodation costs.
+</p>
+
+<div class="form-group">
+
+<label>Number of Nights</label>
+
+<input
+type="number"
+id="accommodationNights"
+placeholder="Example: 7"
+min="1"
+step="1"
+>
+
+</div>
+
+<div class="form-group">
+
+<label>Cost Per Night</label>
+
+<input
+type="number"
+id="accommodationCost"
+placeholder="Example: 150"
+min="0"
+step="any"
+>
+
+</div>
+
+<div class="form-group">
+
+<label>Number of Rooms</label>
+
+<input
+type="number"
+id="accommodationRooms"
+placeholder="Example: 1"
+min="1"
+step="1"
+>
+
+</div>
+
+<div class="form-group">
+
+<label>Number of Travelers</label>
+
+<input
+type="number"
+id="accommodationTravelers"
+placeholder="Example: 2"
+min="1"
+step="1"
+>
+
+</div>
+
+<button
+type="button"
+class="action-btn"
+id="calculateAccommodation">
+
+Calculate Accommodation
+</button>
+
+<div
+id="accommodationResult"
+class="result-box">
+
+<h3>Accommodation Budget</h3>
+
+<div id="accommodationContent"></div>
+
+<div class="result-actions">
+
+<button
+type="button"
+class="save-btn"
+id="saveAccommodation">
+💾 Save
+</button>
+
+<button
+type="button"
+class="share-btn"
+id="shareAccommodation">
+🔗 Share
+</button>
+
+<button
+type="button"
+class="delete-btn"
+id="deleteAccommodation">
+🗑️ Delete
+</button>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     FOOD
+===================================================== -->
+
+<div class="section-divider"></div>
+
+<section>
+
+<h2>🍽️ Food Budget</h2>
+
+<p class="description">
+Estimate your daily food expenses for everyone on the trip.
+</p>
+
+<div class="form-group">
+
+<label>Daily Food Budget Per Person</label>
+
+<input
+type="number"
+id="foodDaily"
+placeholder="Example: 40"
+min="0"
+step="any"
+>
+
+</div>
+
+<div class="form-group">
+
+<label>Number of Days</label>
+
+<input
+type="number"
+id="foodDays"
+placeholder="Example: 7"
+min="1"
+step="1"
+>
+
+</div>
+
+<div class="form-group">
+
+<label>Number of Travelers</label>
+
+<input
+type="number"
+id="foodTravelers"
+placeholder="Example: 2"
+min="1"
+step="1"
+>
+
+</div>
+
+<button
+type="button"
+class="action-btn"
+id="calculateFood">
+
+Calculate Food Budget
+</button>
+
+<div
+id="foodResult"
+class="result-box">
+
+<h3>Food Budget</h3>
+
+<div id="foodContent"></div>
+
+<div class="result-actions">
+
+<button
+type="button"
+class="save-btn"
+id="saveFood">
+💾 Save
+</button>
+
+<button
+type="button"
+class="share-btn"
+id="shareFood">
+🔗 Share
+</button>
+
+<button
+type="button"
+class="delete-btn"
+id="deleteFood">
+🗑️ Delete
+</button>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     TRANSPORTATION
+===================================================== -->
+
+<div class="section-divider"></div>
+
+<section>
+
+<h2>🚗 Transportation Budget</h2>
+
+<p class="description">
+Estimate airport transfers, local transportation and other
+travel costs.
+</p>
+
+<div class="form-group">
+
+<label>Transportation Type</label>
+
+<input
+type="text"
+id="transportType"
+placeholder="Example: Taxi, Train, Rental Car"
+>
+
+</div>
+
+<div class="form-group">
+
+<label>Daily Transportation Cost</label>
+
+<input
+type="number"
+id="transportDaily"
+placeholder="Example: 30"
+min="0"
+step="any"
+>
+
+</div>
+
+<div class="form-group">
+
+<label>Number of Days</label>
+
+<input
+type="number"
+id="transportDays"
+placeholder="Example: 7"
+min="1"
+step="1"
+>
+
+</div>
+
+<div class="form-group">
+
+<label>Airport / Arrival Cost</label>
+
+<input
+type="number"
+id="transportArrival"
+placeholder="Example: 50"
+min="0"
+step="any"
+>
+
+</div>
+
+<div class="form-group">
+
+<label>Other Transportation Cost</label>
+
+<input
+type="number"
+id="transportOther"
+placeholder="Example: 25"
+min="0"
+step="any"
+>
+
+</div>
+
+<button
+type="button"
+class="action-btn"
+id="calculateTransportation">
+
+Calculate Transportation
+</button>
+
+<div
+id="transportResult"
+class="result-box">
+
+<h3>Transportation Budget</h3>
+
+<div id="transportContent"></div>
+
+<div class="result-actions">
+
+<button
+type="button"
+class="save-btn"
+id="saveTransportation">
+💾 Save
+</button>
+
+<button
+type="button"
+class="share-btn"
+id="shareTransportation">
+🔗 Share
+</button>
+
+<button
+type="button"
+class="delete-btn"
+id="deleteTransportation">
+🗑️ Delete
+</button>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     ACTIVITIES & ENTERTAINMENT
+===================================================== -->
+
+<div class="section-divider"></div>
+
+<section>
+
+<h2>🎭 Activities & Entertainment</h2>
+
+<p class="description">
+Add activities, tours, attractions and entertainment expenses.
+</p>
+
+<div id="activityItems"></div>
+
+<button
+type="button"
+class="secondary-btn"
+id="addActivity">
++ Add Activity
+</button>
+
+<button
+type="button"
+class="action-btn"
+id="calculateActivities">
+
+Calculate Activities & Entertainment
+</button>
+
+<div
+id="activitiesResult"
+class="result-box">
+
+<h3>Activities & Entertainment</h3>
+
+<div id="activitiesContent"></div>
+
+<div class="result-actions">
+
+<button
+type="button"
+class="save-btn"
+id="saveActivities">
+💾 Save
+</button>
+
+<button
+type="button"
+class="share-btn"
+id="shareActivities">
+🔗 Share
+</button>
+
+<button
+type="button"
+class="delete-btn"
+id="deleteActivities">
+🗑️ Delete
+</button>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     SAVED HISTORY
+===================================================== -->
+
+<div class="section-divider"></div>
+
+<section>
+
+<h2>💾 Saved Travel Budget History</h2>
+
+<p class="description">
+Saved travel budgets are stored on this device.
+</p>
+
+<div id="savedHistory"></div>
+
+<button
+type="button"
+class="secondary-btn"
+id="clearHistory">
+🗑️ Clear All History
+</button>
+
+</section>
+
+
+<!-- =====================================================
+     BOTTOM
+===================================================== -->
+
+<div class="notice">
+
+Saved travel budgets are stored locally on this device
+and are not uploaded to our server.
+
+</div>
+
+<a
+href="index.html"
+class="back-link">
+
+← Back to Split Bill Calculator
+
+</a>
+
+<footer>
+
+© <span id="currentYear"></span>
+Split Bill Calculator
+
+</footer>
+
+</div>
+
+
+<script>
+
+"use strict";
+
+
+/* =====================================================
+   CURRENCIES
+===================================================== */
+
+const currencies = [
+
+["AFN","Afghanistan — Afghan Afghani","؋"],
+["ALL","Albania — Albanian Lek","L"],
+["DZD","Algeria — Algerian Dinar","دج"],
+["AOA","Angola — Angolan Kwanza","Kz"],
+["ARS","Argentina — Argentine Peso","$"],
+["AMD","Armenia — Armenian Dram","֏"],
+["AWG","Aruba — Aruban Florin","ƒ"],
+["AUD","Australia — Australian Dollar","A$"],
+["AZN","Azerbaijan — Azerbaijani Manat","₼"],
+
+["BSD","Bahamas — Bahamian Dollar","$"],
+["BHD","Bahrain — Bahraini Dinar","د.ب"],
+["BDT","Bangladesh — Bangladeshi Taka","৳"],
+["BBD","Barbados — Barbadian Dollar","$"],
+["BYN","Belarus — Belarusian Ruble","Br"],
+["BZD","Belize — Belize Dollar","BZ$"],
+["BMD","Bermuda — Bermudian Dollar","$"],
+["BTN","Bhutan — Bhutanese Ngultrum","Nu."],
+["BOB","Bolivia — Bolivian Boliviano","Bs."],
+["BAM","Bosnia and Herzegovina — Convertible Mark","KM"],
+["BWP","Botswana — Botswana Pula","P"],
+["BRL","Brazil — Brazilian Real","R$"],
+["BND","Brunei — Brunei Dollar","B$"],
+["BGN","Bulgaria — Bulgarian Lev","лв"],
+["BIF","Burundi — Burundian Franc","FBu"],
+
+["KHR","Cambodia — Cambodian Riel","៛"],
+["CAD","Canada — Canadian Dollar","C$"],
+["CVE","Cape Verde — Cape Verdean Escudo","$"],
+["KYD","Cayman Islands — Cayman Islands Dollar","CI$"],
+["XAF","Central African CFA Franc","FCFA"],
+["CLP","Chile — Chilean Peso","$"],
+["CNY","China — Chinese Yuan","¥"],
+["COP","Colombia — Colombian Peso","$"],
+["KMF","Comoros — Comorian Franc","CF"],
+["CDF","Congo — Congolese Franc","FC"],
+["CRC","Costa Rica — Costa Rican Colón","₡"],
+["XOF","West African CFA Franc","CFA"],
+["CUP","Cuba — Cuban Peso","$"],
+["CZK","Czechia — Czech Koruna","Kč"],
+
+["DKK","Denmark — Danish Krone","kr"],
+["DJF","Djibouti — Djiboutian Franc","Fdj"],
+["DOP","Dominican Republic — Dominican Peso","RD$"],
+
+["EGP","Egypt — Egyptian Pound","£"],
+["ERN","Eritrea — Eritrean Nakfa","Nfk"],
+["ETB","Ethiopia — Ethiopian Birr","Br"],
+["EUR","European Union — Euro","€"],
+
+["FKP","Falkland Islands — Falkland Pound","£"],
+["FJD","Fiji — Fijian Dollar","FJ$"],
+["XPF","French Pacific Franc","₣"],
+
+["GMD","Gambia — Gambian Dalasi","D"],
+["GEL","Georgia — Georgian Lari","₾"],
+["GHS","Ghana — Ghanaian Cedi","₵"],
+["GIP","Gibraltar — Gibraltar Pound","£"],
+["GTQ","Guatemala — Guatemalan Quetzal","Q"],
+["GNF","Guinea — Guinean Franc","FG"],
+["GYD","Guyana — Guyanese Dollar","G$"],
+
+["HTG","Haiti — Haitian Gourde","G"],
+["HNL","Honduras — Honduran Lempira","L"],
+["HKD","Hong Kong — Hong Kong Dollar","HK$"],
+["HUF","Hungary — Hungarian Forint","Ft"],
+
+["ISK","Iceland — Icelandic Króna","kr"],
+["INR","India — Indian Rupee","₹"],
+["IDR","Indonesia — Indonesian Rupiah","Rp"],
+["IRR","Iran — Iranian Rial","﷼"],
+["IQD","Iraq — Iraqi Dinar","ع.د"],
+["ILS","Israel — Israeli New Shekel","₪"],
+
+["JMD","Jamaica — Jamaican Dollar","J$"],
+["JPY","Japan — Japanese Yen","¥"],
+["JOD","Jordan — Jordanian Dinar","د.ا"],
+
+["KZT","Kazakhstan — Kazakhstani Tenge","₸"],
+["KES","Kenya — Kenyan Shilling","KSh"],
+["KWD","Kuwait — Kuwaiti Dinar","د.ك"],
+["KGS","Kyrgyzstan — Kyrgyzstani Som","с"],
+
+["LAK","Laos — Lao Kip","₭"],
+["LBP","Lebanon — Lebanese Pound","ل.ل"],
+["LSL","Lesotho — Lesotho Loti","L"],
+["LRD","Liberia — Liberian Dollar","L$"],
+["LYD","Libya — Libyan Dinar","ل.د"],
+
+["MOP","Macau — Macanese Pataca","MOP$"],
+["MKD","North Macedonia — Macedonian Denar","ден"],
+["MGA","Madagascar — Malagasy Ariary","Ar"],
+["MWK","Malawi — Malawian Kwacha","MK"],
+["MYR","Malaysia — Malaysian Ringgit","RM"],
+["MVR","Maldives — Maldivian Rufiyaa","Rf"],
+["MRU","Mauritania — Mauritanian Ouguiya","UM"],
+["MUR","Mauritius — Mauritian Rupee","₨"],
+["MXN","Mexico — Mexican Peso","$"],
+["MDL","Moldova — Moldovan Leu","L"],
+["MNT","Mongolia — Mongolian Tögrög","₮"],
+["MAD","Morocco — Moroccan Dirham","د.م."],
+["MZN","Mozambique — Mozambican Metical","MT"],
+
+["NAD","Namibia — Namibian Dollar","N$"],
+["NPR","Nepal — Nepalese Rupee","₨"],
+["ANG","Netherlands — Caribbean Guilder","ƒ"],
+["NZD","New Zealand — New Zealand Dollar","NZ$"],
+["NIO","Nicaragua — Nicaraguan Córdoba","C$"],
+["NGN","Nigeria — Nigerian Naira","₦"],
+["NOK","Norway — Norwegian Krone","kr"],
+
+["OMR","Oman — Omani Rial","ر.ع."],
+
+["PKR","Pakistan — Pakistani Rupee","₨"],
+["PAB","Panama — Panamanian Balboa","B/."],
+["PGK","Papua New Guinea — Kina","K"],
+["PYG","Paraguay — Paraguayan Guaraní","₲"],
+["PEN","Peru — Peruvian Sol","S/"],
+["PHP","Philippines — Philippine Peso","₱"],
+["PLN","Poland — Polish Złoty","zł"],
+["QAR","Qatar — Qatari Riyal","ر.ق"],
+
+["RON","Romania — Romanian Leu","lei"],
+["RSD","Serbia — Serbian Dinar","дин"],
+["RUB","Russia — Russian Ruble","₽"],
+["RWF","Rwanda — Rwandan Franc","FRw"],
+
+["SHP","Saint Helena — Saint Helena Pound","£"],
+["WST","Samoa — Samoan Tala","T"],
+["STN","São Tomé and Príncipe — Dobra","Db"],
+["SAR","Saudi Arabia — Saudi Riyal","ر.س"],
+["SCR","Seychelles — Seychellois Rupee","₨"],
+["SGD","Singapore — Singapore Dollar","S$"],
+["SBD","Solomon Islands — Solomon Islands Dollar","SI$"],
+["SOS","Somalia — Somali Shilling","Sh"],
+["ZAR","South Africa — South African Rand","R"],
+["KRW","South Korea — South Korean Won","₩"],
+["SSP","South Sudan — South Sudanese Pound","£"],
+["LKR","Sri Lanka — Sri Lankan Rupee","₨"],
+["SDG","Sudan — Sudanese Pound","ج.س."],
+["SRD","Suriname — Surinamese Dollar","$"],
+["SZL","Eswatini — Swazi Lilangeni","E"],
+["SEK","Sweden — Swedish Krona","kr"],
+["CHF","Switzerland — Swiss Franc","CHF"],
+["SYP","Syria — Syrian Pound","£"],
+
+["TWD","Taiwan — New Taiwan Dollar","NT$"],
+["TJS","Tajikistan — Somoni","SM"],
+["TZS","Tanzania — Tanzanian Shilling","TSh"],
+["THB","Thailand — Thai Baht","฿"],
+["TOP","Tonga — Tongan Paʻanga","T$"],
+["TTD","Trinidad and Tobago — Dollar","TT$"],
+["TND","Tunisia — Tunisian Dinar","د.ت"],
+["TRY","Turkey — Turkish Lira","₺"],
+["TMT","Turkmenistan — Turkmenistan Manat","m"],
+
+["UGX","Uganda — Ugandan Shilling","USh"],
+["UAH","Ukraine — Ukrainian Hryvnia","₴"],
+["AED","United Arab Emirates — Dirham","د.إ"],
+["GBP","United Kingdom — British Pound","£"],
+["USD","United States — US Dollar","$"],
+["UYU","Uruguay — Uruguayan Peso","$U"],
+["UZS","Uzbekistan — Uzbekistani Som","лв"],
+
+["VUV","Vanuatu — Vanuatu Vatu","VT"],
+["VES","Venezuela — Venezuelan Bolívar","Bs."],
+["VND","Vietnam — Vietnamese Dong","₫"],
+
+["YER","Yemen — Yemeni Rial","﷼"],
+["ZMW","Zambia — Zambian Kwacha","ZK"],
+["ZWL","Zimbabwe — Zimbabwe Dollar","Z$"]
+
+];
+
+
+/* =====================================================
+   CURRENCY
+===================================================== */
+
+function populateCurrencies(query = "") {
+
+    const select =
+        document.getElementById(
+            "currencySelect"
+        );
+
+    select.innerHTML = "";
+
+    const search =
+        query.toLowerCase().trim();
+
+    currencies
+        .filter(function(item) {
+
+            return (
+                item[0]
+                    .toLowerCase()
+                    .includes(search)
+
+                ||
+
+                item[1]
+                    .toLowerCase()
+                    .includes(search)
+            );
+
+        })
+        .forEach(function(item) {
+
+            const option =
+                document.createElement(
+                    "option"
+                );
+
+            option.value =
+                item[0];
+
+            option.textContent =
+                item[1] +
+                " (" +
+                item[0] +
+                ")";
+
+            select.appendChild(option);
+
+        });
+
+}
+
+
+populateCurrencies();
+
+document.getElementById(
+    "currencySelect"
+).value = "USD";
+
+
+document.getElementById(
+    "currencySearch"
+).addEventListener(
+    "input",
+    function() {
+
+        const current =
+            document.getElementById(
+                "currencySelect"
+            ).value;
+
+        populateCurrencies(
+            this.value
+        );
+
+        const exists =
+            currencies.some(
+                function(item) {
+
+                    return item[0] === current;
+
+                }
+            );
+
+        if(exists) {
+
+            const optionExists =
+                Array.from(
+                    document.getElementById(
+                        "currencySelect"
+                    ).options
+                ).some(
+                    function(option) {
+
+                        return option.value === current;
+
+                    }
+                );
+
+            if(optionExists) {
+
+                document.getElementById(
+                    "currencySelect"
+                ).value = current;
+
+            }
+
+        }
+
+    }
+);
+
+
+function getCurrencyData() {
+
+    const code =
+        document.getElementById(
+            "currencySelect"
+        ).value;
+
+    return currencies.find(
+        function(item) {
+
+            return item[0] === code;
+
+        }
+    ) || currencies.find(
+        function(item) {
+
+            return item[0] === "USD";
+
+        }
+    );
+
+}
+
+
+function getSymbol() {
+
+    return getCurrencyData()[2];
+
+}
+
+
+function money(value) {
+
+    return (
+        getSymbol() +
+        Number(value).toLocaleString(
+            undefined,
+            {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            }
+        )
+    );
+
+}
+
+
+/* =====================================================
+   SHARE
+===================================================== */
+
+function shareResult(text) {
+
+    if(navigator.share) {
+
+        navigator.share({
+
+            title:
+                "Travel Budget",
+
+            text:
+                text
+
+        }).catch(
+            function(error) {
+
+                if(
+                    error &&
+                    error.name ===
+                    "AbortError"
+                ) {
+
+                    return;
+
+                }
+
+                fallbackCopy(text);
+
+            }
+        );
+
+        return;
+
+    }
+
+    fallbackCopy(text);
+
+}
+
+
+function fallbackCopy(text) {
+
+    if(
+        navigator.clipboard &&
+        window.isSecureContext
+    ) {
+
+        navigator.clipboard
+            .writeText(text)
+            .then(function() {
+
+                alert(
+                    "Result copied to clipboard."
+                );
+
+            })
+            .catch(function() {
+
+                copyLegacy(text);
+
+            });
+
+        return;
+
+    }
+
+    copyLegacy(text);
+
+}
+
+
+function copyLegacy(text) {
+
+    const textarea =
+        document.createElement(
+            "textarea"
+        );
+
+    textarea.value =
+        text;
+
+    textarea.style.position =
+        "fixed";
+
+    textarea.style.left =
+        "-9999px";
+
+    document.body.appendChild(
+        textarea
+    );
+
+    textarea.focus();
+
+    textarea.select();
+
+    try {
+
+        document.execCommand(
+            "copy"
+        );
+
+        alert(
+            "Result copied to clipboard."
+        );
+
+    } catch(error) {
+
+        alert(text);
+
+    }
+
+    document.body.removeChild(
+        textarea
+    );
+
+}
+
+
+/* =====================================================
+   HISTORY
+===================================================== */
+
+const HISTORY_KEY =
+    "splitBillTravelBudgetHistory";
+
+
+function getHistory() {
+
+    try {
+
+        return JSON.parse(
+            localStorage.getItem(
+                HISTORY_KEY
+            )
+        ) || [];
+
+    } catch(error) {
+
+        return [];
+
+    }
+
+}
+
+
+function saveHistory(
+    tool,
+    result
+) {
+
+    const history =
+        getHistory();
+
+    history.unshift({
+
+        id:
+            Date.now().toString() +
+            Math.random()
+                .toString(36)
+                .slice(2),
+
+        tool:
+            tool,
+
+        result:
+            result,
+
+        date:
+            new Date()
+                .toLocaleString()
+
+    });
+
+    try {
+
+        localStorage.setItem(
+            HISTORY_KEY,
+            JSON.stringify(history)
+        );
+
+    } catch(error) {
+
+        alert(
+            "Unable to save this travel budget on your device."
+        );
+
+        return;
+
+    }
+
+    renderHistory();
+
+    alert(
+        "Travel budget saved successfully."
+    );
+
+}
+
+
+function deleteHistory(id) {
+
+    const history =
+        getHistory()
+        .filter(
+            function(item) {
+
+                return item.id !== id;
+
+            }
+        );
+
+    localStorage.setItem(
+        HISTORY_KEY,
+        JSON.stringify(history)
+    );
+
+    renderHistory();
+
+}
+
+
+function renderHistory() {
+
+    const container =
+        document.getElementById(
+            "savedHistory"
+        );
+
+    const history =
+        getHistory();
+
+    container.innerHTML = "";
+
+    if(!history.length) {
+
+        container.innerHTML =
+            '<div class="no-history">' +
+            'No saved travel budgets yet.' +
+            '</div>';
+
+        return;
+
+    }
+
+    history.forEach(
+        function(item) {
+
+            const card =
+                document.createElement(
+                    "div"
+                );
+
+            card.className =
+                "history-card";
+
+            const title =
+                document.createElement(
+                    "h3"
+                );
+
+            title.textContent =
+                "📌 " +
+                item.tool;
+
+            const result =
+                document.createElement(
+                    "p"
+                );
+
+            result.textContent =
+                item.result +
+                "\n\nSaved: " +
+                item.date;
+
+            const actions =
+                document.createElement(
+                    "div"
+                );
+
+            actions.className =
+                "history-actions";
+
+            const share =
+                document.createElement(
+                    "button"
+                );
+
+            share.textContent =
+                "🔗 Share";
+
+            share.className =
+                "share-btn";
+
+            share.addEventListener(
+                "click",
+                function() {
+
+                    shareResult(
+                        item.result
+                    );
+
+                }
+            );
+
+            const del =
+                document.createElement(
+                    "button"
+                );
+
+            del.textContent =
+                "🗑️ Delete";
+
+            del.className =
+                "delete-btn";
+
+            del.addEventListener(
+                "click",
+                function() {
+
+                    deleteHistory(
+                        item.id
+                    );
+
+                }
+            );
+
+            actions.appendChild(
+                share
+            );
+
+            actions.appendChild(
+                del
+            );
+
+            card.appendChild(
+                title
+            );
+
+            card.appendChild(
+                result
+            );
+
+            card.appendChild(
+                actions
+            );
+
+            container.appendChild(
+                card
+            );
+
+        }
+    );
+
+}
+
+
+document.getElementById(
+    "clearHistory"
+).addEventListener(
+    "click",
+    function() {
+
+        if(
+            !confirm(
+                "Delete all saved travel budgets?"
+            )
+        ) {
+
+            return;
+
+        }
+
+        localStorage.removeItem(
+            HISTORY_KEY
+        );
+
+        renderHistory();
+
+    }
+);
+
+
+/* =====================================================
+   TRIP BUDGET
+===================================================== */
+
+document.getElementById(
+    "calculateTripBudget"
+).addEventListener(
+    "click",
+    function() {
+
+        const tripName =
+            document.getElementById(
+                "tripName"
+            ).value.trim()
+            || "Travel Trip";
+
+        const destination =
+            document.getElementById(
+                "destination"
+            ).value.trim()
+            || "Destination";
+
+        const travelers =
+            parseInt(
+                document.getElementById(
+                    "tripTravelers"
+                ).value,
+                10
+            );
+
+        const days =
+            parseInt(
+                document.getElementById(
+                    "tripDays"
+                ).value,
+                10
+            );
+
+        const budget =
+            parseFloat(
+                document.getElementById(
+                    "tripBudget"
+                ).value
+            );
+
+        if(
+            !Number.isFinite(travelers) ||
+            travelers <= 0 ||
+
+            !Number.isFinite(days) ||
+            days <= 0 ||
+
+            !Number.isFinite(budget) ||
+            budget < 0
+        ) {
+
+            alert(
+                "Please enter valid trip details."
+            );
+
+            return;
+
+        }
+
+        const perDay =
+            budget / days;
+
+        const perPerson =
+            budget / travelers;
+
+        const perPersonDay =
+            budget /
+            travelers /
+            days;
+
+        document.getElementById(
+            "tripBudgetContent"
+        ).innerHTML =
+
+            '<div class="result-item">' +
+            '<span>Trip</span>' +
+            '<span>' +
+            tripName +
+            '</span>' +
+            '</div>' +
+
+            '<div class="result-item">' +
+            '<span>Destination</span>' +
+            '<span>' +
+            destination +
+            '</span>' +
+            '</div>' +
+
+            '<div class="result-item">' +
+            '<span>Travelers</span>' +
+            '<span>' +
+            travelers +
+            '</span>' +
+            '</div>' +
+
+            '<div class="result-item">' +
+            '<span>Days</span>' +
+            '<span>' +
+            days +
+            '</span>' +
+            '</div>' +
+
+            '<div class="result-item">' +
+            '<span>Budget Per Day</span>' +
+            '<span>' +
+            money(perDay) +
+            '</span>' +
+            '</div>' +
+
+            '<div class="result-item">' +
+            '<span>Budget Per Person</span>' +
+            '<span>' +
+            money(perPerson) +
+            '</span>' +
+            '</div>' +
+
+            '<div class="result-item result-total">' +
+            '<span>Total Trip Budget</span>' +
+            '<span>' +
+            money(budget) +
+            '</span>' +
+            '</div>';
+
+        document.getElementById(
+            "tripBudgetResult"
+        ).style.display =
+            "block";
+
+    }
+);
+
+
+document.getElementById(
+    "saveTripBudget"
+).addEventListener(
+    "click",
+    function() {
+
+        const result =
+            document.getElementById(
+                "tripBudgetContent"
+            ).innerText;
+
+        if(!result) {
+
+            alert(
+                "Calculate the trip budget first."
+            );
+
+            return;
+
+        }
+
+        saveHistory(
+            "🧳 Trip Budget",
+            result
+        );
+
+    }
+);
+
+
+document.getElementById(
+    "shareTripBudget"
+).addEventListener(
+    "click",
+    function() {
+
+        const result =
+            document.getElementById(
+                "tripBudgetContent"
+            ).innerText;
+
+        if(!result) {
+
+            alert(
+                "Calculate the trip budget first."
+            );
+
+            return;
+
+        }
+
+        shareResult(
+            "🧳 Trip Budget\n\n" +
+            result
+        );
+
+    }
+);
+
+
+document.getElementById(
+    "deleteTripBudget"
+).addEventListener(
+    "click",
+    function() {
+
+        document.getElementById(
+            "tripBudgetResult"
+        ).style.display =
+            "none";
+
+    }
+);
+
+
+/* =====================================================
+   DAILY BUDGET
+===================================================== */
+
+document.getElementById(
+    "calculateDaily"
+).addEventListener(
+    "click",
+    function() {
+
+        const total =
+            parseFloat(
+                document.getElementById(
+                    "dailyTotal"
+                ).value
+            );
+
+        const days =
+            parseInt(
+                document.getElementById(
+                    "dailyDays"
+                ).value,
+                10
+            );
+
+        const travelers =
+            parseInt(
+                document.getElementById(
+                    "dailyTravelers"
+                ).value,
+                10
+            );
+
+        if(
+            !Number.isFinite(total) ||
+            total < 0 ||
+
+            !Number.isFinite(days) ||
+            days <= 0 ||
+
+            !Number.isFinite(travelers) ||
+            travelers <= 0
+        ) {
+
+            alert(
+                "Please enter valid travel budget details."
+            );
+
+            return;
+
+        }
+
+        const groupDaily =
+            total / days;
+
+        const personDaily =
+            total /
+            days /
+            travelers;
+
+        document.getElementById(
+            "dailyContent"
+        ).innerHTML =
+
+            '<div class="result-item">' +
+            '<span>Total Budget</span>' +
+            '<span>' +
+            money(total) +
+            '</span>' +
+            '</div>' +
+
+            '<div class="result-item">' +
+            '<span>Travel Days</span>' +
+            '<span>' +
+            days +
+            '</span>' +
+            '</div>' +
+
+            '<div class="result-item">' +
+            '<span>Travelers</span>' +
+            '<span>' +
+            travelers +
+            '</span>' +
+            '</div>' +
+
+            '<div class="result-item">' +
+            '<span>Group Daily Budget</span>' +
+            '<span>' +
+            money(groupDaily) +
+            '</span>' +
+            '</div>' +
+
+            '<div class="result-item result-total">' +
+            '<span>Daily Budget Per Person</span>' +
+            '<span>' +
+            money(personDaily) +
+            '</span>' +
+            '</div>';
+
+        document.getElementById(
+            "dailyResult"
+        ).style.display =
+            "block";
+
+    }
+);
+
+
+document.getElementById(
+    "saveDaily"
+).addEventListener(
+    "click",
+    function() {
+
+        const result =
+            document.getElementById(
+                "dailyContent"
+            ).innerText;
+
+        if(!result) {
+
+            alert(
+                "Calculate the daily budget first."
+            );
+
+            return;
+
+        }
+
+        saveHistory(
+            "📅 Daily Travel Budget",
+            result
+        );
+
+    }
+);
+
+
+document.getElementById(
+    "shareDaily"
+).addEventListener(
+    "click",
+    function() {
+
+        const result =
+            document.getElementById(
+                "dailyContent"
+            ).innerText;
+
+        if(!result) {
+
+            alert(
+                "Calculate the daily budget first."
+            );
+
+            return;
+
+        }
+
+        shareResult(
+            "📅 Daily Travel Budget\n\n" +
+            result
+        );
+
+    }
+);
+
+
+document.getElementById(
+    "deleteDaily"
+).addEventListener(
+    "click",
+    function() {
+
+        document.getElementById(
+            "dailyResult"
+        ).style.display =
+            "none";
+
+    }
+);
+
+
+/* =====================================================
+   ACCOMMODATION
+===================================================== */
+
+document.getElementById(
+    "calculateAccommodation"
+).addEventListener(
+    "click",
+    function() {
+
+        const nights =
+            parseInt(
+                document.getElementById(
+                    "accommodationNights"
+                ).value,
+                10
+            );
+
+        const cost =
+            parseFloat(
+                document.getElementById(
+                    "accommodationCost"
+                ).value
+            );
+
+        const rooms =
+            parseInt(
+                document.getElementById(
+                    "accommodationRooms"
+                ).value,
+                10
+            );
+
+        const travelers =
+            parseInt(
+                document.getElementById(
+                    "accommodationTravelers"
+                ).value,
+                10
+            );
+
+        if(
+            !Number.isFinite(nights) ||
+            nights <= 0 ||
+
+            !Number.isFinite(cost) ||
+            cost < 0 ||
+
+            !Number.isFinite(rooms) ||
+            rooms <= 0 ||
+
+            !Number.isFinite(travelers) ||
+            travelers <= 0
+        ) {
+
+            alert(
+                "Please enter valid accommodation details."
+            );
+
+            return;
+
+        }
+
+        const total =
+            nights *
+            cost *
+            rooms;
+
+        const perPerson =
+            total / travelers;
+
+        document.getElementById(
+            "accommodationContent"
+        ).innerHTML =
+
+            '<div class="result-item">' +
+            '<span>Nights</span>' +
+            '<span>' +
+            nights +
+            '</span>' +
+            '</div>' +
+
+            '<div class="result-item">' +
+            '<span>Cost Per Night</span>' +
+            '<span>' +
+            money(cost) +
+            '</span>' +
+            '</div>' +
+
+            '<div class="result-item">' +
+            '<span>Rooms</span>' +
+            '<span>' +
+            rooms +
+            '</span>' +
+            '</div>' +
+
+            '<div class="result-item">' +
+            '<span>Travelers</span>' +
+            '<span>' +
+            travelers +
+            '</span>' +
+            '</div>' +
+
+            '<div class="result-item">' +
+            '<span>Cost Per Person</span>' +
+            '<span>' +
+            money(perPerson) +
+            '</span>' +
+            '</div>' +
+
+            '<div class="result-item result-total">' +
+            '<span>Total Accommodation</span>' +
+            '<span>' +
+            money(total) +
+            '</span>' +
+            '</div>';
+
+        document.getElementById(
+            "accommodationResult"
+        ).style.display =
+            "block";
+
+    }
+);
+
+
+document.getElementById(
+    "saveAccommodation"
+).addEventListener(
+    "click",
+    function() {
+
+        const result =
+            document.getElementById(
+                "accommodationContent"
+            ).innerText;
+
+        if(!result) {
+
+            alert(
+                "Calculate accommodation first."
+            );
+
+            return;
+
+        }
+
+        saveHistory(
+            "🏨 Accommodation Budget",
+            result
+        );
+
+    }
+);
+
+
+document.getElementById(
+    "shareAccommodation"
+).addEventListener(
+    "click",
+    function() {
+
+        const result =
+            document.getElementById(
+                "accommodationContent"
+            ).innerText;
+
+        if(!result) {
+
+            alert(
+                "Calculate accommodation first."
+            );
+
+            return;
+
+        }
+
+        shareResult(
+            "🏨 Accommodation Budget\n\n" +
+            result
+        );
+
+    }
+);
+
+
+document.getElementById(
+    "deleteAccommodation"
+).addEventListener(
+    "click",
+    function() {
+
+        document.getElementById(
+            "accommodationResult"
+        ).style.display =
+            "none";
+
+    }
+);
+
+
+/* =====================================================
+   FOOD
+===================================================== */
+
+document.getElementById(
+    "calculateFood"
+).addEventListener(
+    "click",
+    function() {
+
+        const daily =
+            parseFloat(
+                document.getElementById(
+                    "foodDaily"
+                ).value
+            );
+
+        const days =
+            parseInt(
+                document.getElementById(
+                    "foodDays"
+                ).value,
+                10
+            );
+
+        const travelers =
+            parseInt(
+                document.getElementById(
+                    "foodTravelers"
+                ).value,
+                10
+            );
+
+        if(
+            !Number.isFinite(daily) ||
+            daily < 0 ||
+
+            !Number.isFinite(days) ||
+            days <= 0 ||
+
+            !Number.isFinite(travelers) ||
+            travelers <= 0
+        ) {
+
+            alert(
+                "Please enter valid food budget details."
+            );
+
+            return;
+
+        }
+
+        const total =
+            daily *
+            days *
+            travelers;
+
+        const groupDaily =
+            daily *
+            travelers;
+
+        document.getElementById(
+            "foodContent"
+        ).innerHTML =
+
+            '<div class="result-item">' +
+            '<span>Daily Per Person</span>' +
+            '<span>' +
+            money(daily) +
+            '</span>' +
+            '</div>' +
+
+            '<div class="result-item">' +
+            '<span>Days</span>' +
+            '<span>' +
+            days +
+            '</span>' +
+            '</div>' +
+
+            '<div class="result-item">' +
+            '<span>Travelers</span>' +
+            '<span>' +
+            travelers +
+            '</span>' +
+            '</div>' +
+
+            '<div class="result-item">' +
+            '<span>Group Daily Food Budget</span>' +
+            '<span>' +
+            money(groupDaily) +
+            '</span>' +
+            '</div>' +
+
+            '<div class="result-item result-total">' +
+            '<span>Total Food Budget</span>' +
+            '<span>' +
+            money(total) +
+            '</span>' +
+            '</div>';
+
+        document.getElementById(
+            "foodResult"
+        ).style.display =
+            "block";
+
+    }
+);
+
+
+document.getElementById(
+    "saveFood"
+).addEventListener(
+    "click",
+    function() {
+
+        const result =
+            document.getElementById(
+                "foodContent"
+            ).innerText;
+
+        if(!result) {
+
+            alert(
+                "Calculate the food budget first."
+            );
+
+            return;
+
+        }
+
+        saveHistory(
+            "🍽️ Food Budget",
+            result
+        );
+
+    }
+);
+
+
+document.getElementById(
+    "shareFood"
+).addEventListener(
+    "click",
+    function() {
+
+        const result =
+            document.getElementById(
+                "foodContent"
+            ).innerText;
+
+        if(!result) {
+
+            alert(
+                "Calculate the food budget first."
+            );
+
+            return;
+
+        }
+
+        shareResult(
+            "🍽️ Food Budget\n\n" +
+            result
+        );
+
+    }
+);
+
+
+document.getElementById(
+    "deleteFood"
+).addEventListener(
+    "click",
+    function() {
+
+        document.getElementById(
+            "foodResult"
+        ).style.display =
+            "none";
+
+    }
+);
+
+
+/* =====================================================
+   TRANSPORTATION
+===================================================== */
+
+document.getElementById(
+    "calculateTransportation"
+).addEventListener(
+    "click",
+    function() {
+
+        const type =
+            document.getElementById(
+                "transportType"
+            ).value.trim()
+            || "Transportation";
+
+        const daily =
+            parseFloat(
+                document.getElementById(
+                    "transportDaily"
+                ).value
+            ) || 0;
+
+        const days =
+            parseInt(
+                document.getElementById(
+                    "transportDays"
+                ).value,
+                10
+            );
+
+        const arrival =
+            parseFloat(
+                document.getElementById(
+                    "transportArrival"
+                ).value
+            ) || 0;
+
+        const other =
+            parseFloat(
+                document.getElementById(
+                    "transportOther"
+                ).value
+            ) || 0;
+
+        if(
+            !Number.isFinite(days) ||
+            days <= 0
+        ) {
+
+            alert(
+                "Please enter a valid number of transportation days."
+            );
+
+            return;
+
+        }
+
+        const dailyTotal =
+            daily * days;
+
+        const total =
+            dailyTotal +
+            arrival +
+            other;
+
+        document.getElementById(
+            "transportContent"
+        ).innerHTML =
+
+            '<div class="result-item">' +
+            '<span>Type</span>' +
+            '<span>' +
+            type +
+            '</span>' +
+            '</div>' +
+
+            '<div class="result-item">' +
+            '<span>Daily Cost</span>' +
+            '<span>' +
+            money(daily) +
+            '</span>' +
+            '</div>' +
+
+            '<div class="result-item">' +
+            '<span>Daily Transportation Total</span>' +
+            '<span>' +
+            money(dailyTotal) +
+            '</span>' +
+            '</div>' +
+
+            '<div class="result-item">' +
+            '<span>Airport / Arrival</span>' +
+            '<span>' +
+            money(arrival) +
+            '</span>' +
+            '</div>' +
+
+            '<div class="result-item">' +
+            '<span>Other Transportation</span>' +
+            '<span>' +
+            money(other) +
+            '</span>' +
+            '</div>' +
+
+            '<div class="result-item result-total">' +
+            '<span>Total Transportation</span>' +
+            '<span>' +
+            money(total) +
+            '</span>' +
+            '</div>';
+
+        document.getElementById(
+            "transportResult"
+        ).style.display =
+            "block";
+
+    }
+);
+
+
+document.getElementById(
+    "saveTransportation"
+).addEventListener(
+    "click",
+    function() {
+
+        const result =
+            document.getElementById(
+                "transportContent"
+            ).innerText;
+
+        if(!result) {
+
+            alert(
+                "Calculate transportation first."
+            );
+
+            return;
+
+        }
+
+        saveHistory(
+            "🚗 Transportation Budget",
+            result
+        );
+
+    }
+);
+
+
+document.getElementById(
+    "shareTransportation"
+).addEventListener(
+    "click",
+    function() {
+
+        const result =
+            document.getElementById(
+                "transportContent"
+            ).innerText;
+
+        if(!result) {
+
+            alert(
+                "Calculate transportation first."
+            );
+
+            return;
+
+        }
+
+        shareResult(
+            "🚗 Transportation Budget\n\n" +
+            result
+        );
+
+    }
+);
+
+
+document.getElementById(
+    "deleteTransportation"
+).addEventListener(
+    "click",
+    function() {
+
+        document.getElementById(
+            "transportResult"
+        ).style.display =
+            "none";
+
+    }
+);
+
+
+/* =====================================================
+   ACTIVITIES
+===================================================== */
+
+function addActivity(
+    name = "",
+    cost = ""
+) {
+
+    const container =
+        document.getElementById(
+            "activityItems"
+        );
+
+    const row =
+        document.createElement(
+            "div"
+        );
+
+    row.className =
+        "travel-item";
+
+    row.innerHTML =
+
+        '<input type="text" ' +
+        'placeholder="Activity name" ' +
+        'value="' +
+        name +
+        '">' +
+
+        '<input type="number" ' +
+        'placeholder="Cost" ' +
+        'min="0" ' +
+        'step="any" ' +
+        'value="' +
+        cost +
+        '">' +
+
+        '<button type="button" ' +
+        'class="remove-item">×</button>';
+
+    row.querySelector(
+        ".remove-item"
+    ).addEventListener(
+        "click",
+        function() {
+
+            row.remove();
+
+        }
+    );
+
+    container.appendChild(row);
+
+}
+
+
+addActivity();
+
+
+document.getElementById(
+    "addActivity"
+).addEventListener(
+    "click",
+    function() {
+
+        addActivity();
+
+    }
+);
+
+
+document.getElementById(
+    "calculateActivities"
+).addEventListener(
+    "click",
+    function() {
+
+        const rows =
+            document.querySelectorAll(
+                "#activityItems .travel-item"
+            );
+
+        let total = 0;
+
+        let count = 0;
+
+        let output = "";
+
+        rows.forEach(
+            function(row) {
+
+                const name =
+                    row.querySelector(
+                        'input[type="text"]'
+                    ).value.trim()
+                    || "Activity";
+
+                const cost =
+                    parseFloat(
+                        row.querySelector(
+                            'input[type="number"]'
+                        ).value
+                    );
+
+                if(
+                    Number.isFinite(cost) &&
+                    cost >= 0
+                ) {
+
+                    total += cost;
+
+                    count++;
+
+                    output +=
+
+                        '<div class="result-item">' +
+
+                        '<span>' +
+                        name +
+                        '</span>' +
+
+                        '<span>' +
+                        money(cost) +
+                        '</span>' +
+
+                        '</div>';
+
+                }
+
+            }
+        );
+
+        if(count === 0) {
+
+            alert(
+                "Please add at least one activity with a cost."
+            );
+
+            return;
+
+        }
+
+        output +=
+
+            '<div class="result-item">' +
+
+            '<span>Activities</span>' +
+
+            '<span>' +
+            count +
+            '</span>' +
+
+            '</div>';
+
+        output +=
+
+            '<div class="result-item result-total">' +
+
+            '<span>Total Activities & Entertainment</span>' +
+
+            '<span>' +
+            money(total) +
+            '</span>' +
+
+            '</div>';
+
+        document.getElementById(
+            "activitiesContent"
+        ).innerHTML =
+            output;
+
+        document.getElementById(
+            "activitiesResult"
+        ).style.display =
+            "block";
+
+    }
+);
+
+
+document.getElementById(
+    "saveActivities"
+).addEventListener(
+    "click",
+    function() {
+
+        const result =
+            document.getElementById(
+                "activitiesContent"
+            ).innerText;
+
+        if(!result) {
+
+            alert(
+                "Calculate activities first."
+            );
+
+            return;
+
+        }
+
+        saveHistory(
+            "🎭 Activities & Entertainment",
+            result
+        );
+
+    }
+);
+
+
+document.getElementById(
+    "shareActivities"
+).addEventListener(
+    "click",
+    function() {
+
+        const result =
+            document.getElementById(
+                "activitiesContent"
+            ).innerText;
+
+        if(!result) {
+
+            alert(
+                "Calculate activities first."
+            );
+
+            return;
+
+        }
+
+        shareResult(
+            "🎭 Activities & Entertainment\n\n" +
+            result
+        );
+
+    }
+);
+
+
+document.getElementById(
+    "deleteActivities"
+).addEventListener(
+    "click",
+    function() {
+
+        document.getElementById(
+            "activitiesResult"
+        ).style.display =
+            "none";
+
+    }
+);
+
+
+/* =====================================================
+   INITIAL HISTORY
+===================================================== */
+
+renderHistory();
+
+
+/* =====================================================
+   YEAR
+===================================================== */
+
+document.getElementById(
+    "currentYear"
+).textContent =
+    new Date().getFullYear();
+
+
+/* =====================================================
+   PWA SERVICE WORKER
+===================================================== */
+
+if("serviceWorker" in navigator) {
+
+    window.addEventListener(
+        "load",
+        function() {
+
+            navigator.serviceWorker
+                .register("/sw.js")
+                .then(
+                    function(registration) {
+
+                        console.log(
+                            "PWA service worker registered:",
+                            registration.scope
+                        );
+
+                    }
+                )
+                .catch(
+                    function(error) {
+
+                        console.log(
+                            "PWA service worker registration failed:",
+                            error
+                        );
+
+                    }
+                );
+
+        }
+    );
+
+}
+
+</script>
+
+</body>
+</html>
