@@ -557,6 +557,235 @@ footer a:hover {
     text-decoration: underline;
 }
 
+1. Add this CSS
+
+Place this inside your existing <style> section:
+
+/* =====================================================
+   EXPANDED TOOL SECTIONS
+===================================================== */
+.tool-sections {
+    margin-bottom: 25px;
+    text-align: left;
+}
+.tool-sections h2 {
+    margin-bottom: 14px;
+}
+.tool-section-list {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+}
+.tool-section-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 15px 16px;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    text-decoration: none;
+    color: var(--text-title);
+    transition: transform 0.15s ease, box-shadow 0.15s ease,
+                border-color 0.15s ease;
+}
+.tool-section-card:hover {
+    transform: translateY(-1px);
+    border-color: var(--primary);
+    box-shadow: 0 5px 15px rgba(37, 99, 235, 0.10);
+}
+.tool-section-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.tool-section-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    background: #eff6ff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 21px;
+    flex-shrink: 0;
+}
+.tool-section-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text-title);
+}
+.tool-section-description {
+    font-size: 12px;
+    color: #64748b;
+    margin-top: 3px;
+}
+.tool-section-arrow {
+    color: var(--primary);
+    font-size: 20px;
+    font-weight: 700;
+}
+
+2. Replace your current Advanced Bill Splitting button
+
+Find this at the beginning of your <body>:
+
+<a href="advanced-split.html"
+   class="action-btn"
+   style="display:block;text-align:center;text-decoration:none;">
+    ⚖️ Advanced Bill Splitting
+</a>
+
+Delete it and put this in its place:
+
+<section class="tool-sections">
+    <h2>🧭 Explore More Tools</h2>
+    <div class="tool-section-list">
+        <a href="index.html" class="tool-section-card">
+            <div class="tool-section-left">
+                <div class="tool-section-icon">
+                    🧮
+                </div>
+                <div>
+                    <div class="tool-section-title">
+                        Main Calculator
+                    </div>
+                    <div class="tool-section-description">
+                        Currency, receipts, bill splitting and percentages
+                    </div>
+                </div>
+            </div>
+            <div class="tool-section-arrow">
+                →
+            </div>
+        </a>
+        <a href="advanced-split.html"
+           class="tool-section-card">
+            <div class="tool-section-left">
+                <div class="tool-section-icon">
+                    ⚖️
+                </div>
+                <div>
+                    <div class="tool-section-title">
+                        Advanced Bill Splitting
+                    </div>
+                    <div class="tool-section-description">
+                        Proportional, item-based, tax, tip and unequal splits
+                    </div>
+                </div>
+            </div>
+            <div class="tool-section-arrow">
+                →
+            </div>
+        </a>
+        <a href="travel-budget.html"
+           class="tool-section-card">
+            <div class="tool-section-left">
+                <div class="tool-section-icon">
+                    ✈️
+                </div>
+                <div>
+                    <div class="tool-section-title">
+                        Travel Budget
+                    </div>
+                    <div class="tool-section-description">
+                        Plan trip, accommodation, food and transportation costs
+                    </div>
+                </div>
+            </div>
+            <div class="tool-section-arrow">
+                →
+            </div>
+        </a>
+        <a href="group-expenses.html"
+           class="tool-section-card">
+            <div class="tool-section-left">
+                <div class="tool-section-icon">
+                    👥
+                </div>
+                <div>
+                    <div class="tool-section-title">
+                        Group Expenses
+                    </div>
+                    <div class="tool-section-description">
+                        Manage roommate, vacation, event and group costs
+                    </div>
+                </div>
+            </div>
+            <div class="tool-section-arrow">
+                →
+            </div>
+        </a>
+        <a href="business-expenses.html"
+           class="tool-section-card">
+            <div class="tool-section-left">
+                <div class="tool-section-icon">
+                    💼
+                </div>
+                <div>
+                    <div class="tool-section-title">
+                        Business Expenses
+                    </div>
+                    <div class="tool-section-description">
+                        Business travel, invoices, freight and import costs
+                    </div>
+                </div>
+            </div>
+            <div class="tool-section-arrow">
+                →
+            </div>
+        </a>
+        <a href="student-living.html"
+           class="tool-section-card">
+            <div class="tool-section-left">
+                <div class="tool-section-icon">
+                    🎓
+                </div>
+                <div>
+                    <div class="tool-section-title">
+                        Student & Living Costs
+                    </div>
+                    <div class="tool-section-description">
+                        Housing, rent, utilities, meals and study abroad budgets
+                    </div>
+                </div>
+            </div>
+            <div class="tool-section-arrow">
+                →
+            </div>
+        </a>
+    </div>
+</section>
+
+3. Your page structure
+
+The beginning of your page will now look like:
+
+<body>
+<div class="container">
+<header>
+<section class="tool-sections">
+    ...
+</section>
+<h1>Split Bill Calculator</h1>
+<p>
+Smart, simple calculation tools designed for daily finance.
+</p>
+</header>
+<!-- YOUR EXISTING CURRENCY CONVERTER -->
+<!-- YOUR EXISTING RECEIPT SCANNER -->
+<!-- YOUR EXISTING BILL SPLITTER -->
+<!-- YOUR EXISTING PERCENTAGE TOOL -->
+<!-- YOUR EXISTING SAVED HISTORY -->
+<!-- YOUR EXISTING FAQ -->
+<!-- YOUR EXISTING PWA INSTALL SECTION -->
+</div>
+
+Nothing else in your current JavaScript needs to change.
+
+One thing to remember: the five destination files must actually exist in your Vercel project, otherwise clicking their cards will produce a 404 until we create those pages.
+
 </style>
 </head>
 
@@ -566,11 +795,193 @@ footer a:hover {
 
 <header>
 
-<a href="advanced-split.html"
-   class="action-btn"
-   style="display:block;text-align:center;text-decoration:none;">
-    ⚖️ Advanced Bill Splitting
-</a>
+<section class="tool-sections">
+
+    <h2>🧭 Explore More Tools</h2>
+
+    <div class="tool-section-list">
+
+        <a href="index.html" class="tool-section-card">
+
+            <div class="tool-section-left">
+
+                <div class="tool-section-icon">
+                    🧮
+                </div>
+
+                <div>
+
+                    <div class="tool-section-title">
+                        Main Calculator
+                    </div>
+
+                    <div class="tool-section-description">
+                        Currency, receipts, bill splitting and percentages
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="tool-section-arrow">
+                →
+            </div>
+
+        </a>
+
+
+        <a href="advanced-split.html"
+           class="tool-section-card">
+
+            <div class="tool-section-left">
+
+                <div class="tool-section-icon">
+                    ⚖️
+                </div>
+
+                <div>
+
+                    <div class="tool-section-title">
+                        Advanced Bill Splitting
+                    </div>
+
+                    <div class="tool-section-description">
+                        Proportional, item-based, tax, tip and unequal splits
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="tool-section-arrow">
+                →
+            </div>
+
+        </a>
+
+
+        <a href="travel-budget.html"
+           class="tool-section-card">
+
+            <div class="tool-section-left">
+
+                <div class="tool-section-icon">
+                    ✈️
+                </div>
+
+                <div>
+
+                    <div class="tool-section-title">
+                        Travel Budget
+                    </div>
+
+                    <div class="tool-section-description">
+                        Plan trip, accommodation, food and transportation costs
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="tool-section-arrow">
+                →
+            </div>
+
+        </a>
+
+
+        <a href="group-expenses.html"
+           class="tool-section-card">
+
+            <div class="tool-section-left">
+
+                <div class="tool-section-icon">
+                    👥
+                </div>
+
+                <div>
+
+                    <div class="tool-section-title">
+                        Group Expenses
+                    </div>
+
+                    <div class="tool-section-description">
+                        Manage roommate, vacation, event and group costs
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="tool-section-arrow">
+                →
+            </div>
+
+        </a>
+
+
+        <a href="business-expenses.html"
+           class="tool-section-card">
+
+            <div class="tool-section-left">
+
+                <div class="tool-section-icon">
+                    💼
+                </div>
+
+                <div>
+
+                    <div class="tool-section-title">
+                        Business Expenses
+                    </div>
+
+                    <div class="tool-section-description">
+                        Business travel, invoices, freight and import costs
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="tool-section-arrow">
+                →
+            </div>
+
+        </a>
+
+
+        <a href="student-living.html"
+           class="tool-section-card">
+
+            <div class="tool-section-left">
+
+                <div class="tool-section-icon">
+                    🎓
+                </div>
+
+                <div>
+
+                    <div class="tool-section-title">
+                        Student & Living Costs
+                    </div>
+
+                    <div class="tool-section-description">
+                        Housing, rent, utilities, meals and study abroad budgets
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="tool-section-arrow">
+                →
+            </div>
+
+        </a>
+
+    </div>
+
+</section>
 
 <h1>Split Bill Calculator</h1>
 
