@@ -27,6 +27,8 @@ content="Free currency converter supporting 100+ currencies with current exchang
     --text-body: #334155;
     --border: #e2e8f0;
     --muted: #64748b;
+    --danger: #dc2626;
+    --danger-bg: #fef2f2;
 }
 
 * {
@@ -101,6 +103,19 @@ select:focus {
     box-shadow: 0 0 0 3px rgba(37,99,235,0.10);
 }
 
+/* Currency search */
+
+.currency-search {
+    margin-bottom: 8px;
+}
+
+.currency-search input {
+    padding: 11px 13px;
+    font-size: 14px;
+}
+
+/* Swap */
+
 .swap-container {
     display: flex;
     justify-content: center;
@@ -123,17 +138,24 @@ select:focus {
     background: #dbeafe;
 }
 
-.convert-btn {
+/* Buttons */
+
+.convert-btn,
+.save-btn,
+.share-btn {
     width: 100%;
     padding: 15px;
-    margin-top: 5px;
     border: none;
     border-radius: 12px;
-    background: var(--primary);
-    color: white;
     font-size: 16px;
     font-weight: 700;
     cursor: pointer;
+}
+
+.convert-btn {
+    margin-top: 5px;
+    background: var(--primary);
+    color: white;
 }
 
 .convert-btn:hover {
@@ -175,6 +197,36 @@ select:focus {
     margin-top: 10px;
 }
 
+.result-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 18px;
+}
+
+.result-actions button {
+    flex: 1;
+}
+
+.save-btn {
+    background: #16a34a;
+    color: white;
+}
+
+.save-btn:hover {
+    background: #15803d;
+}
+
+.share-btn {
+    background: #e2e8f0;
+    color: var(--text-title);
+}
+
+.share-btn:hover {
+    background: #cbd5e1;
+}
+
+/* Status */
+
 .status {
     text-align: center;
     color: var(--muted);
@@ -188,12 +240,14 @@ select:focus {
     margin-top: 12px;
     padding: 10px;
     border-radius: 10px;
-    background: #fef2f2;
-    color: #dc2626;
+    background: var(--danger-bg);
+    color: var(--danger);
     font-size: 13px;
     text-align: center;
     line-height: 1.5;
 }
+
+/* Information */
 
 .info {
     margin-top: 24px;
@@ -208,6 +262,112 @@ select:focus {
 .info strong {
     color: var(--text-title);
 }
+
+/* History */
+
+.history-section {
+    margin-top: 30px;
+    padding-top: 25px;
+    border-top: 1px solid var(--border);
+}
+
+.history-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.history-header h2 {
+    color: var(--text-title);
+    font-size: 20px;
+    font-weight: 800;
+}
+
+.clear-history-btn {
+    border: none;
+    background: transparent;
+    color: var(--danger);
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.clear-history-btn:hover {
+    text-decoration: underline;
+}
+
+.history-empty {
+    padding: 18px;
+    border-radius: 14px;
+    background: #f8fafc;
+    color: var(--muted);
+    text-align: center;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.history-item {
+    padding: 15px;
+    margin-bottom: 10px;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    background: #fff;
+}
+
+.history-main {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    align-items: flex-start;
+}
+
+.history-conversion {
+    color: var(--text-title);
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1.5;
+}
+
+.history-rate {
+    color: var(--muted);
+    font-size: 12px;
+    margin-top: 5px;
+    line-height: 1.5;
+}
+
+.history-date {
+    color: var(--muted);
+    font-size: 11px;
+    margin-top: 7px;
+}
+
+.delete-history-btn {
+    flex-shrink: 0;
+    border: none;
+    background: var(--danger-bg);
+    color: var(--danger);
+    width: 34px;
+    height: 34px;
+    border-radius: 9px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.delete-history-btn:hover {
+    background: #fee2e2;
+}
+
+.history-note {
+    margin-top: 12px;
+    color: var(--muted);
+    font-size: 11px;
+    line-height: 1.5;
+    text-align: center;
+}
+
+/* Navigation */
 
 .back-link {
     display: block;
@@ -232,6 +392,32 @@ footer {
     font-size: 12px;
     line-height: 1.7;
 }
+
+/* Mobile */
+
+@media (max-width: 480px) {
+
+    .container {
+        padding: 25px 18px;
+        border-radius: 20px;
+    }
+
+    header h1 {
+        font-size: 25px;
+    }
+
+    .result-amount {
+        font-size: 27px;
+    }
+
+    .result-actions {
+        flex-direction: column;
+    }
+
+    .history-main {
+        gap: 8px;
+    }
+}
 </style>
 </head>
 
@@ -247,8 +433,14 @@ footer {
     </p>
 </header>
 
+
+<!-- Amount -->
+
 <div class="field">
-    <label for="amount">Amount</label>
+
+    <label for="amount">
+        Amount
+    </label>
 
     <input
         type="number"
@@ -259,15 +451,38 @@ footer {
         placeholder="Enter amount"
         inputmode="decimal"
     >
+
 </div>
+
+
+<!-- From Currency -->
 
 <div class="field">
-    <label for="fromCurrency">From Currency</label>
+
+    <label for="fromSearch">
+        From Currency
+    </label>
+
+    <div class="currency-search">
+
+        <input
+            type="search"
+            id="fromSearch"
+            placeholder="🔎 Search currency or code"
+            autocomplete="off"
+        >
+
+    </div>
 
     <select id="fromCurrency"></select>
+
 </div>
 
+
+<!-- Swap -->
+
 <div class="swap-container">
+
     <button
         type="button"
         class="swap-btn"
@@ -276,13 +491,35 @@ footer {
         title="Swap currencies">
         ⇅
     </button>
+
 </div>
+
+
+<!-- To Currency -->
 
 <div class="field">
-    <label for="toCurrency">To Currency</label>
+
+    <label for="toSearch">
+        To Currency
+    </label>
+
+    <div class="currency-search">
+
+        <input
+            type="search"
+            id="toSearch"
+            placeholder="🔎 Search currency or code"
+            autocomplete="off"
+        >
+
+    </div>
 
     <select id="toCurrency"></select>
+
 </div>
+
+
+<!-- Convert -->
 
 <button
     type="button"
@@ -291,51 +528,141 @@ footer {
     Convert
 </button>
 
-<div class="error" id="errorMessage"></div>
 
-<div class="result" id="resultBox">
+<!-- Error -->
+
+<div
+    class="error"
+    id="errorMessage">
+</div>
+
+
+<!-- Result -->
+
+<div
+    class="result"
+    id="resultBox">
 
     <div class="result-label">
         Converted Amount
     </div>
 
-    <div class="result-amount" id="resultAmount">
+    <div
+        class="result-amount"
+        id="resultAmount">
         —
     </div>
 
-    <div class="rate-text" id="rateText">
+    <div
+        class="rate-text"
+        id="rateText">
         —
+    </div>
+
+    <div class="result-actions">
+
+        <button
+            type="button"
+            class="save-btn"
+            id="saveBtn">
+            💾 Save Conversion
+        </button>
+
+        <button
+            type="button"
+            class="share-btn"
+            id="shareBtn">
+            🔗 Share
+        </button>
+
     </div>
 
 </div>
 
-<div class="status" id="statusMessage"></div>
+
+<div
+    class="status"
+    id="statusMessage">
+</div>
+
+
+<!-- Exchange-rate information -->
 
 <div class="info">
+
     <strong>Exchange rates:</strong>
+
     Rates are provided for informational purposes and may differ
     from rates used by banks, card providers, payment services
     and other financial institutions.
+
 </div>
 
-<a href="index.html" class="back-link">
+
+<!-- Saved History -->
+
+<section
+    class="history-section"
+    aria-labelledby="historyTitle">
+
+    <div class="history-header">
+
+        <h2 id="historyTitle">
+            Saved Conversion History
+        </h2>
+
+        <button
+            type="button"
+            class="clear-history-btn"
+            id="clearHistoryBtn">
+            Clear All
+        </button>
+
+    </div>
+
+
+    <div
+        id="historyList">
+    </div>
+
+
+    <div class="history-note">
+
+        Saved conversions are stored locally on this device
+        and are not uploaded to our server.
+
+    </div>
+
+</section>
+
+
+<a
+    href="index.html"
+    class="back-link">
     ← Back to Split Bill Calculator
 </a>
 
+
 <footer>
-    © <span id="currentYear"></span> Split Bill Calculator
+
+    © <span id="currentYear"></span>
+    Split Bill Calculator
+
 </footer>
 
 </div>
 
+
 <script>
 "use strict";
+
 
 /* =====================================================
    CURRENCY LIST
 ===================================================== */
 
 const currencies = {
+
     AED: "UAE Dirham",
     AFN: "Afghan Afghani",
     ALL: "Albanian Lek",
@@ -533,6 +860,12 @@ const fromCurrency =
 const toCurrency =
     document.getElementById("toCurrency");
 
+const fromSearch =
+    document.getElementById("fromSearch");
+
+const toSearch =
+    document.getElementById("toSearch");
+
 const convertBtn =
     document.getElementById("convertBtn");
 
@@ -554,50 +887,168 @@ const errorMessage =
 const statusMessage =
     document.getElementById("statusMessage");
 
+const saveBtn =
+    document.getElementById("saveBtn");
+
+const shareBtn =
+    document.getElementById("shareBtn");
+
+const historyList =
+    document.getElementById("historyList");
+
+const clearHistoryBtn =
+    document.getElementById("clearHistoryBtn");
+
 document.getElementById("currentYear").textContent =
     new Date().getFullYear();
+
+
+/* =====================================================
+   SORTED CURRENCY LIST
+===================================================== */
+
+const sortedCurrencies =
+    Object.entries(currencies)
+        .sort((a, b) =>
+            a[1].localeCompare(b[1])
+        );
 
 
 /* =====================================================
    CREATE CURRENCY OPTIONS
 ===================================================== */
 
-Object.entries(currencies)
-    .sort((a, b) =>
-        a[1].localeCompare(b[1])
-    )
-    .forEach(([code, name]) => {
+function populateCurrencySelect(
+    selectElement,
+    searchTerm = "",
+    selectedValue = ""
+) {
 
-        const optionFrom =
+    selectElement.innerHTML = "";
+
+    const search =
+        searchTerm.trim().toLowerCase();
+
+    const filtered =
+        sortedCurrencies.filter(
+            ([code, name]) => {
+
+                return (
+                    code.toLowerCase().includes(search) ||
+                    name.toLowerCase().includes(search)
+                );
+
+            }
+        );
+
+
+    if (filtered.length === 0) {
+
+        const option =
             document.createElement("option");
 
-        optionFrom.value = code;
-        optionFrom.textContent =
-            `${code} — ${name}`;
+        option.textContent =
+            "No currency found";
 
-        fromCurrency.appendChild(optionFrom);
+        option.disabled = true;
 
-        const optionTo =
-            document.createElement("option");
+        selectElement.appendChild(option);
 
-        optionTo.value = code;
-        optionTo.textContent =
-            `${code} — ${name}`;
+        return;
 
-        toCurrency.appendChild(optionTo);
-    });
+    }
+
+
+    filtered.forEach(
+        ([code, name]) => {
+
+            const option =
+                document.createElement("option");
+
+            option.value = code;
+
+            option.textContent =
+                `${code} — ${name}`;
+
+            selectElement.appendChild(option);
+
+        }
+    );
+
+
+    if (
+        selectedValue &&
+        filtered.some(
+            ([code]) =>
+                code === selectedValue
+        )
+    ) {
+
+        selectElement.value =
+            selectedValue;
+
+    }
+
+}
 
 
 /* =====================================================
-   DEFAULT CURRENCIES
+   INITIAL CURRENCIES
 ===================================================== */
 
-fromCurrency.value = "USD";
-toCurrency.value = "EUR";
+populateCurrencySelect(
+    fromCurrency,
+    "",
+    "USD"
+);
+
+populateCurrencySelect(
+    toCurrency,
+    "",
+    "EUR"
+);
 
 
 /* =====================================================
-   12-HOUR CACHE
+   CURRENCY SEARCH
+===================================================== */
+
+fromSearch.addEventListener(
+    "input",
+    function() {
+
+        const current =
+            fromCurrency.value;
+
+        populateCurrencySelect(
+            fromCurrency,
+            fromSearch.value,
+            current
+        );
+
+    }
+);
+
+
+toSearch.addEventListener(
+    "input",
+    function() {
+
+        const current =
+            toCurrency.value;
+
+        populateCurrencySelect(
+            toCurrency,
+            toSearch.value,
+            current
+        );
+
+    }
+);
+
+
+/* =====================================================
+   12-HOUR EXCHANGE RATE CACHE
 ===================================================== */
 
 const CACHE_DURATION =
@@ -633,8 +1084,11 @@ function getCachedRate(from, to) {
             typeof data.rate !== "number" ||
             !data.timestamp
         ) {
+
             localStorage.removeItem(key);
+
             return null;
+
         }
 
         const age =
@@ -645,6 +1099,7 @@ function getCachedRate(from, to) {
             localStorage.removeItem(key);
 
             return null;
+
         }
 
         return data;
@@ -658,7 +1113,12 @@ function getCachedRate(from, to) {
 }
 
 
-function saveRate(from, to, rate, date) {
+function saveRate(
+    from,
+    to,
+    rate,
+    date
+) {
 
     try {
 
@@ -668,9 +1128,13 @@ function saveRate(from, to, rate, date) {
         localStorage.setItem(
             key,
             JSON.stringify({
+
                 rate: rate,
+
                 date: date || null,
+
                 timestamp: Date.now()
+
             })
         );
 
@@ -689,29 +1153,43 @@ function saveRate(from, to, rate, date) {
    FETCH EXCHANGE RATE
 ===================================================== */
 
-async function getExchangeRate(from, to) {
+async function getExchangeRate(
+    from,
+    to
+) {
 
     if (from === to) {
 
         return {
+
             rate: 1,
+
             date: null,
+
             cached: false
+
         };
 
     }
 
 
     const cached =
-        getCachedRate(from, to);
+        getCachedRate(
+            from,
+            to
+        );
 
 
     if (cached) {
 
         return {
+
             rate: cached.rate,
+
             date: cached.date,
+
             cached: true
+
         };
 
     }
@@ -786,20 +1264,33 @@ function formatNumber(value) {
 
 
 /* =====================================================
+   CURRENT CONVERSION
+===================================================== */
+
+let currentConversion = null;
+
+
+/* =====================================================
    CONVERT
 ===================================================== */
 
 async function convertCurrency() {
 
-    errorMessage.style.display = "none";
-    errorMessage.textContent = "";
+    errorMessage.style.display =
+        "none";
 
-    resultBox.style.display = "none";
+    errorMessage.textContent =
+        "";
+
+    resultBox.style.display =
+        "none";
 
     statusMessage.textContent =
         "Getting exchange rate...";
 
-    convertBtn.disabled = true;
+    convertBtn.disabled =
+        true;
+
 
     const amount =
         Number(amountInput.value);
@@ -822,9 +1313,33 @@ async function convertCurrency() {
         errorMessage.style.display =
             "block";
 
-        statusMessage.textContent = "";
+        statusMessage.textContent =
+            "";
 
-        convertBtn.disabled = false;
+        convertBtn.disabled =
+            false;
+
+        return;
+
+    }
+
+
+    if (
+        !from ||
+        !to
+    ) {
+
+        errorMessage.textContent =
+            "Please select both currencies.";
+
+        errorMessage.style.display =
+            "block";
+
+        statusMessage.textContent =
+            "";
+
+        convertBtn.disabled =
+            false;
 
         return;
 
@@ -842,6 +1357,26 @@ async function convertCurrency() {
 
         const converted =
             amount * exchange.rate;
+
+
+        currentConversion = {
+
+            amount: amount,
+
+            from: from,
+
+            to: to,
+
+            rate: exchange.rate,
+
+            converted: converted,
+
+            date: exchange.date,
+
+            createdAt:
+                new Date().toISOString()
+
+        };
 
 
         resultAmount.textContent =
@@ -876,9 +1411,13 @@ async function convertCurrency() {
 
         }
 
+
     } catch (error) {
 
         console.error(error);
+
+        currentConversion =
+            null;
 
         errorMessage.textContent =
             "Unable to get the exchange rate right now. Please try again.";
@@ -886,11 +1425,13 @@ async function convertCurrency() {
         errorMessage.style.display =
             "block";
 
-        statusMessage.textContent = "";
+        statusMessage.textContent =
+            "";
 
     } finally {
 
-        convertBtn.disabled = false;
+        convertBtn.disabled =
+            false;
 
     }
 
@@ -925,7 +1466,16 @@ swapBtn.addEventListener(
             oldFrom;
 
 
-        if (amountInput.value !== "") {
+        fromSearch.value =
+            "";
+
+        toSearch.value =
+            "";
+
+
+        if (
+            amountInput.value !== ""
+        ) {
 
             convertCurrency();
 
@@ -943,7 +1493,9 @@ amountInput.addEventListener(
     "keydown",
     function(event) {
 
-        if (event.key === "Enter") {
+        if (
+            event.key === "Enter"
+        ) {
 
             convertCurrency();
 
@@ -961,7 +1513,9 @@ fromCurrency.addEventListener(
     "change",
     function() {
 
-        if (amountInput.value !== "") {
+        if (
+            amountInput.value !== ""
+        ) {
 
             convertCurrency();
 
@@ -975,7 +1529,9 @@ toCurrency.addEventListener(
     "change",
     function() {
 
-        if (amountInput.value !== "") {
+        if (
+            amountInput.value !== ""
+        ) {
 
             convertCurrency();
 
@@ -986,10 +1542,565 @@ toCurrency.addEventListener(
 
 
 /* =====================================================
+   SAVED HISTORY
+===================================================== */
+
+const HISTORY_KEY =
+    "splitBillSavedConversionHistory";
+
+
+function getHistory() {
+
+    try {
+
+        const saved =
+            localStorage.getItem(
+                HISTORY_KEY
+            );
+
+        if (!saved) {
+
+            return [];
+
+        }
+
+
+        const history =
+            JSON.parse(saved);
+
+
+        if (
+            !Array.isArray(history)
+        ) {
+
+            return [];
+
+        }
+
+
+        return history;
+
+    } catch (error) {
+
+        return [];
+
+    }
+
+}
+
+
+function saveHistory(
+    history
+) {
+
+    try {
+
+        localStorage.setItem(
+            HISTORY_KEY,
+            JSON.stringify(history)
+        );
+
+        return true;
+
+    } catch (error) {
+
+        console.error(
+            "Unable to save conversion history.",
+            error
+        );
+
+        return false;
+
+    }
+
+}
+
+
+/* =====================================================
+   SAVE CURRENT CONVERSION
+===================================================== */
+
+saveBtn.addEventListener(
+    "click",
+    function() {
+
+        if (!currentConversion) {
+
+            return;
+
+        }
+
+
+        const history =
+            getHistory();
+
+
+        const item = {
+
+            id:
+                Date.now().toString() +
+                Math.random()
+                    .toString(36)
+                    .substring(2),
+
+            amount:
+                currentConversion.amount,
+
+            from:
+                currentConversion.from,
+
+            to:
+                currentConversion.to,
+
+            rate:
+                currentConversion.rate,
+
+            converted:
+                currentConversion.converted,
+
+            rateDate:
+                currentConversion.date,
+
+            savedAt:
+                new Date().toISOString()
+
+        };
+
+
+        history.unshift(item);
+
+
+        /*
+         * Keep the history from becoming
+         * unnecessarily large.
+         */
+
+        const limitedHistory =
+            history.slice(0, 50);
+
+
+        if (
+            saveHistory(
+                limitedHistory
+            )
+        ) {
+
+            statusMessage.textContent =
+                "Conversion saved to your device.";
+
+            renderHistory();
+
+        } else {
+
+            statusMessage.textContent =
+                "Unable to save this conversion on your device.";
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   SHARE CURRENT CONVERSION
+===================================================== */
+
+shareBtn.addEventListener(
+    "click",
+    async function() {
+
+        if (!currentConversion) {
+
+            return;
+
+        }
+
+
+        const conversionText =
+            `${formatNumber(currentConversion.amount)} ${currentConversion.from} = ${formatNumber(currentConversion.converted)} ${currentConversion.to}\n` +
+            `Exchange rate: 1 ${currentConversion.from} = ${formatNumber(currentConversion.rate)} ${currentConversion.to}` +
+            (
+                currentConversion.date
+                    ? `\nRate date: ${currentConversion.date}`
+                    : ""
+            );
+
+
+        const shareData = {
+
+            title:
+                "Currency Conversion",
+
+            text:
+                conversionText,
+
+            url:
+                window.location.href
+
+        };
+
+
+        try {
+
+            if (
+                navigator.share
+            ) {
+
+                await navigator.share(
+                    shareData
+                );
+
+                statusMessage.textContent =
+                    "Conversion shared.";
+
+                return;
+
+            }
+
+
+            if (
+                navigator.clipboard
+            ) {
+
+                await navigator.clipboard.writeText(
+                    conversionText
+                );
+
+                statusMessage.textContent =
+                    "Conversion copied to your clipboard.";
+
+                return;
+
+            }
+
+
+            statusMessage.textContent =
+                "Sharing is not supported on this browser.";
+
+        } catch (error) {
+
+            if (
+                error &&
+                error.name === "AbortError"
+            ) {
+
+                return;
+
+            }
+
+            console.error(error);
+
+            statusMessage.textContent =
+                "Unable to share this conversion.";
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   RENDER HISTORY
+===================================================== */
+
+function renderHistory() {
+
+    const history =
+        getHistory();
+
+
+    historyList.innerHTML =
+        "";
+
+
+    if (
+        history.length === 0
+    ) {
+
+        const empty =
+            document.createElement(
+                "div"
+            );
+
+        empty.className =
+            "history-empty";
+
+        empty.textContent =
+            "No saved conversions yet. Your saved conversions will appear here.";
+
+        historyList.appendChild(
+            empty
+        );
+
+        return;
+
+    }
+
+
+    history.forEach(
+        function(item) {
+
+            const historyItem =
+                document.createElement(
+                    "div"
+                );
+
+            historyItem.className =
+                "history-item";
+
+
+            const main =
+                document.createElement(
+                    "div"
+                );
+
+            main.className =
+                "history-main";
+
+
+            const details =
+                document.createElement(
+                    "div"
+                );
+
+
+            const conversion =
+                document.createElement(
+                    "div"
+                );
+
+            conversion.className =
+                "history-conversion";
+
+            conversion.textContent =
+                `${formatNumber(item.amount)} ${item.from} → ${formatNumber(item.converted)} ${item.to}`;
+
+
+            const rate =
+                document.createElement(
+                    "div"
+                );
+
+            rate.className =
+                "history-rate";
+
+            rate.textContent =
+                `1 ${item.from} = ${formatNumber(item.rate)} ${item.to}`;
+
+
+            const savedDate =
+                document.createElement(
+                    "div"
+                );
+
+            savedDate.className =
+                "history-date";
+
+            savedDate.textContent =
+                `Saved ${formatHistoryDate(item.savedAt)}`;
+
+
+            details.appendChild(
+                conversion
+            );
+
+            details.appendChild(
+                rate
+            );
+
+            details.appendChild(
+                savedDate
+            );
+
+
+            const deleteButton =
+                document.createElement(
+                    "button"
+                );
+
+            deleteButton.type =
+                "button";
+
+            deleteButton.className =
+                "delete-history-btn";
+
+            deleteButton.textContent =
+                "🗑️";
+
+            deleteButton.title =
+                "Delete saved conversion";
+
+            deleteButton.setAttribute(
+                "aria-label",
+                "Delete saved conversion"
+            );
+
+
+            deleteButton.addEventListener(
+                "click",
+                function() {
+
+                    deleteHistoryItem(
+                        item.id
+                    );
+
+                }
+            );
+
+
+            main.appendChild(
+                details
+            );
+
+            main.appendChild(
+                deleteButton
+            );
+
+
+            historyItem.appendChild(
+                main
+            );
+
+
+            historyList.appendChild(
+                historyItem
+            );
+
+        }
+    );
+
+}
+
+
+/* =====================================================
+   HISTORY DATE
+===================================================== */
+
+function formatHistoryDate(
+    dateString
+) {
+
+    try {
+
+        const date =
+            new Date(dateString);
+
+        return date.toLocaleString(
+            undefined,
+            {
+                dateStyle: "medium",
+                timeStyle: "short"
+            }
+        );
+
+    } catch (error) {
+
+        return "";
+
+    }
+
+}
+
+
+/* =====================================================
+   DELETE ONE HISTORY ITEM
+===================================================== */
+
+function deleteHistoryItem(
+    id
+) {
+
+    const history =
+        getHistory();
+
+
+    const updatedHistory =
+        history.filter(
+            item =>
+                item.id !== id
+        );
+
+
+    saveHistory(
+        updatedHistory
+    );
+
+
+    renderHistory();
+
+
+    statusMessage.textContent =
+        "Saved conversion deleted.";
+
+}
+
+
+/* =====================================================
+   CLEAR ALL HISTORY
+===================================================== */
+
+clearHistoryBtn.addEventListener(
+    "click",
+    function() {
+
+        const history =
+            getHistory();
+
+
+        if (
+            history.length === 0
+        ) {
+
+            statusMessage.textContent =
+                "There are no saved conversions to clear.";
+
+            return;
+
+        }
+
+
+        const confirmed =
+            window.confirm(
+                "Are you sure you want to delete all saved conversion history from this device?"
+            );
+
+
+        if (!confirmed) {
+
+            return;
+
+        }
+
+
+        localStorage.removeItem(
+            HISTORY_KEY
+        );
+
+
+        renderHistory();
+
+
+        statusMessage.textContent =
+            "All saved conversion history has been cleared.";
+
+    }
+);
+
+
+/* =====================================================
+   INITIALIZE HISTORY
+===================================================== */
+
+renderHistory();
+
+
+/* =====================================================
    PWA SERVICE WORKER
 ===================================================== */
 
-if ("serviceWorker" in navigator) {
+if (
+    "serviceWorker" in navigator
+) {
 
     window.addEventListener(
         "load",
@@ -997,22 +2108,26 @@ if ("serviceWorker" in navigator) {
 
             navigator.serviceWorker
                 .register("/sw.js")
-                .then(function(registration) {
+                .then(
+                    function(registration) {
 
-                    console.log(
-                        "PWA service worker registered:",
-                        registration.scope
-                    );
+                        console.log(
+                            "PWA service worker registered:",
+                            registration.scope
+                        );
 
-                })
-                .catch(function(error) {
+                    }
+                )
+                .catch(
+                    function(error) {
 
-                    console.log(
-                        "PWA service worker registration failed:",
-                        error
-                    );
+                        console.log(
+                            "PWA service worker registration failed:",
+                            error
+                        );
 
-                });
+                    }
+                );
 
         }
     );
