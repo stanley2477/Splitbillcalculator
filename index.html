@@ -388,6 +388,140 @@ button.share-btn:hover {
     margin-top: 8px;
 }
 
+/* =====================================================
+   SAVED HISTORY
+===================================================== */
+
+.saved-history-item {
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 15px;
+    margin-bottom: 12px;
+    background: #fff;
+}
+
+.saved-history-item h3 {
+    color: var(--text-title);
+    font-size: 15px;
+    margin-bottom: 8px;
+}
+
+.saved-history-item p {
+    color: var(--text-body);
+    font-size: 14px;
+    line-height: 1.5;
+    white-space: pre-line;
+    margin-bottom: 12px;
+}
+
+.history-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+}
+
+.history-share-btn {
+    background: #16a34a !important;
+}
+
+.history-delete-btn {
+    background: #dc2626 !important;
+}
+
+.no-history {
+    text-align: center;
+    padding: 20px 10px;
+    color: #64748b;
+    font-size: 14px;
+}
+
+/* =====================================================
+   SAVE / DELETE / HISTORY
+===================================================== */
+
+.result-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.result-actions button {
+    padding: 12px 8px;
+    border-radius: 10px;
+    border: none;
+    font-weight: 700;
+    cursor: pointer;
+    font-size: 13px;
+}
+
+.save-btn {
+    background: #2563eb;
+    color: white;
+}
+
+.save-btn:hover {
+    background: #1d4ed8;
+}
+
+.delete-btn {
+    background: #fee2e2;
+    color: #b91c1c;
+}
+
+.delete-btn:hover {
+    background: #fecaca;
+}
+
+.history-section {
+    margin-top: 35px;
+    text-align: left;
+}
+
+.history-card {
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 15px;
+    margin-bottom: 10px;
+    background: #fff;
+}
+
+.history-card h3 {
+    font-size: 15px;
+    color: var(--text-title);
+    margin-bottom: 8px;
+}
+
+.history-card p {
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--text-body);
+    white-space: pre-line;
+}
+
+.history-delete {
+    margin-top: 10px;
+    padding: 9px 12px;
+    border: none;
+    border-radius: 9px;
+    background: #fee2e2;
+    color: #b91c1c;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.clear-history-btn {
+    padding: 12px;
+    border: 1px solid #fecaca;
+    border-radius: 10px;
+    background: #fff;
+    color: #b91c1c;
+    font-weight: 700;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 8px;
+}
+
 @media (max-width: 430px) {
 
     .receipt-buttons {
@@ -544,11 +678,27 @@ id="rateOutput"
 class="rate-text">
 </div>
 
+<div class="result-actions">
+
 <button
 type="button"
-class="action-btn share-btn"
+class="save-btn"
+id="saveConversion">
+💾 Save
+</button>
+
+<button
+type="button"
+class="save-btn"
 id="shareConversion">
-🔗 Share Result
+🔗 Share
+</button>
+
+<button
+type="button"
+class="delete-btn"
+id="deleteConversion">
+🗑️ Delete
 </button>
 
 </div>
@@ -741,11 +891,27 @@ id="addPasteItem">
 
 </div>
 
+<div class="result-actions">
+
 <button
 type="button"
-class="action-btn share-btn"
+class="save-btn"
+id="savePaste">
+💾 Save
+</button>
+
+<button
+type="button"
+class="save-btn"
 id="sharePaste">
-🔗 Share Result
+🔗 Share
+</button>
+
+<button
+type="button"
+class="delete-btn"
+id="deletePaste">
+🗑️ Delete
 </button>
 
 </div>
@@ -871,16 +1037,62 @@ class="result-box">
 
 <div id="percentageContent"></div>
 
+<div class="result-actions">
+
 <button
 type="button"
-class="action-btn share-btn"
+class="save-btn"
+id="savePercentage">
+💾 Save
+</button>
+
+<button
+type="button"
+class="save-btn"
 id="sharePercentage">
-🔗 Share Result
+🔗 Share
+</button>
+
+<button
+type="button"
+class="delete-btn"
+id="deletePercentage">
+🗑️ Delete
 </button>
 
 </div>
 
 </section>
+
+<!-- =========================
+     SAVED CALCULATION HISTORY
+========================= -->
+
+<div class="section-divider"></div>
+
+<section id="savedHistorySection">
+
+    <h2>💾 Saved Calculation History</h2>
+
+    <p class="receipt-description">
+        Your saved calculations are stored on this device. You can review,
+        share, or delete them anytime.
+    </p>
+
+    <div id="savedHistory"></div>
+
+    <button
+        type="button"
+        class="secondary-btn"
+        id="clearHistoryButton"
+        style="display:none;">
+        🗑️ Clear All History
+    </button>
+
+</section>
+
+</div>
+<!-- FREQUENTLY ASKED QUESTIONS -->
 
 </div>
 <!-- FREQUENTLY ASKED QUESTIONS -->
@@ -2367,6 +2579,43 @@ document.body.removeChild(textarea);
    SHARE CURRENCY CONVERSION
 ===================================================== */
 
+/* =====================================================
+   SAVE CURRENCY CONVERSION
+===================================================== */
+
+document.getElementById("saveConversion")
+.addEventListener("click", function(){
+
+    const amount =
+        parseFloat(
+            document.getElementById("converterAmount").value
+        );
+
+    const from =
+        document.getElementById("fromCurrency").value;
+
+    const to =
+        document.getElementById("toCurrency").value;
+
+    const output =
+        document.getElementById("converterOutput").textContent;
+
+    if(!Number.isFinite(amount)){
+
+        alert("Calculate a conversion first.");
+
+        return;
+
+    }
+
+    saveToHistory(
+        "💱 Currency Conversion",
+        amount + " " + from +
+        " = " + output + " " + to
+    );
+
+});
+
 document.getElementById("shareConversion")
 .addEventListener("click", function(){
 
@@ -2420,6 +2669,60 @@ to +
 /* =====================================================
    SHARE SPLIT
 ===================================================== */
+
+document.getElementById("saveSplit")
+.addEventListener("click", function(){
+
+    const bill =
+        parseFloat(
+            document.getElementById("totalBill").value
+        );
+
+    const people =
+        parseInt(
+            document.getElementById("peopleCount").value,
+            10
+        );
+
+    if(
+        !Number.isFinite(bill) ||
+        !Number.isFinite(people) ||
+        people <= 0
+    ){
+
+        alert("Calculate the split first.");
+
+        return;
+
+    }
+
+    const share =
+        bill / people;
+
+    saveToHistory(
+        "👥 Bill Split",
+        "Total Bill: " +
+        getCurrencySymbol() +
+        bill.toFixed(2) +
+
+        "\nPeople: " +
+        people +
+
+        "\nEach Person Pays: " +
+        getCurrencySymbol() +
+        share.toFixed(2)
+    );
+
+});
+
+
+document.getElementById("deleteSplit")
+.addEventListener("click", function(){
+
+    document.getElementById("split-results")
+        .style.display = "none";
+
+});
 
 document.getElementById("shareSplit")
 .addEventListener("click", function(){
@@ -2478,6 +2781,74 @@ share.toFixed(2)
 /* =====================================================
    SHARE PERCENTAGE
 ===================================================== */
+
+document.getElementById("savePercentage")
+.addEventListener("click", function(){
+
+    const bill =
+        parseFloat(
+            document.getElementById(
+                "percentageTotalBill"
+            ).value
+        );
+
+    const percentage =
+        parseFloat(
+            document.getElementById(
+                "customPercentage"
+            ).value
+        );
+
+    if(
+        !Number.isFinite(bill) ||
+        !Number.isFinite(percentage)
+    ){
+
+        alert(
+            "Calculate the percentage first."
+        );
+
+        return;
+
+    }
+
+    const pays =
+        bill * percentage / 100;
+
+    const remaining =
+        bill - pays;
+
+
+    saveToHistory(
+        "📊 Percentage Cut",
+        "Total Bill: " +
+        getCurrencySymbol() +
+        bill.toFixed(2) +
+
+        "\nPercentage: " +
+        percentage +
+        "%" +
+
+        "\nYou Will Pay: " +
+        getCurrencySymbol() +
+        pays.toFixed(2) +
+
+        "\nRemaining: " +
+        getCurrencySymbol() +
+        remaining.toFixed(2)
+    );
+
+});
+
+
+document.getElementById("deletePercentage")
+.addEventListener("click", function(){
+
+    document.getElementById(
+        "percentage-results"
+    ).style.display = "none";
+
+});
 
 document.getElementById("sharePercentage")
 .addEventListener("click", function(){
@@ -2651,6 +3022,304 @@ total.toFixed(2)
 /* =====================================================
    ADD RECEIPT ITEM BUTTONS
 ===================================================== */
+
+/* =====================================================
+   SAVED CALCULATION HISTORY
+===================================================== */
+
+const HISTORY_KEY = "splitBillCalculatorHistory";
+
+
+function getSavedHistory(){
+
+    try {
+
+        return JSON.parse(
+            localStorage.getItem(HISTORY_KEY)
+        ) || [];
+
+    } catch(error) {
+
+        return [];
+
+    }
+
+}
+
+
+function saveToHistory(
+    tool,
+    result
+){
+
+    const history =
+        getSavedHistory();
+
+    const savedItem = {
+
+        id:
+            Date.now().toString() +
+            Math.random().toString(36).slice(2),
+
+        tool: tool,
+
+        result: result,
+
+        date:
+            new Date().toLocaleString()
+
+    };
+
+
+    history.unshift(savedItem);
+
+
+    try {
+
+        localStorage.setItem(
+            HISTORY_KEY,
+            JSON.stringify(history)
+        );
+
+    } catch(error) {
+
+        alert(
+            "Unable to save this calculation on your device."
+        );
+
+        return;
+
+    }
+
+
+    renderSavedHistory();
+
+    alert(
+        "Calculation saved successfully."
+    );
+
+}
+
+
+function deleteHistoryItem(id){
+
+    const history =
+        getSavedHistory()
+        .filter(function(item){
+
+            return item.id !== id;
+
+        });
+
+
+    localStorage.setItem(
+        HISTORY_KEY,
+        JSON.stringify(history)
+    );
+
+
+    renderSavedHistory();
+
+}
+
+
+function clearAllHistory(){
+
+    if(!confirm(
+        "Delete all saved calculations?"
+    )){
+
+        return;
+
+    }
+
+
+    localStorage.removeItem(
+        HISTORY_KEY
+    );
+
+
+    renderSavedHistory();
+
+}
+
+
+function shareSavedHistory(result){
+
+    shareResult(result);
+
+}
+
+
+function renderSavedHistory(){
+
+    const container =
+        document.getElementById(
+            "savedHistory"
+        );
+
+    const clearButton =
+        document.getElementById(
+            "clearHistoryButton"
+        );
+
+
+    if(!container){
+
+        return;
+
+    }
+
+
+    const history =
+        getSavedHistory();
+
+
+    container.innerHTML = "";
+
+
+    if(!history.length){
+
+        container.innerHTML =
+            '<div class="no-history">' +
+            'No saved calculations yet.' +
+            '</div>';
+
+        if(clearButton){
+
+            clearButton.style.display =
+                "none";
+
+        }
+
+        return;
+
+    }
+
+
+    if(clearButton){
+
+        clearButton.style.display =
+            "block";
+
+    }
+
+
+    history.forEach(function(item){
+
+        const card =
+            document.createElement("div");
+
+        card.className =
+            "saved-history-item";
+
+
+        const title =
+            document.createElement("h3");
+
+        title.textContent =
+            "📌 " + item.tool;
+
+
+        const result =
+            document.createElement("p");
+
+        result.textContent =
+            item.result +
+            "\n\nSaved: " +
+            item.date;
+
+
+        const actions =
+            document.createElement("div");
+
+        actions.className =
+            "history-actions";
+
+
+        const shareButton =
+            document.createElement("button");
+
+        shareButton.type =
+            "button";
+
+        shareButton.className =
+            "action-btn history-share-btn";
+
+        shareButton.textContent =
+            "🔗 Share";
+
+
+        shareButton.addEventListener(
+            "click",
+            function(){
+
+                shareSavedHistory(
+                    item.result
+                );
+
+            }
+        );
+
+
+        const deleteButton =
+            document.createElement("button");
+
+        deleteButton.type =
+            "button";
+
+        deleteButton.className =
+            "action-btn history-delete-btn";
+
+        deleteButton.textContent =
+            "🗑️ Delete";
+
+
+        deleteButton.addEventListener(
+            "click",
+            function(){
+
+                deleteHistoryItem(
+                    item.id
+                );
+
+            }
+        );
+
+
+        actions.appendChild(
+            shareButton
+        );
+
+        actions.appendChild(
+            deleteButton
+        );
+
+
+        card.appendChild(title);
+
+        card.appendChild(result);
+
+        card.appendChild(actions);
+
+
+        container.appendChild(card);
+
+    });
+
+}
+
+
+document.getElementById(
+    "clearHistoryButton"
+)
+.addEventListener(
+    "click",
+    clearAllHistory
+);
+
+
+renderSavedHistory();
 
 document.getElementById("addScanItem")
 .addEventListener("click", function(){
