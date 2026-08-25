@@ -1,0 +1,1956 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#2563eb">
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Split Bill">
+
+<title>Group Expenses | Split Bill Calculator</title>
+
+<meta name="description"
+content="Manage roommate, couples, vacation, road trip, event, wedding and group gift expenses with easy group expense calculators.">
+
+<style>
+:root {
+    --primary: #2563eb;
+    --primary-hover: #1d4ed8;
+    --bg-main: #f8fafc;
+    --card-bg: #ffffff;
+    --text-title: #0f172a;
+    --text-body: #334155;
+    --border: #e2e8f0;
+    --muted: #64748b;
+    --success-bg: #f0fdf4;
+    --success-border: #10b981;
+    --success-text: #166534;
+}
+
+* {
+    box-sizing: border-box;
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    -webkit-text-size-adjust: 100%;
+}
+
+body {
+    background: var(--bg-main);
+    color: var(--text-body);
+    padding: 20px 15px;
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 520px;
+    width: 100%;
+    margin: 10px auto;
+    background: var(--card-bg);
+    padding: 30px 24px;
+    border-radius: 24px;
+    box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05);
+}
+
+header {
+    text-align: center;
+}
+
+header h1 {
+    color: var(--text-title);
+    font-size: 27px;
+    font-weight: 800;
+    margin-bottom: 7px;
+}
+
+header p {
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 28px;
+}
+
+h2 {
+    color: var(--text-title);
+    font-size: 19px;
+    margin-bottom: 9px;
+}
+
+.description {
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.6;
+    margin-bottom: 17px;
+}
+
+.section-divider {
+    margin: 35px 0 25px;
+    border-top: 2px solid var(--border);
+    padding-top: 25px;
+}
+
+.form-group {
+    margin-bottom: 16px;
+}
+
+label {
+    display: block;
+    color: #475569;
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 7px;
+}
+
+input,
+select {
+    width: 100%;
+    padding: 14px 16px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: #fff;
+    color: var(--text-title);
+    font-size: 16px;
+    outline: none;
+}
+
+input:focus,
+select:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(37,99,235,0.10);
+}
+
+button {
+    cursor: pointer;
+}
+
+.action-btn {
+    width: 100%;
+    padding: 15px;
+    margin-top: 8px;
+    border: none;
+    border-radius: 12px;
+    background: var(--primary);
+    color: white;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.action-btn:hover {
+    background: var(--primary-hover);
+}
+
+.secondary-btn {
+    width: 100%;
+    padding: 13px;
+    margin-top: 8px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: #fff;
+    color: var(--text-title);
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.currency-search {
+    margin-bottom: 8px;
+}
+
+.currency-search input {
+    padding: 11px 13px;
+    font-size: 14px;
+}
+
+.person-row {
+    display: grid;
+    grid-template-columns: 1fr 105px 38px;
+    gap: 7px;
+    margin-bottom: 8px;
+}
+
+.person-row input {
+    padding: 11px;
+    font-size: 14px;
+}
+
+.remove-person {
+    width: 38px;
+    border: 1px solid #fecaca;
+    background: #fff;
+    color: #dc2626;
+    border-radius: 10px;
+    font-size: 20px;
+}
+
+.result-box {
+    display: none;
+    margin-top: 20px;
+    padding: 20px;
+    border: 1px solid var(--success-border);
+    border-radius: 16px;
+    background: var(--success-bg);
+}
+
+.result-box h3 {
+    color: var(--success-text);
+    text-align: center;
+    font-size: 15px;
+    margin-bottom: 14px;
+    text-transform: uppercase;
+    border-bottom: 1px dashed rgba(16,185,129,0.3);
+    padding-bottom: 7px;
+}
+
+.result-item {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 10px;
+    color: var(--success-text);
+    font-size: 14px;
+}
+
+.result-total {
+    border-top: 1px dashed #10b981;
+    padding-top: 12px;
+    margin-top: 12px;
+    font-size: 20px;
+    font-weight: 800;
+    color: #064e3b;
+}
+
+.result-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px;
+    margin-top: 15px;
+}
+
+.result-actions button {
+    padding: 11px 6px;
+    border: none;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.save-btn {
+    background: #2563eb;
+    color: white;
+}
+
+.share-btn {
+    background: #16a34a;
+    color: white;
+}
+
+.delete-btn {
+    background: #fee2e2;
+    color: #b91c1c;
+}
+
+.history-card {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 15px;
+    margin-bottom: 10px;
+}
+
+.history-card h3 {
+    color: var(--text-title);
+    font-size: 15px;
+    margin-bottom: 8px;
+}
+
+.history-card p {
+    font-size: 13px;
+    line-height: 1.5;
+    white-space: pre-line;
+    margin-bottom: 12px;
+}
+
+.history-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+}
+
+.history-actions button {
+    padding: 10px;
+    border: none;
+    border-radius: 9px;
+    font-weight: 700;
+}
+
+.no-history {
+    text-align: center;
+    padding: 20px;
+    color: var(--muted);
+    font-size: 14px;
+}
+
+.saved-note {
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.6;
+    margin-top: 12px;
+    text-align: center;
+}
+
+.back-link {
+    display: block;
+    text-align: center;
+    margin-top: 23px;
+    color: var(--primary);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.back-link:hover {
+    text-decoration: underline;
+}
+
+footer {
+    margin-top: 28px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.7;
+}
+
+@media (max-width: 430px) {
+    .person-row {
+        grid-template-columns: 1fr 85px 38px;
+    }
+
+    .result-actions {
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<header>
+    <h1>👥 Group Expenses</h1>
+    <p>
+        Manage roommate, vacation, event and group costs.
+    </p>
+</header>
+
+<!-- =====================================================
+     CURRENCY
+===================================================== -->
+
+<section>
+
+<h2>💱 Currency</h2>
+
+<p class="description">
+Choose the currency you want to use for your group expenses.
+</p>
+
+<div class="currency-search">
+    <input
+        type="text"
+        id="currencySearch"
+        placeholder="🔎 Search currency or country"
+        autocomplete="off">
+</div>
+
+<select id="currencySelect"></select>
+
+</section>
+
+
+<!-- =====================================================
+     ROOMMATE EXPENSES
+===================================================== -->
+
+<div class="section-divider"></div>
+
+<section>
+
+<h2>🏠 Roommate Expenses</h2>
+
+<p class="description">
+Split rent, utilities, groceries and other shared household expenses.
+</p>
+
+<div class="form-group">
+<label>Total Expenses</label>
+<input
+    type="number"
+    id="roommateTotal"
+    placeholder="Example: 1200"
+    min="0"
+    step="any">
+</div>
+
+<div id="roommatePeople"></div>
+
+<button
+    type="button"
+    class="secondary-btn"
+    id="addRoommatePerson">
+    + Add Person
+</button>
+
+<button
+    type="button"
+    class="action-btn"
+    id="calculateRoommate">
+    Calculate Roommate Expenses
+</button>
+
+<div id="roommateResult" class="result-box">
+
+<h3>Roommate Expense Result</h3>
+
+<div id="roommateContent"></div>
+
+<div class="result-actions">
+<button class="save-btn" id="saveRoommate">💾 Save</button>
+<button class="share-btn" id="shareRoommate">🔗 Share</button>
+<button class="delete-btn" id="deleteRoommate">🗑️ Delete</button>
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     COUPLES EXPENSES
+===================================================== -->
+
+<div class="section-divider"></div>
+
+<section>
+
+<h2>❤️ Couples Expenses</h2>
+
+<p class="description">
+Split shared expenses between two people using equal or custom shares.
+</p>
+
+<div class="form-group">
+<label>Total Expenses</label>
+<input
+    type="number"
+    id="couplesTotal"
+    placeholder="Example: 500"
+    min="0"
+    step="any">
+</div>
+
+<div class="form-group">
+<label>Person 1 Percentage</label>
+<input
+    type="number"
+    id="couplesPercent1"
+    placeholder="Example: 50"
+    min="0"
+    max="100"
+    step="any"
+    value="50">
+</div>
+
+<div class="form-group">
+<label>Person 2 Percentage</label>
+<input
+    type="number"
+    id="couplesPercent2"
+    placeholder="Example: 50"
+    min="0"
+    max="100"
+    step="any"
+    value="50">
+</div>
+
+<button
+    type="button"
+    class="action-btn"
+    id="calculateCouples">
+    Calculate Couples Expenses
+</button>
+
+<div id="couplesResult" class="result-box">
+
+<h3>Couples Expense Result</h3>
+
+<div id="couplesContent"></div>
+
+<div class="result-actions">
+<button class="save-btn" id="saveCouples">💾 Save</button>
+<button class="share-btn" id="shareCouples">🔗 Share</button>
+<button class="delete-btn" id="deleteCouples">🗑️ Delete</button>
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     VACATION EXPENSES
+===================================================== -->
+
+<div class="section-divider"></div>
+
+<section>
+
+<h2>🏖️ Vacation Expenses</h2>
+
+<p class="description">
+Plan shared vacation expenses for accommodation, food, transport and activities.
+</p>
+
+<div class="form-group">
+<label>Total Vacation Cost</label>
+<input
+    type="number"
+    id="vacationTotal"
+    placeholder="Example: 3000"
+    min="0"
+    step="any">
+</div>
+
+<div class="form-group">
+<label>Number of Travelers</label>
+<input
+    type="number"
+    id="vacationPeople"
+    placeholder="Example: 4"
+    min="1"
+    step="1">
+</div>
+
+<button
+    type="button"
+    class="action-btn"
+    id="calculateVacation">
+    Calculate Vacation Expenses
+</button>
+
+<div id="vacationResult" class="result-box">
+
+<h3>Vacation Expense Result</h3>
+
+<div id="vacationContent"></div>
+
+<div class="result-actions">
+<button class="save-btn" id="saveVacation">💾 Save</button>
+<button class="share-btn" id="shareVacation">🔗 Share</button>
+<button class="delete-btn" id="deleteVacation">🗑️ Delete</button>
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     ROAD TRIP EXPENSES
+===================================================== -->
+
+<div class="section-divider"></div>
+
+<section>
+
+<h2>🚗 Road Trip Expenses</h2>
+
+<p class="description">
+Calculate fuel, accommodation, food and other shared road trip costs.
+</p>
+
+<div class="form-group">
+<label>Total Road Trip Cost</label>
+<input
+    type="number"
+    id="roadTotal"
+    placeholder="Example: 1800"
+    min="0"
+    step="any">
+</div>
+
+<div class="form-group">
+<label>Number of Travelers</label>
+<input
+    type="number"
+    id="roadPeople"
+    placeholder="Example: 4"
+    min="1"
+    step="1">
+</div>
+
+<button
+    type="button"
+    class="action-btn"
+    id="calculateRoad">
+    Calculate Road Trip Expenses
+</button>
+
+<div id="roadResult" class="result-box">
+
+<h3>Road Trip Expense Result</h3>
+
+<div id="roadContent"></div>
+
+<div class="result-actions">
+<button class="save-btn" id="saveRoad">💾 Save</button>
+<button class="share-btn" id="shareRoad">🔗 Share</button>
+<button class="delete-btn" id="deleteRoad">🗑️ Delete</button>
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     EVENT EXPENSES
+===================================================== -->
+
+<div class="section-divider"></div>
+
+<section>
+
+<h2>🎉 Event Expenses</h2>
+
+<p class="description">
+Split the cost of parties, dinners, celebrations and other group events.
+</p>
+
+<div class="form-group">
+<label>Total Event Cost</label>
+<input
+    type="number"
+    id="eventTotal"
+    placeholder="Example: 2500"
+    min="0"
+    step="any">
+</div>
+
+<div class="form-group">
+<label>Number of People</label>
+<input
+    type="number"
+    id="eventPeople"
+    placeholder="Example: 10"
+    min="1"
+    step="1">
+</div>
+
+<button
+    type="button"
+    class="action-btn"
+    id="calculateEvent">
+    Calculate Event Expenses
+</button>
+
+<div id="eventResult" class="result-box">
+
+<h3>Event Expense Result</h3>
+
+<div id="eventContent"></div>
+
+<div class="result-actions">
+<button class="save-btn" id="saveEvent">💾 Save</button>
+<button class="share-btn" id="shareEvent">🔗 Share</button>
+<button class="delete-btn" id="deleteEvent">🗑️ Delete</button>
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     WEDDING EXPENSES
+===================================================== -->
+
+<div class="section-divider"></div>
+
+<section>
+
+<h2>💍 Wedding Expenses</h2>
+
+<p class="description">
+Plan and divide shared wedding costs between contributors.
+</p>
+
+<div class="form-group">
+<label>Total Wedding Cost</label>
+<input
+    type="number"
+    id="weddingTotal"
+    placeholder="Example: 10000"
+    min="0"
+    step="any">
+</div>
+
+<div id="weddingPeople"></div>
+
+<button
+    type="button"
+    class="secondary-btn"
+    id="addWeddingPerson">
+    + Add Contributor
+</button>
+
+<button
+    type="button"
+    class="action-btn"
+    id="calculateWedding">
+    Calculate Wedding Expenses
+</button>
+
+<div id="weddingResult" class="result-box">
+
+<h3>Wedding Expense Result</h3>
+
+<div id="weddingContent"></div>
+
+<div class="result-actions">
+<button class="save-btn" id="saveWedding">💾 Save</button>
+<button class="share-btn" id="shareWedding">🔗 Share</button>
+<button class="delete-btn" id="deleteWedding">🗑️ Delete</button>
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     GROUP GIFT
+===================================================== -->
+
+<div class="section-divider"></div>
+
+<section>
+
+<h2>🎁 Group Gift Expenses</h2>
+
+<p class="description">
+Split the cost of a shared gift between friends, coworkers or family.
+</p>
+
+<div class="form-group">
+<label>Gift Cost</label>
+<input
+    type="number"
+    id="giftTotal"
+    placeholder="Example: 300"
+    min="0"
+    step="any">
+</div>
+
+<div class="form-group">
+<label>Number of Contributors</label>
+<input
+    type="number"
+    id="giftPeople"
+    placeholder="Example: 6"
+    min="1"
+    step="1">
+</div>
+
+<button
+    type="button"
+    class="action-btn"
+    id="calculateGift">
+    Calculate Group Gift
+</button>
+
+<div id="giftResult" class="result-box">
+
+<h3>Group Gift Result</h3>
+
+<div id="giftContent"></div>
+
+<div class="result-actions">
+<button class="save-btn" id="saveGift">💾 Save</button>
+<button class="share-btn" id="shareGift">🔗 Share</button>
+<button class="delete-btn" id="deleteGift">🗑️ Delete</button>
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     SAVED HISTORY
+===================================================== -->
+
+<div class="section-divider"></div>
+
+<section>
+
+<h2>💾 Saved Expense History</h2>
+
+<p class="description">
+Saved calculations are stored on this device.
+</p>
+
+<div id="savedHistory"></div>
+
+<button
+    type="button"
+    class="secondary-btn"
+    id="clearHistory">
+    🗑️ Clear All History
+</button>
+
+<p class="saved-note">
+Saved calculations are stored locally on this device and are not uploaded to our server.
+</p>
+
+</section>
+
+
+<a href="index.html" class="back-link">
+← Back to Split Bill Calculator
+</a>
+
+<footer>
+© <span id="currentYear"></span> Split Bill Calculator
+</footer>
+
+</div>
+
+
+<script>
+"use strict";
+
+/* =====================================================
+   CURRENCIES
+===================================================== */
+
+const currencies = [
+
+["AFN","Afghanistan — Afghan Afghani","؋"],
+["ALL","Albania — Albanian Lek","L"],
+["DZD","Algeria — Algerian Dinar","دج"],
+["AOA","Angola — Angolan Kwanza","Kz"],
+["ARS","Argentina — Argentine Peso","$"],
+["AMD","Armenia — Armenian Dram","֏"],
+["AWG","Aruba — Aruban Florin","ƒ"],
+["AUD","Australia — Australian Dollar","A$"],
+["AZN","Azerbaijan — Azerbaijani Manat","₼"],
+
+["BSD","Bahamas — Bahamian Dollar","$"],
+["BHD","Bahrain — Bahraini Dinar","د.ب"],
+["BDT","Bangladesh — Bangladeshi Taka","৳"],
+["BBD","Barbados — Barbadian Dollar","$"],
+["BYN","Belarus — Belarusian Ruble","Br"],
+["BZD","Belize — Belize Dollar","BZ$"],
+["BMD","Bermuda — Bermudian Dollar","$"],
+["BTN","Bhutan — Bhutanese Ngultrum","Nu."],
+["BOB","Bolivia — Bolivian Boliviano","Bs."],
+["BAM","Bosnia and Herzegovina — Convertible Mark","KM"],
+["BWP","Botswana — Botswana Pula","P"],
+["BRL","Brazil — Brazilian Real","R$"],
+["BND","Brunei — Brunei Dollar","B$"],
+["BGN","Bulgaria — Bulgarian Lev","лв"],
+["BIF","Burundi — Burundian Franc","FBu"],
+
+["KHR","Cambodia — Cambodian Riel","៛"],
+["CAD","Canada — Canadian Dollar","C$"],
+["CVE","Cape Verde — Cape Verdean Escudo","$"],
+["KYD","Cayman Islands — Cayman Islands Dollar","CI$"],
+["XAF","Central African CFA Franc","FCFA"],
+["CLP","Chile — Chilean Peso","$"],
+["CNY","China — Chinese Yuan","¥"],
+["COP","Colombia — Colombian Peso","$"],
+["KMF","Comoros — Comorian Franc","CF"],
+["CDF","Congo — Congolese Franc","FC"],
+["CRC","Costa Rica — Costa Rican Colón","₡"],
+["XOF","West African CFA Franc","CFA"],
+["CUP","Cuba — Cuban Peso","$"],
+["CZK","Czechia — Czech Koruna","Kč"],
+
+["DKK","Denmark — Danish Krone","kr"],
+["DJF","Djibouti — Djiboutian Franc","Fdj"],
+["DOP","Dominican Republic — Dominican Peso","RD$"],
+
+["EGP","Egypt — Egyptian Pound","£"],
+["ERN","Eritrea — Eritrean Nakfa","Nfk"],
+["ETB","Ethiopia — Ethiopian Birr","Br"],
+["EUR","European Union — Euro","€"],
+
+["FKP","Falkland Islands — Falkland Pound","£"],
+["FJD","Fiji — Fijian Dollar","FJ$"],
+["XPF","French Pacific Franc","₣"],
+
+["GMD","Gambia — Gambian Dalasi","D"],
+["GEL","Georgia — Georgian Lari","₾"],
+["GHS","Ghana — Ghanaian Cedi","₵"],
+["GIP","Gibraltar — Gibraltar Pound","£"],
+["GTQ","Guatemala — Guatemalan Quetzal","Q"],
+["GNF","Guinea — Guinean Franc","FG"],
+["GYD","Guyana — Guyanese Dollar","G$"],
+
+["HTG","Haiti — Haitian Gourde","G"],
+["HNL","Honduras — Honduran Lempira","L"],
+["HKD","Hong Kong — Hong Kong Dollar","HK$"],
+["HUF","Hungary — Hungarian Forint","Ft"],
+
+["ISK","Iceland — Icelandic Króna","kr"],
+["INR","India — Indian Rupee","₹"],
+["IDR","Indonesia — Indonesian Rupiah","Rp"],
+["IRR","Iran — Iranian Rial","﷼"],
+["IQD","Iraq — Iraqi Dinar","ع.د"],
+["ILS","Israel — Israeli New Shekel","₪"],
+
+["JMD","Jamaica — Jamaican Dollar","J$"],
+["JPY","Japan — Japanese Yen","¥"],
+["JOD","Jordan — Jordanian Dinar","د.ا"],
+
+["KZT","Kazakhstan — Kazakhstani Tenge","₸"],
+["KES","Kenya — Kenyan Shilling","KSh"],
+["KWD","Kuwait — Kuwaiti Dinar","د.ك"],
+["KGS","Kyrgyzstan — Kyrgyzstani Som","с"],
+
+["LAK","Laos — Lao Kip","₭"],
+["LBP","Lebanon — Lebanese Pound","ل.ل"],
+["LSL","Lesotho — Lesotho Loti","L"],
+["LRD","Liberia — Liberian Dollar","L$"],
+["LYD","Libya — Libyan Dinar","ل.د"],
+
+["MOP","Macau — Macanese Pataca","MOP$"],
+["MKD","North Macedonia — Macedonian Denar","ден"],
+["MGA","Madagascar — Malagasy Ariary","Ar"],
+["MWK","Malawi — Malawian Kwacha","MK"],
+["MYR","Malaysia — Malaysian Ringgit","RM"],
+["MVR","Maldives — Maldivian Rufiyaa","Rf"],
+["MRU","Mauritania — Mauritanian Ouguiya","UM"],
+["MUR","Mauritius — Mauritian Rupee","₨"],
+["MXN","Mexico — Mexican Peso","$"],
+["MDL","Moldova — Moldovan Leu","L"],
+["MNT","Mongolia — Mongolian Tögrög","₮"],
+["MAD","Morocco — Moroccan Dirham","د.م."],
+["MZN","Mozambique — Mozambican Metical","MT"],
+
+["NAD","Namibia — Namibian Dollar","N$"],
+["NPR","Nepal — Nepalese Rupee","₨"],
+["ANG","Netherlands — Caribbean Guilder","ƒ"],
+["NZD","New Zealand — New Zealand Dollar","NZ$"],
+["NIO","Nicaragua — Nicaraguan Córdoba","C$"],
+["NGN","Nigeria — Nigerian Naira","₦"],
+["NOK","Norway — Norwegian Krone","kr"],
+
+["OMR","Oman — Omani Rial","ر.ع."],
+
+["PKR","Pakistan — Pakistani Rupee","₨"],
+["PAB","Panama — Panamanian Balboa","B/."],
+["PGK","Papua New Guinea — Kina","K"],
+["PYG","Paraguay — Paraguayan Guaraní","₲"],
+["PEN","Peru — Peruvian Sol","S/"],
+["PHP","Philippines — Philippine Peso","₱"],
+["PLN","Poland — Polish Złoty","zł"],
+["QAR","Qatar — Qatari Riyal","ر.ق"],
+
+["RON","Romania — Romanian Leu","lei"],
+["RUB","Russia — Russian Ruble","₽"],
+["RWF","Rwanda — Rwandan Franc","FRw"],
+
+["SHP","Saint Helena — Saint Helena Pound","£"],
+["WST","Samoa — Samoan Tala","T"],
+["STN","São Tomé and Príncipe — Dobra","Db"],
+["SAR","Saudi Arabia — Saudi Riyal","ر.س"],
+["RSD","Serbia — Serbian Dinar","дин"],
+["SCR","Seychelles — Seychellois Rupee","₨"],
+["SGD","Singapore — Singapore Dollar","S$"],
+["SBD","Solomon Islands — Solomon Islands Dollar","SI$"],
+["SOS","Somalia — Somali Shilling","Sh"],
+["ZAR","South Africa — South African Rand","R"],
+["KRW","South Korea — South Korean Won","₩"],
+["SSP","South Sudan — South Sudanese Pound","£"],
+["LKR","Sri Lanka — Sri Lankan Rupee","₨"],
+["SDG","Sudan — Sudanese Pound","ج.س."],
+["SRD","Suriname — Surinamese Dollar","$"],
+["SZL","Eswatini — Swazi Lilangeni","E"],
+["SEK","Sweden — Swedish Krona","kr"],
+["CHF","Switzerland — Swiss Franc","CHF"],
+["SYP","Syria — Syrian Pound","£"],
+
+["TWD","Taiwan — New Taiwan Dollar","NT$"],
+["TJS","Tajikistan — Somoni","SM"],
+["TZS","Tanzania — Tanzanian Shilling","TSh"],
+["THB","Thailand — Thai Baht","฿"],
+["TOP","Tonga — Tongan Paʻanga","T$"],
+["TTD","Trinidad and Tobago — Dollar","TT$"],
+["TND","Tunisia — Tunisian Dinar","د.ت"],
+["TRY","Turkey — Turkish Lira","₺"],
+["TMT","Turkmenistan — Turkmenistan Manat","m"],
+
+["UGX","Uganda — Ugandan Shilling","USh"],
+["UAH","Ukraine — Ukrainian Hryvnia","₴"],
+["AED","United Arab Emirates — Dirham","د.إ"],
+["GBP","United Kingdom — British Pound","£"],
+["USD","United States — US Dollar","$"],
+["UYU","Uruguay — Uruguayan Peso","$U"],
+["UZS","Uzbekistan — Uzbekistani Som","лв"],
+
+["VUV","Vanuatu — Vanuatu Vatu","VT"],
+["VES","Venezuela — Venezuelan Bolívar","Bs."],
+["VND","Vietnam — Vietnamese Dong","₫"],
+
+["YER","Yemen — Yemeni Rial","﷼"],
+["ZMW","Zambia — Zambian Kwacha","ZK"],
+["ZWL","Zimbabwe — Zimbabwe Dollar","Z$"]
+
+];
+
+
+/* =====================================================
+   CURRENCY
+===================================================== */
+
+function populateCurrencies(query = "") {
+
+    const select =
+        document.getElementById("currencySelect");
+
+    select.innerHTML = "";
+
+    const search =
+        query.toLowerCase().trim();
+
+    currencies
+        .filter(function(item) {
+
+            return (
+                item[0].toLowerCase().includes(search) ||
+                item[1].toLowerCase().includes(search)
+            );
+
+        })
+        .forEach(function(item) {
+
+            const option =
+                document.createElement("option");
+
+            option.value = item[0];
+
+            option.textContent =
+                item[1] +
+                " (" +
+                item[0] +
+                ")";
+
+            select.appendChild(option);
+
+        });
+
+}
+
+populateCurrencies();
+
+document.getElementById("currencySelect").value = "USD";
+
+document.getElementById("currencySearch")
+.addEventListener("input", function() {
+
+    const current =
+        document.getElementById("currencySelect").value;
+
+    populateCurrencies(this.value);
+
+    const exists =
+        Array.from(
+            document.getElementById("currencySelect").options
+        ).some(function(option) {
+            return option.value === current;
+        });
+
+    if (exists) {
+        document.getElementById("currencySelect").value = current;
+    }
+
+});
+
+
+function getCurrencyData() {
+
+    const code =
+        document.getElementById("currencySelect").value;
+
+    return currencies.find(function(item) {
+        return item[0] === code;
+    }) || currencies.find(function(item) {
+        return item[0] === "USD";
+    });
+
+}
+
+
+function money(value) {
+
+    const currency =
+        getCurrencyData();
+
+    return (
+        currency[2] +
+        Number(value).toLocaleString(
+            undefined,
+            {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            }
+        )
+    );
+
+}
+
+
+/* =====================================================
+   PEOPLE HELPERS
+===================================================== */
+
+function addPerson(containerId, name = "") {
+
+    const container =
+        document.getElementById(containerId);
+
+    const row =
+        document.createElement("div");
+
+    row.className = "person-row";
+
+    row.innerHTML =
+        '<input type="text" placeholder="Person name" value="' +
+        name.replace(/"/g, "&quot;") +
+        '">' +
+
+        '<input type="number" placeholder="%" min="0" max="100" step="any">' +
+
+        '<button type="button" class="remove-person">×</button>';
+
+    row.querySelector(".remove-person")
+    .addEventListener("click", function() {
+        row.remove();
+    });
+
+    container.appendChild(row);
+
+}
+
+
+/* Roommates */
+
+addPerson("roommatePeople", "Person 1");
+addPerson("roommatePeople", "Person 2");
+
+
+document.getElementById("addRoommatePerson")
+.addEventListener("click", function() {
+    addPerson("roommatePeople");
+});
+
+
+document.getElementById("calculateRoommate")
+.addEventListener("click", function() {
+
+    const total =
+        parseFloat(
+            document.getElementById("roommateTotal").value
+        );
+
+    const rows =
+        document.querySelectorAll(
+            "#roommatePeople .person-row"
+        );
+
+    if (
+        !Number.isFinite(total) ||
+        total < 0 ||
+        rows.length < 1
+    ) {
+        alert("Please enter a valid total and at least one person.");
+        return;
+    }
+
+    const share =
+        total / rows.length;
+
+    let output = "";
+
+    rows.forEach(function(row, index) {
+
+        const name =
+            row.querySelector('input[type="text"]')
+            .value.trim() ||
+            "Person " + (index + 1);
+
+        output +=
+            '<div class="result-item">' +
+            '<span>' + name + '</span>' +
+            '<span>' + money(share) + '</span>' +
+            '</div>';
+
+    });
+
+    output +=
+        '<div class="result-item result-total">' +
+        '<span>Total</span>' +
+        '<span>' + money(total) + '</span>' +
+        '</div>';
+
+    document.getElementById("roommateContent").innerHTML = output;
+
+    document.getElementById("roommateResult").style.display = "block";
+
+});
+
+
+/* =====================================================
+   COUPLES
+===================================================== */
+
+document.getElementById("calculateCouples")
+.addEventListener("click", function() {
+
+    const total =
+        parseFloat(
+            document.getElementById("couplesTotal").value
+        );
+
+    const percent1 =
+        parseFloat(
+            document.getElementById("couplesPercent1").value
+        );
+
+    const percent2 =
+        parseFloat(
+            document.getElementById("couplesPercent2").value
+        );
+
+    if (
+        !Number.isFinite(total) ||
+        total < 0 ||
+        !Number.isFinite(percent1) ||
+        !Number.isFinite(percent2) ||
+        Math.abs(percent1 + percent2 - 100) > 0.01
+    ) {
+        alert("The two percentages must total 100%.");
+        return;
+    }
+
+    const amount1 =
+        total * percent1 / 100;
+
+    const amount2 =
+        total * percent2 / 100;
+
+    document.getElementById("couplesContent").innerHTML =
+
+        '<div class="result-item">' +
+        '<span>Person 1 (' + percent1 + '%)</span>' +
+        '<span>' + money(amount1) + '</span>' +
+        '</div>' +
+
+        '<div class="result-item">' +
+        '<span>Person 2 (' + percent2 + '%)</span>' +
+        '<span>' + money(amount2) + '</span>' +
+        '</div>' +
+
+        '<div class="result-item result-total">' +
+        '<span>Total</span>' +
+        '<span>' + money(total) + '</span>' +
+        '</div>';
+
+    document.getElementById("couplesResult").style.display = "block";
+
+});
+
+
+/* =====================================================
+   EQUAL SPLIT HELPER
+===================================================== */
+
+function calculateEqualExpense(
+    totalId,
+    peopleId,
+    resultId,
+    contentId,
+    label
+) {
+
+    const total =
+        parseFloat(
+            document.getElementById(totalId).value
+        );
+
+    const people =
+        parseInt(
+            document.getElementById(peopleId).value,
+            10
+        );
+
+    if (
+        !Number.isFinite(total) ||
+        total < 0 ||
+        !Number.isFinite(people) ||
+        people <= 0
+    ) {
+        alert("Please enter valid expense and people values.");
+        return;
+    }
+
+    const share =
+        total / people;
+
+    document.getElementById(contentId).innerHTML =
+
+        '<div class="result-item">' +
+        '<span>Total Cost</span>' +
+        '<span>' + money(total) + '</span>' +
+        '</div>' +
+
+        '<div class="result-item">' +
+        '<span>People</span>' +
+        '<span>' + people + '</span>' +
+        '</div>' +
+
+        '<div class="result-item result-total">' +
+        '<span>Each Person Pays</span>' +
+        '<span>' + money(share) + '</span>' +
+        '</div>';
+
+    document.getElementById(resultId).style.display = "block";
+
+}
+
+
+/* Vacation */
+
+document.getElementById("calculateVacation")
+.addEventListener("click", function() {
+
+    calculateEqualExpense(
+        "vacationTotal",
+        "vacationPeople",
+        "vacationResult",
+        "vacationContent",
+        "Vacation"
+    );
+
+});
+
+
+/* Road */
+
+document.getElementById("calculateRoad")
+.addEventListener("click", function() {
+
+    calculateEqualExpense(
+        "roadTotal",
+        "roadPeople",
+        "roadResult",
+        "roadContent",
+        "Road"
+    );
+
+});
+
+
+/* Event */
+
+document.getElementById("calculateEvent")
+.addEventListener("click", function() {
+
+    calculateEqualExpense(
+        "eventTotal",
+        "eventPeople",
+        "eventResult",
+        "eventContent",
+        "Event"
+    );
+
+});
+
+
+/* Gift */
+
+document.getElementById("calculateGift")
+.addEventListener("click", function() {
+
+    calculateEqualExpense(
+        "giftTotal",
+        "giftPeople",
+        "giftResult",
+        "giftContent",
+        "Gift"
+    );
+
+});
+
+
+/* =====================================================
+   WEDDING
+===================================================== */
+
+addPerson("weddingPeople", "Contributor 1");
+addPerson("weddingPeople", "Contributor 2");
+
+
+document.getElementById("addWeddingPerson")
+.addEventListener("click", function() {
+    addPerson("weddingPeople");
+});
+
+
+document.getElementById("calculateWedding")
+.addEventListener("click", function() {
+
+    const total =
+        parseFloat(
+            document.getElementById("weddingTotal").value
+        );
+
+    const rows =
+        document.querySelectorAll(
+            "#weddingPeople .person-row"
+        );
+
+    if (
+        !Number.isFinite(total) ||
+        total < 0 ||
+        rows.length < 1
+    ) {
+        alert("Please enter a valid wedding cost and contributors.");
+        return;
+    }
+
+    const share =
+        total / rows.length;
+
+    let output = "";
+
+    rows.forEach(function(row, index) {
+
+        const name =
+            row.querySelector('input[type="text"]')
+            .value.trim() ||
+            "Contributor " + (index + 1);
+
+        output +=
+            '<div class="result-item">' +
+            '<span>' + name + '</span>' +
+            '<span>' + money(share) + '</span>' +
+            '</div>';
+
+    });
+
+    output +=
+        '<div class="result-item result-total">' +
+        '<span>Total Wedding Cost</span>' +
+        '<span>' + money(total) + '</span>' +
+        '</div>';
+
+    document.getElementById("weddingContent").innerHTML = output;
+
+    document.getElementById("weddingResult").style.display = "block";
+
+});
+
+
+/* =====================================================
+   SHARING
+===================================================== */
+
+function shareResult(text) {
+
+    if (navigator.share) {
+
+        navigator.share({
+            title: "Group Expenses",
+            text: text
+        }).catch(function(error) {
+
+            if (
+                error &&
+                error.name === "AbortError"
+            ) {
+                return;
+            }
+
+            fallbackCopy(text);
+
+        });
+
+        return;
+    }
+
+    fallbackCopy(text);
+
+}
+
+
+function fallbackCopy(text) {
+
+    if (
+        navigator.clipboard &&
+        window.isSecureContext
+    ) {
+
+        navigator.clipboard
+        .writeText(text)
+        .then(function() {
+            alert("Result copied to clipboard.");
+        })
+        .catch(function() {
+            oldCopy(text);
+        });
+
+        return;
+    }
+
+    oldCopy(text);
+
+}
+
+
+function oldCopy(text) {
+
+    const textarea =
+        document.createElement("textarea");
+
+    textarea.value = text;
+
+    textarea.style.position = "fixed";
+    textarea.style.left = "-9999px";
+
+    document.body.appendChild(textarea);
+
+    textarea.focus();
+    textarea.select();
+
+    try {
+
+        document.execCommand("copy");
+
+        alert("Result copied to clipboard.");
+
+    } catch(error) {
+
+        alert(text);
+
+    }
+
+    document.body.removeChild(textarea);
+
+}
+
+
+/* =====================================================
+   HISTORY
+===================================================== */
+
+const HISTORY_KEY =
+    "splitBillGroupExpensesHistory";
+
+
+function getHistory() {
+
+    try {
+
+        return JSON.parse(
+            localStorage.getItem(HISTORY_KEY)
+        ) || [];
+
+    } catch(error) {
+
+        return [];
+
+    }
+
+}
+
+
+function saveHistory(tool, result) {
+
+    const history =
+        getHistory();
+
+    history.unshift({
+
+        id:
+            Date.now().toString() +
+            Math.random()
+            .toString(36)
+            .slice(2),
+
+        tool:
+            tool,
+
+        result:
+            result,
+
+        date:
+            new Date().toLocaleString()
+
+    });
+
+    try {
+
+        localStorage.setItem(
+            HISTORY_KEY,
+            JSON.stringify(history)
+        );
+
+    } catch(error) {
+
+        alert(
+            "Unable to save this calculation on this device."
+        );
+
+        return;
+
+    }
+
+    renderHistory();
+
+    alert("Calculation saved successfully.");
+
+}
+
+
+function deleteHistory(id) {
+
+    const history =
+        getHistory().filter(function(item) {
+            return item.id !== id;
+        });
+
+    localStorage.setItem(
+        HISTORY_KEY,
+        JSON.stringify(history)
+    );
+
+    renderHistory();
+
+}
+
+
+function renderHistory() {
+
+    const container =
+        document.getElementById("savedHistory");
+
+    const history =
+        getHistory();
+
+    container.innerHTML = "";
+
+    if (!history.length) {
+
+        container.innerHTML =
+            '<div class="no-history">' +
+            'No saved calculations yet.' +
+            '</div>';
+
+        return;
+
+    }
+
+    history.forEach(function(item) {
+
+        const card =
+            document.createElement("div");
+
+        card.className = "history-card";
+
+        const title =
+            document.createElement("h3");
+
+        title.textContent =
+            "📌 " + item.tool;
+
+        const result =
+            document.createElement("p");
+
+        result.textContent =
+            item.result +
+            "\n\nSaved: " +
+            item.date;
+
+        const actions =
+            document.createElement("div");
+
+        actions.className = "history-actions";
+
+        const share =
+            document.createElement("button");
+
+        share.textContent = "🔗 Share";
+
+        share.className = "share-btn";
+
+        share.addEventListener(
+            "click",
+            function() {
+                shareResult(item.result);
+            }
+        );
+
+        const del =
+            document.createElement("button");
+
+        del.textContent = "🗑️ Delete";
+
+        del.className = "delete-btn";
+
+        del.addEventListener(
+            "click",
+            function() {
+                deleteHistory(item.id);
+            }
+        );
+
+        actions.appendChild(share);
+        actions.appendChild(del);
+
+        card.appendChild(title);
+        card.appendChild(result);
+        card.appendChild(actions);
+
+        container.appendChild(card);
+
+    });
+
+}
+
+
+document.getElementById("clearHistory")
+.addEventListener("click", function() {
+
+    if (
+        !confirm(
+            "Delete all saved expense calculations?"
+        )
+    ) {
+        return;
+    }
+
+    localStorage.removeItem(HISTORY_KEY);
+
+    renderHistory();
+
+});
+
+
+/* =====================================================
+   SAVE / SHARE / DELETE BUTTONS
+===================================================== */
+
+function setupResultActions(
+    saveId,
+    shareId,
+    deleteId,
+    resultId,
+    contentId,
+    title
+) {
+
+    document.getElementById(saveId)
+    .addEventListener("click", function() {
+
+        const result =
+            document.getElementById(contentId).innerText;
+
+        if (!result) {
+
+            alert("Calculate the result first.");
+
+            return;
+
+        }
+
+        saveHistory(title, result);
+
+    });
+
+
+    document.getElementById(shareId)
+    .addEventListener("click", function() {
+
+        const result =
+            document.getElementById(contentId).innerText;
+
+        if (!result) {
+
+            alert("Calculate the result first.");
+
+            return;
+
+        }
+
+        shareResult(
+            title + "\n\n" + result
+        );
+
+    });
+
+
+    document.getElementById(deleteId)
+    .addEventListener("click", function() {
+
+        document.getElementById(resultId)
+        .style.display = "none";
+
+    });
+
+}
+
+
+/* Roommate */
+
+setupResultActions(
+    "saveRoommate",
+    "shareRoommate",
+    "deleteRoommate",
+    "roommateResult",
+    "roommateContent",
+    "🏠 Roommate Expenses"
+);
+
+
+/* Couples */
+
+setupResultActions(
+    "saveCouples",
+    "shareCouples",
+    "deleteCouples",
+    "couplesResult",
+    "couplesContent",
+    "❤️ Couples Expenses"
+);
+
+
+/* Vacation */
+
+setupResultActions(
+    "saveVacation",
+    "shareVacation",
+    "deleteVacation",
+    "vacationResult",
+    "vacationContent",
+    "🏖️ Vacation Expenses"
+);
+
+
+/* Road */
+
+setupResultActions(
+    "saveRoad",
+    "shareRoad",
+    "deleteRoad",
+    "roadResult",
+    "roadContent",
+    "🚗 Road Trip Expenses"
+);
+
+
+/* Event */
+
+setupResultActions(
+    "saveEvent",
+    "shareEvent",
+    "deleteEvent",
+    "eventResult",
+    "eventContent",
+    "🎉 Event Expenses"
+);
+
+
+/* Wedding */
+
+setupResultActions(
+    "saveWedding",
+    "shareWedding",
+    "deleteWedding",
+    "weddingResult",
+    "weddingContent",
+    "💍 Wedding Expenses"
+);
+
+
+/* Gift */
+
+setupResultActions(
+    "saveGift",
+    "shareGift",
+    "deleteGift",
+    "giftResult",
+    "giftContent",
+    "🎁 Group Gift Expenses"
+);
+
+
+/* =====================================================
+   YEAR
+===================================================== */
+
+document.getElementById("currentYear").textContent =
+    new Date().getFullYear();
+
+
+/* =====================================================
+   PWA SERVICE WORKER
+===================================================== */
+
+if ("serviceWorker" in navigator) {
+
+    window.addEventListener("load", function() {
+
+        navigator.serviceWorker
+        .register("/sw.js")
+        .then(function(registration) {
+
+            console.log(
+                "PWA service worker registered:",
+                registration.scope
+            );
+
+        })
+        .catch(function(error) {
+
+            console.log(
+                "PWA service worker registration failed:",
+                error
+            );
+
+        });
+
+    });
+
+}
+
+</script>
+
+</body>
+</html>
