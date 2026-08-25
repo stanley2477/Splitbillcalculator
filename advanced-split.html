@@ -702,90 +702,6 @@ id="deleteProportional">
 
 </section>
 
-
-<!-- =====================================================
-     FIXED AMOUNT SPLIT
-===================================================== -->
-
-<div class="section-divider"></div>
-
-<section>
-
-<h2>💳 Fixed Amount Split</h2>
-
-<p class="receipt-description">
-Set a fixed amount for each person and calculate how much
-remains from the total bill.
-</p>
-
-<div class="form-group">
-
-<label>Total Bill</label>
-
-<input
-type="number"
-id="fixedTotal"
-placeholder="Example: 500"
-min="0"
-step="any"
->
-
-</div>
-
-<div id="fixedPeople"></div>
-
-<button
-type="button"
-class="secondary-btn"
-id="addFixedPerson">
-+ Add Person
-</button>
-
-<button
-type="button"
-class="action-btn"
-id="calculateFixed">
-Calculate Fixed Amount Split
-</button>
-
-<div
-id="fixedResult"
-class="result-box">
-
-<h3>Fixed Amount Result</h3>
-
-<div id="fixedContent"></div>
-
-<div class="result-actions">
-
-<button
-type="button"
-class="save-btn"
-id="saveFixed">
-💾 Save
-</button>
-
-<button
-type="button"
-class="share-result-btn"
-id="shareFixed">
-🔗 Share
-</button>
-
-<button
-type="button"
-class="delete-btn"
-id="deleteFixed">
-🗑️ Delete
-</button>
-
-</div>
-
-</div>
-
-</section>
-
-
 <!-- =====================================================
      TAX AND TIP
 ===================================================== -->
@@ -982,288 +898,6 @@ id="deleteUnequal">
 
 </section>
 
-/* =====================================================
-   FIXED AMOUNT SPLIT
-===================================================== */
-
-function addFixedPerson(
-    name = "",
-    amount = ""
-) {
-
-    const container =
-        document.getElementById(
-            "fixedPeople"
-        );
-
-    const row =
-        document.createElement(
-            "div"
-        );
-
-    row.className =
-        "person-row";
-
-    row.innerHTML =
-
-        '<input type="text" ' +
-        'placeholder="Person name" ' +
-        'value="' +
-        name +
-        '">' +
-
-        '<input type="number" ' +
-        'placeholder="Amount" ' +
-        'min="0" ' +
-        'step="any" ' +
-        'value="' +
-        amount +
-        '">' +
-
-        '<button type="button" ' +
-        'class="remove-person">' +
-        '×' +
-        '</button>';
-
-    row.querySelector(
-        ".remove-person"
-    ).addEventListener(
-        "click",
-        function() {
-
-            row.remove();
-
-        }
-    );
-
-    container.appendChild(row);
-
-}
-
-
-addFixedPerson(
-    "Person 1"
-);
-
-addFixedPerson(
-    "Person 2"
-);
-
-
-document.getElementById(
-    "addFixedPerson"
-).addEventListener(
-    "click",
-    function() {
-
-        addFixedPerson();
-
-    }
-);
-
-
-document.getElementById(
-    "calculateFixed"
-).addEventListener(
-    "click",
-    function() {
-
-        const total =
-            parseFloat(
-                document.getElementById(
-                    "fixedTotal"
-                ).value
-            );
-
-        if(
-            !Number.isFinite(total) ||
-            total < 0
-        ) {
-
-            alert(
-                "Please enter a valid total bill."
-            );
-
-            return;
-
-        }
-
-        const rows =
-            document.querySelectorAll(
-                "#fixedPeople .person-row"
-            );
-
-        if(!rows.length) {
-
-            alert(
-                "Please add at least one person."
-            );
-
-            return;
-
-        }
-
-        let assigned = 0;
-
-        let output = "";
-
-        rows.forEach(
-            function(row) {
-
-                const name =
-                    row.querySelector(
-                        'input[type="text"]'
-                    ).value.trim()
-                    || "Person";
-
-                const amount =
-                    parseFloat(
-                        row.querySelector(
-                            'input[type="number"]'
-                        ).value
-                    ) || 0;
-
-                assigned += amount;
-
-                output +=
-
-                    '<div class="result-item">' +
-
-                    '<span>' +
-                    name +
-                    '</span>' +
-
-                    '<span>' +
-                    money(amount) +
-                    '</span>' +
-
-                    '</div>';
-
-            }
-        );
-
-        const remaining =
-            total - assigned;
-
-        output +=
-
-            '<div class="result-item">' +
-
-            '<span>Total Assigned</span>' +
-
-            '<span>' +
-            money(assigned) +
-            '</span>' +
-
-            '</div>';
-
-        output +=
-
-            '<div class="result-item result-total">' +
-
-            '<span>' +
-            (
-                remaining >= 0
-                    ? "Remaining"
-                    : "Over Assigned"
-            ) +
-            '</span>' +
-
-            '<span>' +
-            money(
-                Math.abs(remaining)
-            ) +
-            '</span>' +
-
-            '</div>';
-
-        document.getElementById(
-            "fixedContent"
-        ).innerHTML = output;
-
-        document.getElementById(
-            "fixedResult"
-        ).style.display =
-            "block";
-
-    }
-);
-
-
-document.getElementById(
-    "saveFixed"
-).addEventListener(
-    "click",
-    function() {
-
-        const result =
-            document.getElementById(
-                "fixedContent"
-            ).innerText;
-
-        if(!result) {
-
-            alert(
-                "Calculate the fixed amount split first."
-            );
-
-            return;
-
-        }
-
-        saveHistory(
-            "💳 Fixed Amount Split",
-            result
-        );
-
-    }
-);
-
-
-document.getElementById(
-    "shareFixed"
-).addEventListener(
-    "click",
-    function() {
-
-        const result =
-            document.getElementById(
-                "fixedContent"
-            ).innerText;
-
-        if(!result) {
-
-            alert(
-                "Calculate the fixed amount split first."
-            );
-
-            return;
-
-        }
-
-        shareResult(
-            "💳 Fixed Amount Split\n\n" +
-            result
-        );
-
-    }
-);
-
-
-document.getElementById(
-    "deleteFixed"
-).addEventListener(
-    "click",
-    function() {
-
-        document.getElementById(
-            "fixedResult"
-        ).style.display =
-            "none";
-
-    }
-);
-
 <!-- =====================================================
      IOU SIMPLIFIER
 ===================================================== -->
@@ -1331,310 +965,6 @@ id="deleteIou">
 </div>
 
 </section>
-
-
-<!-- =====================================================
-     REIMBURSEMENT CALCULATOR
-===================================================== -->
-
-<div class="section-divider"></div>
-
-<section>
-
-<h2>🔄 Reimbursement Calculator</h2>
-
-<p class="receipt-description">
-Calculate exactly how much one person should reimburse another.
-</p>
-
-<div class="form-group">
-
-<label>Person Who Paid</label>
-
-<input
-type="text"
-id="reimbursementPayer"
-placeholder="Example: Alex"
->
-
-</div>
-
-<div class="form-group">
-
-<label>Person Being Reimbursed</label>
-
-<input
-type="text"
-id="reimbursementReceiver"
-placeholder="Example: Jordan"
->
-
-</div>
-
-<div class="form-group">
-
-<label>Amount Paid</label>
-
-<input
-type="number"
-id="reimbursementAmount"
-placeholder="Example: 75"
-min="0"
-step="any"
->
-
-</div>
-
-<div class="form-group">
-
-<label>Reason</label>
-
-<input
-type="text"
-id="reimbursementReason"
-placeholder="Example: Dinner"
->
-
-</div>
-
-<button
-type="button"
-class="action-btn"
-id="calculateReimbursement">
-Calculate Reimbursement
-</button>
-
-<div
-id="reimbursementResult"
-class="result-box">
-
-<h3>Reimbursement Result</h3>
-
-<div id="reimbursementContent"></div>
-
-<div class="result-actions">
-
-<button
-type="button"
-class="save-btn"
-id="saveReimbursement">
-💾 Save
-</button>
-
-<button
-type="button"
-class="share-result-btn"
-id="shareReimbursement">
-🔗 Share
-</button>
-
-<button
-type="button"
-class="delete-btn"
-id="deleteReimbursement">
-🗑️ Delete
-</button>
-
-</div>
-
-</div>
-
-</section>
-
-/* =====================================================
-   REIMBURSEMENT CALCULATOR
-===================================================== */
-
-document.getElementById(
-    "calculateReimbursement"
-).addEventListener(
-    "click",
-    function() {
-
-        const payer =
-            document.getElementById(
-                "reimbursementPayer"
-            ).value.trim();
-
-        const receiver =
-            document.getElementById(
-                "reimbursementReceiver"
-            ).value.trim();
-
-        const amount =
-            parseFloat(
-                document.getElementById(
-                    "reimbursementAmount"
-                ).value
-            );
-
-        const reason =
-            document.getElementById(
-                "reimbursementReason"
-            ).value.trim();
-
-        if(
-            !payer ||
-            !receiver ||
-            !Number.isFinite(amount) ||
-            amount <= 0
-        ) {
-
-            alert(
-                "Please enter the payer, receiver, and a valid amount."
-            );
-
-            return;
-
-        }
-
-        if(
-            payer.toLowerCase() ===
-            receiver.toLowerCase()
-        ) {
-
-            alert(
-                "The payer and receiver must be different people."
-            );
-
-            return;
-
-        }
-
-        document.getElementById(
-            "reimbursementContent"
-        ).innerHTML =
-
-            '<div class="result-item">' +
-            '<span>Paid By</span>' +
-            '<span>' +
-            payer +
-            '</span>' +
-            '</div>' +
-
-            '<div class="result-item">' +
-            '<span>Reimburse</span>' +
-            '<span>' +
-            receiver +
-            '</span>' +
-            '</div>' +
-
-            '<div class="result-item">' +
-            '<span>Amount</span>' +
-            '<span>' +
-            money(amount) +
-            '</span>' +
-            '</div>' +
-
-            (
-                reason
-                ?
-
-                '<div class="result-item">' +
-                '<span>Reason</span>' +
-                '<span>' +
-                reason +
-                '</span>' +
-                '</div>'
-
-                :
-
-                ''
-            ) +
-
-            '<div class="result-item result-total">' +
-            '<span>' +
-            receiver +
-            ' Should Reimburse ' +
-            payer +
-            '</span>' +
-            '<span>' +
-            money(amount) +
-            '</span>' +
-            '</div>';
-
-        document.getElementById(
-            "reimbursementResult"
-        ).style.display =
-            "block";
-
-    }
-);
-
-
-document.getElementById(
-    "saveReimbursement"
-).addEventListener(
-    "click",
-    function() {
-
-        const result =
-            document.getElementById(
-                "reimbursementContent"
-            ).innerText;
-
-        if(!result) {
-
-            alert(
-                "Calculate the reimbursement first."
-            );
-
-            return;
-
-        }
-
-        saveHistory(
-            "🔄 Reimbursement Calculator",
-            result
-        );
-
-    }
-);
-
-
-document.getElementById(
-    "shareReimbursement"
-).addEventListener(
-    "click",
-    function() {
-
-        const result =
-            document.getElementById(
-                "reimbursementContent"
-            ).innerText;
-
-        if(!result) {
-
-            alert(
-                "Calculate the reimbursement first."
-            );
-
-            return;
-
-        }
-
-        shareResult(
-            "🔄 Reimbursement Calculator\n\n" +
-            result
-        );
-
-    }
-);
-
-
-document.getElementById(
-    "deleteReimbursement"
-).addEventListener(
-    "click",
-    function() {
-
-        document.getElementById(
-            "reimbursementResult"
-        ).style.display =
-            "none";
-
-    }
-);
 
 <!-- =====================================================
      ROUNDING AND SETTLEMENT
@@ -3538,6 +2868,309 @@ document.getElementById(
 
         document.getElementById(
             "iouResult"
+        ).style.display =
+            "none";
+
+    }
+);
+
+<!-- =====================================================
+     REIMBURSEMENT CALCULATOR
+===================================================== -->
+
+<div class="section-divider"></div>
+
+<section>
+
+<h2>🔄 Reimbursement Calculator</h2>
+
+<p class="receipt-description">
+Calculate exactly how much one person should reimburse another.
+</p>
+
+<div class="form-group">
+
+<label>Person Who Paid</label>
+
+<input
+type="text"
+id="reimbursementPayer"
+placeholder="Example: Alex"
+>
+
+</div>
+
+<div class="form-group">
+
+<label>Person Being Reimbursed</label>
+
+<input
+type="text"
+id="reimbursementReceiver"
+placeholder="Example: Jordan"
+>
+
+</div>
+
+<div class="form-group">
+
+<label>Amount Paid</label>
+
+<input
+type="number"
+id="reimbursementAmount"
+placeholder="Example: 75"
+min="0"
+step="any"
+>
+
+</div>
+
+<div class="form-group">
+
+<label>Reason</label>
+
+<input
+type="text"
+id="reimbursementReason"
+placeholder="Example: Dinner"
+>
+
+</div>
+
+<button
+type="button"
+class="action-btn"
+id="calculateReimbursement">
+Calculate Reimbursement
+</button>
+
+<div
+id="reimbursementResult"
+class="result-box">
+
+<h3>Reimbursement Result</h3>
+
+<div id="reimbursementContent"></div>
+
+<div class="result-actions">
+
+<button
+type="button"
+class="save-btn"
+id="saveReimbursement">
+💾 Save
+</button>
+
+<button
+type="button"
+class="share-result-btn"
+id="shareReimbursement">
+🔗 Share
+</button>
+
+<button
+type="button"
+class="delete-btn"
+id="deleteReimbursement">
+🗑️ Delete
+</button>
+
+</div>
+
+</div>
+
+</section>
+
+/* =====================================================
+   REIMBURSEMENT CALCULATOR
+===================================================== */
+
+document.getElementById(
+    "calculateReimbursement"
+).addEventListener(
+    "click",
+    function() {
+
+        const payer =
+            document.getElementById(
+                "reimbursementPayer"
+            ).value.trim();
+
+        const receiver =
+            document.getElementById(
+                "reimbursementReceiver"
+            ).value.trim();
+
+        const amount =
+            parseFloat(
+                document.getElementById(
+                    "reimbursementAmount"
+                ).value
+            );
+
+        const reason =
+            document.getElementById(
+                "reimbursementReason"
+            ).value.trim();
+
+        if(
+            !payer ||
+            !receiver ||
+            !Number.isFinite(amount) ||
+            amount <= 0
+        ) {
+
+            alert(
+                "Please enter the payer, receiver, and a valid amount."
+            );
+
+            return;
+
+        }
+
+        if(
+            payer.toLowerCase() ===
+            receiver.toLowerCase()
+        ) {
+
+            alert(
+                "The payer and receiver must be different people."
+            );
+
+            return;
+
+        }
+
+        document.getElementById(
+            "reimbursementContent"
+        ).innerHTML =
+
+            '<div class="result-item">' +
+            '<span>Paid By</span>' +
+            '<span>' +
+            payer +
+            '</span>' +
+            '</div>' +
+
+            '<div class="result-item">' +
+            '<span>Reimburse</span>' +
+            '<span>' +
+            receiver +
+            '</span>' +
+            '</div>' +
+
+            '<div class="result-item">' +
+            '<span>Amount</span>' +
+            '<span>' +
+            money(amount) +
+            '</span>' +
+            '</div>' +
+
+            (
+                reason
+                ?
+
+                '<div class="result-item">' +
+                '<span>Reason</span>' +
+                '<span>' +
+                reason +
+                '</span>' +
+                '</div>'
+
+                :
+
+                ''
+            ) +
+
+            '<div class="result-item result-total">' +
+            '<span>' +
+            receiver +
+            ' Should Reimburse ' +
+            payer +
+            '</span>' +
+            '<span>' +
+            money(amount) +
+            '</span>' +
+            '</div>';
+
+        document.getElementById(
+            "reimbursementResult"
+        ).style.display =
+            "block";
+
+    }
+);
+
+
+document.getElementById(
+    "saveReimbursement"
+).addEventListener(
+    "click",
+    function() {
+
+        const result =
+            document.getElementById(
+                "reimbursementContent"
+            ).innerText;
+
+        if(!result) {
+
+            alert(
+                "Calculate the reimbursement first."
+            );
+
+            return;
+
+        }
+
+        saveHistory(
+            "🔄 Reimbursement Calculator",
+            result
+        );
+
+    }
+);
+
+
+document.getElementById(
+    "shareReimbursement"
+).addEventListener(
+    "click",
+    function() {
+
+        const result =
+            document.getElementById(
+                "reimbursementContent"
+            ).innerText;
+
+        if(!result) {
+
+            alert(
+                "Calculate the reimbursement first."
+            );
+
+            return;
+
+        }
+
+        shareResult(
+            "🔄 Reimbursement Calculator\n\n" +
+            result
+        );
+
+    }
+);
+
+
+document.getElementById(
+    "deleteReimbursement"
+).addEventListener(
+    "click",
+    function() {
+
+        document.getElementById(
+            "reimbursementResult"
         ).style.display =
             "none";
 
