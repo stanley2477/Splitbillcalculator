@@ -1,0 +1,2685 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#2563eb">
+
+<meta
+name="description"
+content="Business expense calculators for corporate dinners, business travel, invoice splitting, freight, import costs, and cost per weight or volume."
+>
+
+<title>Business Expenses | Split Bill Calculator</title>
+
+<style>
+
+:root {
+    --primary: #2563eb;
+    --primary-hover: #1d4ed8;
+    --bg-main: #f8fafc;
+    --card-bg: #ffffff;
+    --text-title: #0f172a;
+    --text-body: #334155;
+    --border: #e2e8f0;
+    --muted: #64748b;
+    --success-bg: #f0fdf4;
+    --success-border: #10b981;
+    --success-text: #166534;
+}
+
+* {
+    box-sizing: border-box;
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    -webkit-text-size-adjust: 100%;
+}
+
+body {
+    background: var(--bg-main);
+    color: var(--text-body);
+    padding: 20px 15px;
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 520px;
+    width: 100%;
+    margin: 10px auto;
+    background: var(--card-bg);
+    padding: 30px 24px;
+    border-radius: 24px;
+    box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05);
+}
+
+header {
+    text-align: center;
+}
+
+header h1 {
+    color: var(--text-title);
+    font-size: 26px;
+    font-weight: 800;
+    margin-bottom: 7px;
+}
+
+header p {
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 28px;
+}
+
+h2 {
+    color: var(--text-title);
+    font-size: 18px;
+    margin-bottom: 9px;
+}
+
+.description {
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.5;
+    margin-bottom: 16px;
+}
+
+.section-divider {
+    margin: 35px 0 25px;
+    border-top: 2px solid var(--border);
+    padding-top: 25px;
+}
+
+.form-group {
+    margin-bottom: 16px;
+}
+
+label {
+    display: block;
+    color: #475569;
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 7px;
+}
+
+input,
+select {
+    width: 100%;
+    padding: 14px 16px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: #fff;
+    color: var(--text-title);
+    font-size: 16px;
+    outline: none;
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+input:focus,
+select:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(37,99,235,0.10);
+}
+
+.currency-search {
+    margin-bottom: 8px;
+}
+
+.currency-search input {
+    padding: 12px 14px;
+    font-size: 16px;
+}
+
+.action-btn,
+.secondary-btn {
+    width: 100%;
+    border-radius: 12px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.action-btn {
+    padding: 15px;
+    border: none;
+    background: var(--primary);
+    color: white;
+    font-size: 16px;
+    margin-top: 6px;
+}
+
+.action-btn:hover {
+    background: var(--primary-hover);
+}
+
+.secondary-btn {
+    padding: 13px;
+    border: 1px solid var(--border);
+    background: #fff;
+    color: var(--text-title);
+    font-size: 15px;
+    margin-top: 8px;
+}
+
+.result-box {
+    display: none;
+    margin-top: 20px;
+    padding: 20px;
+    border-radius: 16px;
+    background: var(--success-bg);
+    border: 1px solid var(--success-border);
+}
+
+.result-box h3 {
+    color: var(--success-text);
+    font-size: 15px;
+    text-align: center;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+    padding-bottom: 7px;
+    border-bottom: 1px dashed rgba(16,185,129,0.3);
+}
+
+.result-item {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 10px;
+    color: var(--success-text);
+    font-size: 15px;
+}
+
+.result-total {
+    border-top: 1px dashed #10b981;
+    padding-top: 12px;
+    margin-top: 12px;
+    font-size: 20px;
+    font-weight: 800;
+    color: #064e3b;
+}
+
+.result-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px;
+    margin-top: 15px;
+}
+
+.result-actions button {
+    border: none;
+    border-radius: 10px;
+    padding: 11px 6px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.save-btn {
+    background: #2563eb;
+    color: white;
+}
+
+.share-btn {
+    background: #16a34a;
+    color: white;
+}
+
+.delete-btn {
+    background: #fee2e2;
+    color: #b91c1c;
+}
+
+.history-card {
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 15px;
+    margin-bottom: 10px;
+    background: #fff;
+}
+
+.history-card h3 {
+    color: var(--text-title);
+    font-size: 15px;
+    margin-bottom: 8px;
+}
+
+.history-card p {
+    color: var(--text-body);
+    font-size: 13px;
+    line-height: 1.5;
+    white-space: pre-line;
+    margin-bottom: 12px;
+}
+
+.history-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+}
+
+.history-actions button {
+    border: none;
+    border-radius: 9px;
+    padding: 10px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.no-history {
+    text-align: center;
+    color: var(--muted);
+    font-size: 14px;
+    padding: 20px 5px;
+}
+
+.notice {
+    margin-top: 22px;
+    padding: 15px;
+    border-radius: 14px;
+    background: #eff6ff;
+    color: var(--text-body);
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.back-link {
+    display: block;
+    text-align: center;
+    margin-top: 22px;
+    color: var(--primary);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+@media (max-width: 430px) {
+
+    .container {
+        padding: 26px 20px;
+    }
+
+    .result-actions {
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<header>
+
+<h1>💼 Business Expenses</h1>
+
+<p>
+Business travel, invoices, freight and import costs.
+</p>
+
+</header>
+
+
+<!-- =====================================================
+     CURRENCY
+===================================================== -->
+
+<section>
+
+<h2>💱 Currency</h2>
+
+<p class="description">
+Choose the currency you want to use for your business calculations.
+</p>
+
+<div class="currency-search">
+
+<input
+type="text"
+id="currencySearch"
+placeholder="🔎 Search currency or country"
+autocomplete="off"
+>
+
+</div>
+
+<select id="currencySelect"></select>
+
+</section>
+
+
+<!-- =====================================================
+     CORPORATE DINNER
+===================================================== -->
+
+<div class="section-divider"></div>
+
+<section>
+
+<h2>🍽️ Corporate Dinner</h2>
+
+<p class="description">
+Calculate the total cost of a business dinner and the amount per attendee.
+</p>
+
+<div class="form-group">
+
+<label>Dinner Cost</label>
+
+<input
+type="number"
+id="dinnerCost"
+placeholder="Example: 500"
+min="0"
+step="any"
+inputmode="decimal"
+>
+
+</div>
+
+<div class="form-group">
+
+<label>Tax (%)</label>
+
+<input
+type="number"
+id="dinnerTax"
+placeholder="Example: 8"
+min="0"
+step="any"
+inputmode="decimal"
+>
+
+</div>
+
+<div class="form-group">
+
+<label>Tip (%)</label>
+
+<input
+type="number"
+id="dinnerTip"
+placeholder="Example: 15"
+min="0"
+step="any"
+inputmode="decimal"
+>
+
+</div>
+
+<div class="form-group">
+
+<label>Number of Attendees</label>
+
+<input
+type="number"
+id="dinnerPeople"
+placeholder="Example: 6"
+min="1"
+step="1"
+inputmode="numeric"
+>
+
+</div>
+
+<button
+type="button"
+class="action-btn"
+id="calculateDinner">
+Calculate Corporate Dinner
+</button>
+
+<div
+class="result-box"
+id="dinnerResult">
+
+<h3>Corporate Dinner Result</h3>
+
+<div id="dinnerContent"></div>
+
+<div class="result-actions">
+
+<button
+class="save-btn"
+id="saveDinner">
+💾 Save
+</button>
+
+<button
+class="share-btn"
+id="shareDinner">
+🔗 Share
+</button>
+
+<button
+class="delete-btn"
+id="deleteDinner">
+🗑️ Delete
+</button>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     BUSINESS TRAVEL
+===================================================== -->
+
+<div class="section-divider"></div>
+
+<section>
+
+<h2>✈️ Business Travel</h2>
+
+<p class="description">
+Estimate the total cost of a business trip including accommodation,
+food, transportation and other travel expenses.
+</p>
+
+<div class="form-group">
+
+<label>Number of Travel Days</label>
+
+<input
+type="number"
+id="travelDays"
+placeholder="Example: 5"
+min="1"
+step="1"
+inputmode="numeric"
+>
+
+</div>
+
+<div class="form-group">
+
+<label>Accommodation Per Day</label>
+
+<input
+type="number"
+id="travelAccommodation"
+placeholder="Example: 150"
+min="0"
+step="any"
+inputmode="decimal"
+>
+
+</div>
+
+<div class="form-group">
+
+<label>Food Per Day</label>
+
+<input
+type="number"
+id="travelFood"
+placeholder="Example: 60"
+min="0"
+step="any"
+inputmode="decimal"
+>
+
+</div>
+
+<div class="form-group">
+
+<label>Transportation Per Day</label>
+
+<input
+type="number"
+id="travelTransport"
+placeholder="Example: 40"
+min="0"
+step="any"
+inputmode="decimal"
+>
+
+</div>
+
+<div class="form-group">
+
+<label>Other Travel Costs</label>
+
+<input
+type="number"
+id="travelOther"
+placeholder="Example: 100"
+min="0"
+step="any"
+inputmode="decimal"
+>
+
+</div>
+
+<button
+type="button"
+class="action-btn"
+id="calculateTravel">
+Calculate Business Travel
+</button>
+
+<div
+class="result-box"
+id="travelResult">
+
+<h3>Business Travel Result</h3>
+
+<div id="travelContent"></div>
+
+<div class="result-actions">
+
+<button
+class="save-btn"
+id="saveTravel">
+💾 Save
+</button>
+
+<button
+class="share-btn"
+id="shareTravel">
+🔗 Share
+</button>
+
+<button
+class="delete-btn"
+id="deleteTravel">
+🗑️ Delete
+</button>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     BUSINESS INVOICE
+===================================================== -->
+
+<div class="section-divider"></div>
+
+<section>
+
+<h2>🧾 Business Invoice Splitter</h2>
+
+<p class="description">
+Split a business invoice between departments, teams or participants.
+</p>
+
+<div class="form-group">
+
+<label>Invoice Amount</label>
+
+<input
+type="number"
+id="invoiceAmount"
+placeholder="Example: 2000"
+min="0"
+step="any"
+inputmode="decimal"
+>
+
+</div>
+
+<div class="form-group">
+
+<label>Number of Departments / Participants</label>
+
+<input
+type="number"
+id="invoicePeople"
+placeholder="Example: 4"
+min="1"
+step="1"
+inputmode="numeric"
+>
+
+</div>
+
+<div class="form-group">
+
+<label>Additional Invoice Charges</label>
+
+<input
+type="number"
+id="invoiceCharges"
+placeholder="Example: 100"
+min="0"
+step="any"
+inputmode="decimal"
+>
+
+</div>
+
+<button
+type="button"
+class="action-btn"
+id="calculateInvoice">
+Calculate Invoice Split
+</button>
+
+<div
+class="result-box"
+id="invoiceResult">
+
+<h3>Business Invoice Result</h3>
+
+<div id="invoiceContent"></div>
+
+<div class="result-actions">
+
+<button
+class="save-btn"
+id="saveInvoice">
+💾 Save
+</button>
+
+<button
+class="share-btn"
+id="shareInvoice">
+🔗 Share
+</button>
+
+<button
+class="delete-btn"
+id="deleteInvoice">
+🗑️ Delete
+</button>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     FREIGHT COST
+===================================================== -->
+
+<div class="section-divider"></div>
+
+<section>
+
+<h2>🚚 Freight Cost</h2>
+
+<p class="description">
+Calculate the total freight cost and average shipping cost.
+</p>
+
+<div class="form-group">
+
+<label>Base Freight Cost</label>
+
+<input
+type="number"
+id="freightBase"
+placeholder="Example: 1000"
+min="0"
+step="any"
+inputmode="decimal"
+>
+
+</div>
+
+<div class="form-group">
+
+<label>Fuel / Surcharge</label>
+
+<input
+type="number"
+id="freightSurcharge"
+placeholder="Example: 150"
+min="0"
+step="any"
+inputmode="decimal"
+>
+
+</div>
+
+<div class="form-group">
+
+<label>Insurance</label>
+
+<input
+type="number"
+id="freightInsurance"
+placeholder="Example: 50"
+min="0"
+step="any"
+inputmode="decimal"
+>
+
+</div>
+
+<div class="form-group">
+
+<label>Number of Shipments</label>
+
+<input
+type="number"
+id="freightShipments"
+placeholder="Example: 5"
+min="1"
+step="1"
+inputmode="numeric"
+>
+
+</div>
+
+<button
+type="button"
+class="action-btn"
+id="calculateFreight">
+Calculate Freight Cost
+</button>
+
+<div
+class="result-box"
+id="freightResult">
+
+<h3>Freight Cost Result</h3>
+
+<div id="freightContent"></div>
+
+<div class="result-actions">
+
+<button
+class="save-btn"
+id="saveFreight">
+💾 Save
+</button>
+
+<button
+class="share-btn"
+id="shareFreight">
+🔗 Share
+</button>
+
+<button
+class="delete-btn"
+id="deleteFreight">
+🗑️ Delete
+</button>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     IMPORT COST
+===================================================== -->
+
+<div class="section-divider"></div>
+
+<section>
+
+<h2>📦 Import Cost</h2>
+
+<p class="description">
+Estimate the complete cost of imported goods including product,
+shipping, duty, tax and other charges.
+</p>
+
+<div class="form-group">
+
+<label>Product Cost</label>
+
+<input
+type="number"
+id="importProduct"
+placeholder="Example: 5000"
+min="0"
+step="any"
+inputmode="decimal"
+>
+
+</div>
+
+<div class="form-group">
+
+<label>Shipping / Freight Cost</label>
+
+<input
+type="number"
+id="importShipping"
+placeholder="Example: 800"
+min="0"
+step="any"
+inputmode="decimal"
+>
+
+</div>
+
+<div class="form-group">
+
+<label>Import Duty (%)</label>
+
+<input
+type="number"
+id="importDuty"
+placeholder="Example: 10"
+min="0"
+step="any"
+inputmode="decimal"
+>
+
+</div>
+
+<div class="form-group">
+
+<label>Tax (%)</label>
+
+<input
+type="number"
+id="importTax"
+placeholder="Example: 8"
+min="0"
+step="any"
+inputmode="decimal"
+>
+
+</div>
+
+<div class="form-group">
+
+<label>Other Import Charges</label>
+
+<input
+type="number"
+id="importOther"
+placeholder="Example: 200"
+min="0"
+step="any"
+inputmode="decimal"
+>
+
+</div>
+
+<button
+type="button"
+class="action-btn"
+id="calculateImport">
+Calculate Import Cost
+</button>
+
+<div
+class="result-box"
+id="importResult">
+
+<h3>Import Cost Result</h3>
+
+<div id="importContent"></div>
+
+<div class="result-actions">
+
+<button
+class="save-btn"
+id="saveImport">
+💾 Save
+</button>
+
+<button
+class="share-btn"
+id="shareImport">
+🔗 Share
+</button>
+
+<button
+class="delete-btn"
+id="deleteImport">
+🗑️ Delete
+</button>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     COST PER WEIGHT / VOLUME
+===================================================== -->
+
+<div class="section-divider"></div>
+
+<section>
+
+<h2>⚖️ Cost-per-Weight/Volume</h2>
+
+<p class="description">
+Calculate the cost per kilogram, tonne, litre, cubic metre or another
+unit of weight or volume.
+</p>
+
+<div class="form-group">
+
+<label>Total Cost</label>
+
+<input
+type="number"
+id="unitTotalCost"
+placeholder="Example: 2500"
+min="0"
+step="any"
+inputmode="decimal"
+>
+
+</div>
+
+<div class="form-group">
+
+<label>Total Weight / Volume</label>
+
+<input
+type="number"
+id="unitQuantity"
+placeholder="Example: 100"
+min="0"
+step="any"
+inputmode="decimal"
+>
+
+</div>
+
+<div class="form-group">
+
+<label>Unit</label>
+
+<select id="unitType">
+
+<option value="kg">Kilogram (kg)</option>
+<option value="tonne">Tonne</option>
+<option value="g">Gram (g)</option>
+<option value="litre">Litre (L)</option>
+<option value="ml">Millilitre (mL)</option>
+<option value="m3">Cubic Metre (m³)</option>
+<option value="ft3">Cubic Foot (ft³)</option>
+<option value="unit">Unit</option>
+
+</select>
+
+</div>
+
+<button
+type="button"
+class="action-btn"
+id="calculateUnitCost">
+Calculate Cost per Unit
+</button>
+
+<div
+class="result-box"
+id="unitResult">
+
+<h3>Cost per Weight / Volume</h3>
+
+<div id="unitContent"></div>
+
+<div class="result-actions">
+
+<button
+class="save-btn"
+id="saveUnit">
+💾 Save
+</button>
+
+<button
+class="share-btn"
+id="shareUnit">
+🔗 Share
+</button>
+
+<button
+class="delete-btn"
+id="deleteUnit">
+🗑️ Delete
+</button>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     SAVED HISTORY
+===================================================== -->
+
+<div class="section-divider"></div>
+
+<section>
+
+<h2>💾 Saved Calculation History</h2>
+
+<p class="description">
+Saved calculations are stored locally on this device and are not uploaded to our server.
+</p>
+
+<div id="savedHistory"></div>
+
+<button
+type="button"
+class="secondary-btn"
+id="clearHistory">
+🗑️ Clear All History
+</button>
+
+</section>
+
+
+<div class="notice">
+
+<strong>Privacy:</strong>
+Your saved business calculations are stored locally on this device
+and are not uploaded to our server.
+
+</div>
+
+
+<a
+href="index.html"
+class="back-link">
+← Back to Split Bill Calculator
+</a>
+
+
+<div style="
+text-align:center;
+color:#64748b;
+font-size:12px;
+margin-top:22px;
+padding-top:20px;
+border-top:1px solid var(--border);
+">
+
+© <span id="currentYear"></span> Split Bill Calculator
+
+</div>
+
+</div>
+
+
+<script>
+
+"use strict";
+
+
+/* =====================================================
+   CURRENCIES
+===================================================== */
+
+const currencies = [
+
+["AFN","Afghanistan — Afghan Afghani","؋"],
+["ALL","Albania — Albanian Lek","L"],
+["DZD","Algeria — Algerian Dinar","دج"],
+["AOA","Angola — Angolan Kwanza","Kz"],
+["ARS","Argentina — Argentine Peso","$"],
+["AMD","Armenia — Armenian Dram","֏"],
+["AWG","Aruba — Aruban Florin","ƒ"],
+["AUD","Australia — Australian Dollar","A$"],
+["AZN","Azerbaijan — Azerbaijani Manat","₼"],
+
+["BSD","Bahamas — Bahamian Dollar","$"],
+["BHD","Bahrain — Bahraini Dinar","د.ب"],
+["BDT","Bangladesh — Bangladeshi Taka","৳"],
+["BBD","Barbados — Barbadian Dollar","$"],
+["BYN","Belarus — Belarusian Ruble","Br"],
+["BZD","Belize — Belize Dollar","BZ$"],
+["BMD","Bermuda — Bermudian Dollar","$"],
+["BTN","Bhutan — Bhutanese Ngultrum","Nu."],
+["BOB","Bolivia — Bolivian Boliviano","Bs."],
+["BAM","Bosnia and Herzegovina — Convertible Mark","KM"],
+["BWP","Botswana — Botswana Pula","P"],
+["BRL","Brazil — Brazilian Real","R$"],
+["BND","Brunei — Brunei Dollar","B$"],
+["BGN","Bulgaria — Bulgarian Lev","лв"],
+["BIF","Burundi — Burundian Franc","FBu"],
+
+["KHR","Cambodia — Cambodian Riel","៛"],
+["CAD","Canada — Canadian Dollar","C$"],
+["CVE","Cape Verde — Cape Verdean Escudo","$"],
+["KYD","Cayman Islands — Cayman Islands Dollar","CI$"],
+["XAF","Central African CFA Franc","FCFA"],
+["CLP","Chile — Chilean Peso","$"],
+["CNY","China — Chinese Yuan","¥"],
+["COP","Colombia — Colombian Peso","$"],
+["KMF","Comoros — Comorian Franc","CF"],
+["CDF","Congo — Congolese Franc","FC"],
+["CRC","Costa Rica — Costa Rican Colón","₡"],
+["XOF","West African CFA Franc","CFA"],
+["CUP","Cuba — Cuban Peso","$"],
+["CZK","Czechia — Czech Koruna","Kč"],
+
+["DKK","Denmark — Danish Krone","kr"],
+["DJF","Djibouti — Djiboutian Franc","Fdj"],
+["DOP","Dominican Republic — Dominican Peso","RD$"],
+
+["EGP","Egypt — Egyptian Pound","£"],
+["ERN","Eritrea — Eritrean Nakfa","Nfk"],
+["ETB","Ethiopia — Ethiopian Birr","Br"],
+["EUR","European Union — Euro","€"],
+
+["FJD","Fiji — Fijian Dollar","FJ$"],
+["FKP","Falkland Islands — Falkland Pound","£"],
+
+["GMD","Gambia — Gambian Dalasi","D"],
+["GEL","Georgia — Georgian Lari","₾"],
+["GHS","Ghana — Ghanaian Cedi","₵"],
+["GIP","Gibraltar — Gibraltar Pound","£"],
+["GTQ","Guatemala — Guatemalan Quetzal","Q"],
+["GNF","Guinea — Guinean Franc","FG"],
+["GYD","Guyana — Guyanese Dollar","G$"],
+
+["HTG","Haiti — Haitian Gourde","G"],
+["HNL","Honduras — Honduran Lempira","L"],
+["HKD","Hong Kong — Hong Kong Dollar","HK$"],
+["HUF","Hungary — Hungarian Forint","Ft"],
+
+["ISK","Iceland — Icelandic Króna","kr"],
+["INR","India — Indian Rupee","₹"],
+["IDR","Indonesia — Indonesian Rupiah","Rp"],
+["IRR","Iran — Iranian Rial","﷼"],
+["IQD","Iraq — Iraqi Dinar","ع.د"],
+["ILS","Israel — Israeli New Shekel","₪"],
+
+["JMD","Jamaica — Jamaican Dollar","J$"],
+["JPY","Japan — Japanese Yen","¥"],
+["JOD","Jordan — Jordanian Dinar","د.ا"],
+
+["KZT","Kazakhstan — Kazakhstani Tenge","₸"],
+["KES","Kenya — Kenyan Shilling","KSh"],
+["KWD","Kuwait — Kuwaiti Dinar","د.ك"],
+["KGS","Kyrgyzstan — Kyrgyzstani Som","с"],
+
+["LAK","Laos — Lao Kip","₭"],
+["LBP","Lebanon — Lebanese Pound","ل.ل"],
+["LSL","Lesotho — Lesotho Loti","L"],
+["LRD","Liberia — Liberian Dollar","L$"],
+["LYD","Libya — Libyan Dinar","ل.د"],
+
+["MOP","Macau — Macanese Pataca","MOP$"],
+["MKD","North Macedonia — Macedonian Denar","ден"],
+["MGA","Madagascar — Malagasy Ariary","Ar"],
+["MWK","Malawi — Malawian Kwacha","MK"],
+["MYR","Malaysia — Malaysian Ringgit","RM"],
+["MVR","Maldives — Maldivian Rufiyaa","Rf"],
+["MRU","Mauritania — Mauritanian Ouguiya","UM"],
+["MUR","Mauritius — Mauritian Rupee","₨"],
+["MXN","Mexico — Mexican Peso","$"],
+["MDL","Moldova — Moldovan Leu","L"],
+["MNT","Mongolia — Mongolian Tögrög","₮"],
+["MAD","Morocco — Moroccan Dirham","د.م."],
+["MZN","Mozambique — Mozambican Metical","MT"],
+
+["NAD","Namibia — Namibian Dollar","N$"],
+["NPR","Nepal — Nepalese Rupee","₨"],
+["ANG","Netherlands — Caribbean Guilder","ƒ"],
+["NZD","New Zealand — New Zealand Dollar","NZ$"],
+["NIO","Nicaragua — Nicaraguan Córdoba","C$"],
+["NGN","Nigeria — Nigerian Naira","₦"],
+["NOK","Norway — Norwegian Krone","kr"],
+
+["OMR","Oman — Omani Rial","ر.ع."],
+
+["PKR","Pakistan — Pakistani Rupee","₨"],
+["PAB","Panama — Panamanian Balboa","B/."],
+["PGK","Papua New Guinea — Kina","K"],
+["PYG","Paraguay — Paraguayan Guaraní","₲"],
+["PEN","Peru — Peruvian Sol","S/"],
+["PHP","Philippines — Philippine Peso","₱"],
+["PLN","Poland — Polish Złoty","zł"],
+["QAR","Qatar — Qatari Riyal","ر.ق"],
+
+["RON","Romania — Romanian Leu","lei"],
+["RSD","Serbia — Serbian Dinar","дин"],
+["RUB","Russia — Russian Ruble","₽"],
+["RWF","Rwanda — Rwandan Franc","FRw"],
+
+["SHP","Saint Helena — Saint Helena Pound","£"],
+["WST","Samoa — Samoan Tala","T"],
+["STN","São Tomé and Príncipe — Dobra","Db"],
+["SAR","Saudi Arabia — Saudi Riyal","ر.س"],
+["SCR","Seychelles — Seychellois Rupee","₨"],
+["SLE","Sierra Leone — Leone","Le"],
+["SGD","Singapore — Singapore Dollar","S$"],
+["SBD","Solomon Islands — Solomon Islands Dollar","SI$"],
+["SOS","Somalia — Somali Shilling","Sh"],
+["ZAR","South Africa — South African Rand","R"],
+["KRW","South Korea — South Korean Won","₩"],
+["SSP","South Sudan — South Sudanese Pound","£"],
+["LKR","Sri Lanka — Sri Lankan Rupee","₨"],
+["SDG","Sudan — Sudanese Pound","ج.س."],
+["SRD","Suriname — Surinamese Dollar","$"],
+["SZL","Eswatini — Swazi Lilangeni","E"],
+["SEK","Sweden — Swedish Krona","kr"],
+["CHF","Switzerland — Swiss Franc","CHF"],
+["SYP","Syria — Syrian Pound","£"],
+
+["TWD","Taiwan — New Taiwan Dollar","NT$"],
+["TJS","Tajikistan — Somoni","SM"],
+["TZS","Tanzania — Tanzanian Shilling","TSh"],
+["THB","Thailand — Thai Baht","฿"],
+["TOP","Tonga — Tongan Paʻanga","T$"],
+["TTD","Trinidad and Tobago — Dollar","TT$"],
+["TND","Tunisia — Tunisian Dinar","د.ت"],
+["TRY","Turkey — Turkish Lira","₺"],
+["TMT","Turkmenistan — Manat","m"],
+
+["UGX","Uganda — Ugandan Shilling","USh"],
+["UAH","Ukraine — Ukrainian Hryvnia","₴"],
+["AED","United Arab Emirates — Dirham","د.إ"],
+["GBP","United Kingdom — British Pound","£"],
+["USD","United States — US Dollar","$"],
+["UYU","Uruguay — Uruguayan Peso","$U"],
+["UZS","Uzbekistani Som","лв"],
+
+["VUV","Vanuatu — Vanuatu Vatu","VT"],
+["VES","Venezuela — Venezuelan Bolívar","Bs."],
+["VND","Vietnam — Vietnamese Dong","₫"],
+
+["YER","Yemen — Yemeni Rial","﷼"],
+["ZMW","Zambia — Zambian Kwacha","ZK"],
+["ZWL","Zimbabwe — Zimbabwe Dollar","Z$"]
+
+];
+
+
+/* =====================================================
+   CURRENCY
+===================================================== */
+
+function populateCurrencies(query = "") {
+
+    const select =
+        document.getElementById("currencySelect");
+
+    const current =
+        select.value;
+
+    select.innerHTML = "";
+
+    const search =
+        query.toLowerCase().trim();
+
+    currencies
+        .filter(function(item) {
+
+            return (
+                item[0].toLowerCase().includes(search) ||
+                item[1].toLowerCase().includes(search)
+            );
+
+        })
+        .forEach(function(item) {
+
+            const option =
+                document.createElement("option");
+
+            option.value = item[0];
+
+            option.textContent =
+                item[1] +
+                " (" +
+                item[0] +
+                ")";
+
+            select.appendChild(option);
+
+        });
+
+    if (
+        currencies.some(
+            function(item) {
+                return item[0] === current;
+            }
+        )
+    ) {
+        select.value = current;
+    }
+
+}
+
+
+populateCurrencies();
+
+document.getElementById(
+    "currencySelect"
+).value = "USD";
+
+
+document.getElementById(
+    "currencySearch"
+).addEventListener(
+    "input",
+    function() {
+        populateCurrencies(this.value);
+    }
+);
+
+
+function getCurrencyData() {
+
+    return currencies.find(
+        function(item) {
+            return item[0] ===
+                document.getElementById(
+                    "currencySelect"
+                ).value;
+        }
+    ) || currencies.find(
+        function(item) {
+            return item[0] === "USD";
+        }
+    );
+
+}
+
+
+function symbol() {
+    return getCurrencyData()[2];
+}
+
+
+function money(value) {
+
+    return symbol() +
+        Number(value).toLocaleString(
+            undefined,
+            {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            }
+        );
+
+}
+
+
+/* =====================================================
+   SHARE
+===================================================== */
+
+function shareResult(text) {
+
+    if (navigator.share) {
+
+        navigator.share({
+            title: "Business Expenses",
+            text: text
+        }).catch(function(error) {
+
+            if (
+                error &&
+                error.name === "AbortError"
+            ) {
+                return;
+            }
+
+            fallbackCopy(text);
+
+        });
+
+        return;
+
+    }
+
+    fallbackCopy(text);
+
+}
+
+
+function fallbackCopy(text) {
+
+    if (
+        navigator.clipboard &&
+        window.isSecureContext
+    ) {
+
+        navigator.clipboard
+            .writeText(text)
+            .then(function() {
+                alert("Result copied to clipboard.");
+            })
+            .catch(function() {
+                oldCopy(text);
+            });
+
+        return;
+
+    }
+
+    oldCopy(text);
+
+}
+
+
+function oldCopy(text) {
+
+    const textarea =
+        document.createElement("textarea");
+
+    textarea.value = text;
+
+    textarea.style.position = "fixed";
+    textarea.style.left = "-9999px";
+
+    document.body.appendChild(textarea);
+
+    textarea.focus();
+    textarea.select();
+
+    try {
+
+        document.execCommand("copy");
+
+        alert("Result copied to clipboard.");
+
+    } catch(error) {
+
+        alert(text);
+
+    }
+
+    document.body.removeChild(textarea);
+
+}
+
+
+/* =====================================================
+   HISTORY
+===================================================== */
+
+const HISTORY_KEY =
+    "splitBillBusinessExpensesHistory";
+
+
+function getHistory() {
+
+    try {
+
+        return JSON.parse(
+            localStorage.getItem(
+                HISTORY_KEY
+            )
+        ) || [];
+
+    } catch(error) {
+
+        return [];
+
+    }
+
+}
+
+
+function saveHistory(tool, result) {
+
+    const history =
+        getHistory();
+
+    history.unshift({
+
+        id:
+            Date.now().toString() +
+            Math.random()
+                .toString(36)
+                .slice(2),
+
+        tool:
+            tool,
+
+        result:
+            result,
+
+        date:
+            new Date().toLocaleString()
+
+    });
+
+    try {
+
+        localStorage.setItem(
+            HISTORY_KEY,
+            JSON.stringify(history)
+        );
+
+        renderHistory();
+
+        alert(
+            "Calculation saved successfully."
+        );
+
+    } catch(error) {
+
+        alert(
+            "Unable to save this calculation on your device."
+        );
+
+    }
+
+}
+
+
+function deleteHistory(id) {
+
+    const history =
+        getHistory().filter(
+            function(item) {
+                return item.id !== id;
+            }
+        );
+
+    localStorage.setItem(
+        HISTORY_KEY,
+        JSON.stringify(history)
+    );
+
+    renderHistory();
+
+}
+
+
+function renderHistory() {
+
+    const container =
+        document.getElementById(
+            "savedHistory"
+        );
+
+    const history =
+        getHistory();
+
+    container.innerHTML = "";
+
+    if (!history.length) {
+
+        container.innerHTML =
+            '<div class="no-history">' +
+            'No saved calculations yet.' +
+            '</div>';
+
+        return;
+
+    }
+
+    history.forEach(function(item) {
+
+        const card =
+            document.createElement("div");
+
+        card.className =
+            "history-card";
+
+        const title =
+            document.createElement("h3");
+
+        title.textContent =
+            item.tool;
+
+        const result =
+            document.createElement("p");
+
+        result.textContent =
+            item.result +
+            "\n\nSaved: " +
+            item.date;
+
+        const actions =
+            document.createElement("div");
+
+        actions.className =
+            "history-actions";
+
+        const share =
+            document.createElement("button");
+
+        share.textContent =
+            "🔗 Share";
+
+        share.className =
+            "share-btn";
+
+        share.addEventListener(
+            "click",
+            function() {
+                shareResult(item.result);
+            }
+        );
+
+        const del =
+            document.createElement("button");
+
+        del.textContent =
+            "🗑️ Delete";
+
+        del.className =
+            "delete-btn";
+
+        del.addEventListener(
+            "click",
+            function() {
+
+                if (
+                    confirm(
+                        "Delete this saved calculation?"
+                    )
+                ) {
+                    deleteHistory(item.id);
+                }
+
+            }
+        );
+
+        actions.appendChild(share);
+        actions.appendChild(del);
+
+        card.appendChild(title);
+        card.appendChild(result);
+        card.appendChild(actions);
+
+        container.appendChild(card);
+
+    });
+
+}
+
+
+document.getElementById(
+    "clearHistory"
+).addEventListener(
+    "click",
+    function() {
+
+        if (
+            !confirm(
+                "Delete all saved calculations?"
+            )
+        ) {
+            return;
+        }
+
+        localStorage.removeItem(
+            HISTORY_KEY
+        );
+
+        renderHistory();
+
+    }
+);
+
+
+/* =====================================================
+   CORPORATE DINNER
+===================================================== */
+
+document.getElementById(
+    "calculateDinner"
+).addEventListener(
+    "click",
+    function() {
+
+        const cost =
+            Number(
+                document.getElementById(
+                    "dinnerCost"
+                ).value
+            );
+
+        const tax =
+            Number(
+                document.getElementById(
+                    "dinnerTax"
+                ).value
+            ) || 0;
+
+        const tip =
+            Number(
+                document.getElementById(
+                    "dinnerTip"
+                ).value
+            ) || 0;
+
+        const people =
+            Number(
+                document.getElementById(
+                    "dinnerPeople"
+                ).value
+            );
+
+        if (
+            !Number.isFinite(cost) ||
+            cost < 0 ||
+            !Number.isFinite(people) ||
+            people <= 0
+        ) {
+
+            alert(
+                "Please enter valid dinner cost and attendee values."
+            );
+
+            return;
+
+        }
+
+        const taxAmount =
+            cost * tax / 100;
+
+        const tipAmount =
+            cost * tip / 100;
+
+        const total =
+            cost +
+            taxAmount +
+            tipAmount;
+
+        const perPerson =
+            total / people;
+
+        const content =
+            document.getElementById(
+                "dinnerContent"
+            );
+
+        content.innerHTML =
+
+            row("Dinner Cost", money(cost)) +
+
+            row(
+                "Tax",
+                money(taxAmount)
+            ) +
+
+            row(
+                "Tip",
+                money(tipAmount)
+            ) +
+
+            row(
+                "Attendees",
+                people
+            ) +
+
+            '<div class="result-item result-total">' +
+            '<span>Each Person</span>' +
+            '<span>' +
+            money(perPerson) +
+            '</span>' +
+            '</div>' +
+
+            '<div class="result-item">' +
+            '<span>Total Dinner Cost</span>' +
+            '<span>' +
+            money(total) +
+            '</span>' +
+            '</div>';
+
+        show("dinnerResult");
+
+    }
+);
+
+
+document.getElementById(
+    "saveDinner"
+).addEventListener(
+    "click",
+    function() {
+        saveCurrent(
+            "🍽️ Corporate Dinner",
+            "dinnerContent"
+        );
+    }
+);
+
+
+document.getElementById(
+    "shareDinner"
+).addEventListener(
+    "click",
+    function() {
+        shareCurrent(
+            "🍽️ Corporate Dinner",
+            "dinnerContent"
+        );
+    }
+);
+
+
+document.getElementById(
+    "deleteDinner"
+).addEventListener(
+    "click",
+    function() {
+        hide("dinnerResult");
+    }
+);
+
+
+/* =====================================================
+   BUSINESS TRAVEL
+===================================================== */
+
+document.getElementById(
+    "calculateTravel"
+).addEventListener(
+    "click",
+    function() {
+
+        const days =
+            Number(
+                document.getElementById(
+                    "travelDays"
+                ).value
+            );
+
+        const accommodation =
+            Number(
+                document.getElementById(
+                    "travelAccommodation"
+                ).value
+            ) || 0;
+
+        const food =
+            Number(
+                document.getElementById(
+                    "travelFood"
+                ).value
+            ) || 0;
+
+        const transport =
+            Number(
+                document.getElementById(
+                    "travelTransport"
+                ).value
+            ) || 0;
+
+        const other =
+            Number(
+                document.getElementById(
+                    "travelOther"
+                ).value
+            ) || 0;
+
+        if (
+            !Number.isFinite(days) ||
+            days <= 0
+        ) {
+
+            alert(
+                "Please enter a valid number of travel days."
+            );
+
+            return;
+
+        }
+
+        const accommodationTotal =
+            accommodation * days;
+
+        const foodTotal =
+            food * days;
+
+        const transportTotal =
+            transport * days;
+
+        const daily =
+            accommodation +
+            food +
+            transport;
+
+        const total =
+            accommodationTotal +
+            foodTotal +
+            transportTotal +
+            other;
+
+        document.getElementById(
+            "travelContent"
+        ).innerHTML =
+
+            row(
+                "Travel Days",
+                days
+            ) +
+
+            row(
+                "Accommodation",
+                money(accommodationTotal)
+            ) +
+
+            row(
+                "Food",
+                money(foodTotal)
+            ) +
+
+            row(
+                "Transportation",
+                money(transportTotal)
+            ) +
+
+            row(
+                "Other Costs",
+                money(other)
+            ) +
+
+            row(
+                "Daily Core Budget",
+                money(daily)
+            ) +
+
+            '<div class="result-item result-total">' +
+            '<span>Total Trip Cost</span>' +
+            '<span>' +
+            money(total) +
+            '</span>' +
+            '</div>';
+
+        show("travelResult");
+
+    }
+);
+
+
+document.getElementById(
+    "saveTravel"
+).addEventListener(
+    "click",
+    function() {
+        saveCurrent(
+            "✈️ Business Travel",
+            "travelContent"
+        );
+    }
+);
+
+
+document.getElementById(
+    "shareTravel"
+).addEventListener(
+    "click",
+    function() {
+        shareCurrent(
+            "✈️ Business Travel",
+            "travelContent"
+        );
+    }
+);
+
+
+document.getElementById(
+    "deleteTravel"
+).addEventListener(
+    "click",
+    function() {
+        hide("travelResult");
+    }
+);
+
+
+/* =====================================================
+   BUSINESS INVOICE
+===================================================== */
+
+document.getElementById(
+    "calculateInvoice"
+).addEventListener(
+    "click",
+    function() {
+
+        const invoice =
+            Number(
+                document.getElementById(
+                    "invoiceAmount"
+                ).value
+            );
+
+        const people =
+            Number(
+                document.getElementById(
+                    "invoicePeople"
+                ).value
+            );
+
+        const charges =
+            Number(
+                document.getElementById(
+                    "invoiceCharges"
+                ).value
+            ) || 0;
+
+        if (
+            !Number.isFinite(invoice) ||
+            invoice < 0 ||
+            !Number.isFinite(people) ||
+            people <= 0
+        ) {
+
+            alert(
+                "Please enter valid invoice and participant values."
+            );
+
+            return;
+
+        }
+
+        const total =
+            invoice + charges;
+
+        const each =
+            total / people;
+
+        document.getElementById(
+            "invoiceContent"
+        ).innerHTML =
+
+            row(
+                "Invoice",
+                money(invoice)
+            ) +
+
+            row(
+                "Additional Charges",
+                money(charges)
+            ) +
+
+            row(
+                "Participants",
+                people
+            ) +
+
+            '<div class="result-item result-total">' +
+            '<span>Each Share</span>' +
+            '<span>' +
+            money(each) +
+            '</span>' +
+            '</div>' +
+
+            row(
+                "Total Invoice Cost",
+                money(total)
+            );
+
+        show("invoiceResult");
+
+    }
+);
+
+
+document.getElementById(
+    "saveInvoice"
+).addEventListener(
+    "click",
+    function() {
+        saveCurrent(
+            "🧾 Business Invoice Splitter",
+            "invoiceContent"
+        );
+    }
+);
+
+
+document.getElementById(
+    "shareInvoice"
+).addEventListener(
+    "click",
+    function() {
+        shareCurrent(
+            "🧾 Business Invoice Splitter",
+            "invoiceContent"
+        );
+    }
+);
+
+
+document.getElementById(
+    "deleteInvoice"
+).addEventListener(
+    "click",
+    function() {
+        hide("invoiceResult");
+    }
+);
+
+
+/* =====================================================
+   FREIGHT COST
+===================================================== */
+
+document.getElementById(
+    "calculateFreight"
+).addEventListener(
+    "click",
+    function() {
+
+        const base =
+            Number(
+                document.getElementById(
+                    "freightBase"
+                ).value
+            ) || 0;
+
+        const surcharge =
+            Number(
+                document.getElementById(
+                    "freightSurcharge"
+                ).value
+            ) || 0;
+
+        const insurance =
+            Number(
+                document.getElementById(
+                    "freightInsurance"
+                ).value
+            ) || 0;
+
+        const shipments =
+            Number(
+                document.getElementById(
+                    "freightShipments"
+                ).value
+            );
+
+        if (
+            !Number.isFinite(shipments) ||
+            shipments <= 0
+        ) {
+
+            alert(
+                "Please enter a valid number of shipments."
+            );
+
+            return;
+
+        }
+
+        const total =
+            base +
+            surcharge +
+            insurance;
+
+        const average =
+            total / shipments;
+
+        document.getElementById(
+            "freightContent"
+        ).innerHTML =
+
+            row(
+                "Base Freight",
+                money(base)
+            ) +
+
+            row(
+                "Fuel / Surcharge",
+                money(surcharge)
+            ) +
+
+            row(
+                "Insurance",
+                money(insurance)
+            ) +
+
+            row(
+                "Shipments",
+                shipments
+            ) +
+
+            '<div class="result-item result-total">' +
+            '<span>Total Freight Cost</span>' +
+            '<span>' +
+            money(total) +
+            '</span>' +
+            '</div>' +
+
+            row(
+                "Average Per Shipment",
+                money(average)
+            );
+
+        show("freightResult");
+
+    }
+);
+
+
+document.getElementById(
+    "saveFreight"
+).addEventListener(
+    "click",
+    function() {
+        saveCurrent(
+            "🚚 Freight Cost",
+            "freightContent"
+        );
+    }
+);
+
+
+document.getElementById(
+    "shareFreight"
+).addEventListener(
+    "click",
+    function() {
+        shareCurrent(
+            "🚚 Freight Cost",
+            "freightContent"
+        );
+    }
+);
+
+
+document.getElementById(
+    "deleteFreight"
+).addEventListener(
+    "click",
+    function() {
+        hide("freightResult");
+    }
+);
+
+
+/* =====================================================
+   IMPORT COST
+===================================================== */
+
+document.getElementById(
+    "calculateImport"
+).addEventListener(
+    "click",
+    function() {
+
+        const product =
+            Number(
+                document.getElementById(
+                    "importProduct"
+                ).value
+            );
+
+        const shipping =
+            Number(
+                document.getElementById(
+                    "importShipping"
+                ).value
+            ) || 0;
+
+        const dutyRate =
+            Number(
+                document.getElementById(
+                    "importDuty"
+                ).value
+            ) || 0;
+
+        const taxRate =
+            Number(
+                document.getElementById(
+                    "importTax"
+                ).value
+            ) || 0;
+
+        const other =
+            Number(
+                document.getElementById(
+                    "importOther"
+                ).value
+            ) || 0;
+
+        if (
+            !Number.isFinite(product) ||
+            product < 0
+        ) {
+
+            alert(
+                "Please enter a valid product cost."
+            );
+
+            return;
+
+        }
+
+        const duty =
+            product * dutyRate / 100;
+
+        const taxBase =
+            product +
+            shipping +
+            duty;
+
+        const tax =
+            taxBase * taxRate / 100;
+
+        const total =
+            product +
+            shipping +
+            duty +
+            tax +
+            other;
+
+        document.getElementById(
+            "importContent"
+        ).innerHTML =
+
+            row(
+                "Product Cost",
+                money(product)
+            ) +
+
+            row(
+                "Shipping / Freight",
+                money(shipping)
+            ) +
+
+            row(
+                "Import Duty",
+                money(duty)
+            ) +
+
+            row(
+                "Tax",
+                money(tax)
+            ) +
+
+            row(
+                "Other Charges",
+                money(other)
+            ) +
+
+            '<div class="result-item result-total">' +
+            '<span>Total Import Cost</span>' +
+            '<span>' +
+            money(total) +
+            '</span>' +
+            '</div>';
+
+        show("importResult");
+
+    }
+);
+
+
+document.getElementById(
+    "saveImport"
+).addEventListener(
+    "click",
+    function() {
+        saveCurrent(
+            "📦 Import Cost",
+            "importContent"
+        );
+    }
+);
+
+
+document.getElementById(
+    "shareImport"
+).addEventListener(
+    "click",
+    function() {
+        shareCurrent(
+            "📦 Import Cost",
+            "importContent"
+        );
+    }
+);
+
+
+document.getElementById(
+    "deleteImport"
+).addEventListener(
+    "click",
+    function() {
+        hide("importResult");
+    }
+);
+
+
+/* =====================================================
+   COST PER WEIGHT / VOLUME
+===================================================== */
+
+document.getElementById(
+    "calculateUnitCost"
+).addEventListener(
+    "click",
+    function() {
+
+        const total =
+            Number(
+                document.getElementById(
+                    "unitTotalCost"
+                ).value
+            );
+
+        const quantity =
+            Number(
+                document.getElementById(
+                    "unitQuantity"
+                ).value
+            );
+
+        const unit =
+            document.getElementById(
+                "unitType"
+            ).value;
+
+        if (
+            !Number.isFinite(total) ||
+            total < 0 ||
+            !Number.isFinite(quantity) ||
+            quantity <= 0
+        ) {
+
+            alert(
+                "Please enter valid cost and quantity values."
+            );
+
+            return;
+
+        }
+
+        const costPerUnit =
+            total / quantity;
+
+        const unitLabel =
+            document.getElementById(
+                "unitType"
+            ).selectedOptions[0].textContent;
+
+        document.getElementById(
+            "unitContent"
+        ).innerHTML =
+
+            row(
+                "Total Cost",
+                money(total)
+            ) +
+
+            row(
+                "Quantity",
+                quantity
+            ) +
+
+            row(
+                "Unit",
+                unitLabel
+            ) +
+
+            '<div class="result-item result-total">' +
+            '<span>Cost Per Unit</span>' +
+            '<span>' +
+            money(costPerUnit) +
+            '</span>' +
+            '</div>';
+
+        show("unitResult");
+
+    }
+);
+
+
+document.getElementById(
+    "saveUnit"
+).addEventListener(
+    "click",
+    function() {
+        saveCurrent(
+            "⚖️ Cost-per-Weight/Volume",
+            "unitContent"
+        );
+    }
+);
+
+
+document.getElementById(
+    "shareUnit"
+).addEventListener(
+    "click",
+    function() {
+        shareCurrent(
+            "⚖️ Cost-per-Weight/Volume",
+            "unitContent"
+        );
+    }
+);
+
+
+document.getElementById(
+    "deleteUnit"
+).addEventListener(
+    "click",
+    function() {
+        hide("unitResult");
+    }
+);
+
+
+/* =====================================================
+   HELPERS
+===================================================== */
+
+function row(label, value) {
+
+    return (
+        '<div class="result-item">' +
+        '<span>' +
+        label +
+        '</span>' +
+        '<span>' +
+        value +
+        '</span>' +
+        '</div>'
+    );
+
+}
+
+
+function show(id) {
+
+    document.getElementById(id)
+        .style.display = "block";
+
+}
+
+
+function hide(id) {
+
+    document.getElementById(id)
+        .style.display = "none";
+
+}
+
+
+function saveCurrent(tool, contentId) {
+
+    const content =
+        document.getElementById(
+            contentId
+        ).innerText.trim();
+
+    if (!content) {
+
+        alert(
+            "Calculate the result first."
+        );
+
+        return;
+
+    }
+
+    saveHistory(
+        tool,
+        content
+    );
+
+}
+
+
+function shareCurrent(tool, contentId) {
+
+    const content =
+        document.getElementById(
+            contentId
+        ).innerText.trim();
+
+    if (!content) {
+
+        alert(
+            "Calculate the result first."
+        );
+
+        return;
+
+    }
+
+    shareResult(
+        tool +
+        "\n\n" +
+        content
+    );
+
+}
+
+
+/* =====================================================
+   YEAR
+===================================================== */
+
+document.getElementById(
+    "currentYear"
+).textContent =
+    new Date().getFullYear();
+
+
+/* =====================================================
+   INITIAL HISTORY
+===================================================== */
+
+renderHistory();
+
+</script>
+
+</body>
+</html>
