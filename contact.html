@@ -1,12 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#2563eb">
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Split Bill">
+
 <title>Contact Us - Split Bill Calculator</title>
 
-<meta name="description" content="Contact Split Bill Calculator for questions, feedback, technical assistance, and feature suggestions.">
+<meta name="description"
+content="Contact Split Bill Calculator for questions, feedback, technical assistance, and suggestions about our bill, travel, group, business, currency, and student expense tools.">
 
 <style>
 :root{
@@ -45,6 +55,12 @@ h1{
     margin-bottom:15px;
     border-bottom:2px solid var(--border);
     padding-bottom:10px;
+}
+
+h2{
+    color:var(--title);
+    font-size:18px;
+    margin:25px 0 10px;
 }
 
 p{
@@ -103,7 +119,27 @@ p{
 .back:hover{
     background:#f8fafc;
 }
+
+footer{
+    border-top:1px solid var(--border);
+    margin-top:35px;
+    padding-top:20px;
+    text-align:center;
+    font-size:14px;
+    color:#64748b;
+    line-height:1.8;
+}
+
+footer a{
+    color:#64748b;
+    text-decoration:none;
+}
+
+footer a:hover{
+    text-decoration:underline;
+}
 </style>
+
 </head>
 
 <body>
@@ -113,32 +149,65 @@ p{
 <h1>Contact Us</h1>
 
 <p>
-We welcome your questions, feedback, and suggestions regarding Split Bill Calculator and its tools.
+We welcome your questions, feedback, and suggestions regarding
+<strong>Split Bill Calculator</strong> and its online tools.
 </p>
 
 <p>
-If you require technical assistance, have a question about our features, or would like to suggest an improvement, please contact us by email.
+If you need technical assistance, have a question about a feature,
+experience an issue with a calculator, or would like to suggest an
+improvement, you can contact us by email.
 </p>
 
+<h2>What Can You Contact Us About?</h2>
+
+<p>
+You can contact us regarding:
+</p>
+
+<ul style="margin:0 0 18px 22px;line-height:1.7;">
+<li>Questions about our calculators and tools</li>
+<li>Technical problems or unexpected results</li>
+<li>Feedback about the website</li>
+<li>Feature suggestions and improvements</li>
+<li>Questions about our privacy or terms</li>
+<li>Other website-related inquiries</li>
+</ul>
+
 <div class="email">
+
 <strong>Split Bill Calculator</strong><br>
+
 Email:
 <a href="mailto:contact@splitbillcalculator.sbs">
 contact@splitbillcalculator.sbs
 </a>
+
 </div>
 
-<div class="links">
+
+<footer>
+
+&copy; <span id="year"></span> Split Bill Calculator |
 <a href="privacy.html">Privacy Policy</a> |
 <a href="terms.html">Terms of Use</a> |
-<a href="about.html">About Us</a>
-</div>
+<a href="about.html">About Us</a> |
+<a href="contact.html">Contact</a>
+
+</footer>
+
 
 <a class="back" href="index.html">
 ← Back to Calculator
 </a>
 
 </div>
+
+
+<script>
+document.getElementById("year").textContent =
+    new Date().getFullYear();
+</script>
 
 </body>
 </html>
