@@ -971,12 +971,30 @@ class="result-box">
 
 <div id="splitContent"></div>
 
+<div class="result-actions">
+
 <button
 type="button"
-class="action-btn share-btn"
-id="shareSplit">
-🔗 Share Result
+class="save-btn"
+id="saveSplit">
+💾 Save
 </button>
+
+<button
+type="button"
+class="save-btn"
+id="shareSplit">
+🔗 Share
+</button>
+
+<button
+type="button"
+class="delete-btn"
+id="deleteSplit">
+🗑️ Delete
+</button>
+
+</div>
 
 </div>
 
@@ -3027,6 +3045,10 @@ total.toFixed(2)
    SAVED CALCULATION HISTORY
 ===================================================== */
 
+/* =====================================================
+   SAVED CALCULATION HISTORY
+===================================================== */
+
 const HISTORY_KEY = "splitBillCalculatorHistory";
 
 
@@ -3047,10 +3069,7 @@ function getSavedHistory(){
 }
 
 
-function saveToHistory(
-    tool,
-    result
-){
+function saveToHistory(tool, result){
 
     const history =
         getSavedHistory();
@@ -3321,19 +3340,10 @@ document.getElementById(
 
 renderSavedHistory();
 
-document.getElementById("addScanItem")
-.addEventListener("click", function(){
 
-addReceiptItem(
-"scanItems",
-"",
-""
-);
-
-updateReceiptTotal("scanItems");
-
-});
-
+/* =====================================================
+   ADD RECEIPT ITEM BUTTONS
+===================================================== */
 
 /* =====================================================
    YEAR
