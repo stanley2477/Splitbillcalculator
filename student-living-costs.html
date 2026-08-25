@@ -1,0 +1,2474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#2563eb">
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Split Bill">
+
+<title>Student & Living Costs | Split Bill Calculator</title>
+
+<meta name="description"
+content="Student and living cost calculators for housing, rent, utilities, meals, and study abroad budgets. Save and share your calculations locally.">
+
+<style>
+
+:root {
+    --primary: #2563eb;
+    --primary-hover: #1d4ed8;
+    --bg-main: #f8fafc;
+    --card-bg: #ffffff;
+    --text-title: #0f172a;
+    --text-body: #334155;
+    --border: #e2e8f0;
+    --success-bg: #f0fdf4;
+    --success-border: #10b981;
+    --success-text: #166534;
+    --muted: #64748b;
+}
+
+* {
+    box-sizing: border-box;
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    -webkit-text-size-adjust: 100%;
+}
+
+body {
+    background: var(--bg-main);
+    color: var(--text-body);
+    padding: 20px 15px;
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 520px;
+    width: 100%;
+    margin: 10px auto;
+    background: var(--card-bg);
+    padding: 30px 24px;
+    border-radius: 24px;
+    box-shadow:
+        0 10px 25px -5px rgba(0,0,0,0.05);
+}
+
+header {
+    text-align: center;
+}
+
+header h1 {
+    color: var(--text-title);
+    font-size: 26px;
+    font-weight: 800;
+    margin-bottom: 7px;
+}
+
+header p {
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 25px;
+}
+
+h2 {
+    color: var(--text-title);
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.description {
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.5;
+    margin-bottom: 15px;
+}
+
+.section-divider {
+    margin: 35px 0 25px;
+    border-top: 2px solid var(--border);
+    padding-top: 25px;
+}
+
+.form-group {
+    margin-bottom: 16px;
+}
+
+label {
+    display: block;
+    color: #475569;
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 7px;
+}
+
+input,
+select {
+    width: 100%;
+    padding: 14px 16px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: #fff;
+    color: var(--text-title);
+    font-size: 16px;
+    outline: none;
+    -webkit-appearance: auto;
+    appearance: auto;
+}
+
+input:focus,
+select:focus {
+    border-color: var(--primary);
+    box-shadow:
+        0 0 0 3px rgba(37,99,235,0.10);
+}
+
+.currency-search {
+    margin-bottom: 8px;
+}
+
+.currency-search input {
+    padding: 12px 14px;
+}
+
+button {
+    cursor: pointer;
+}
+
+.action-btn,
+.secondary-btn {
+    width: 100%;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 700;
+    padding: 14px;
+    margin-top: 8px;
+}
+
+.action-btn {
+    border: none;
+    background: var(--primary);
+    color: white;
+    box-shadow:
+        0 4px 12px rgba(37,99,235,0.18);
+}
+
+.action-btn:hover {
+    background: var(--primary-hover);
+}
+
+.secondary-btn {
+    border: 1px solid var(--border);
+    background: #fff;
+    color: var(--text-title);
+}
+
+.share-btn {
+    background: #16a34a;
+    color: white;
+    border: none;
+}
+
+.share-btn:hover {
+    background: #15803d;
+}
+
+.result-box {
+    display: none;
+    margin-top: 20px;
+    padding: 20px;
+    border-radius: 16px;
+    background: var(--success-bg);
+    border: 1px solid var(--success-border);
+}
+
+.result-box h3 {
+    color: var(--success-text);
+    font-size: 15px;
+    text-transform: uppercase;
+    text-align: center;
+    margin-bottom: 14px;
+    padding-bottom: 7px;
+    border-bottom: 1px dashed rgba(16,185,129,0.3);
+}
+
+.result-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 10px;
+    color: var(--success-text);
+    font-size: 15px;
+    line-height: 1.4;
+}
+
+.result-item span:last-child {
+    text-align: right;
+    font-weight: 600;
+}
+
+.result-total {
+    border-top: 1px dashed #10b981;
+    padding-top: 12px;
+    margin-top: 12px;
+    font-size: 21px;
+    font-weight: 800;
+    color: #064e3b;
+}
+
+.result-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px;
+    margin-top: 14px;
+}
+
+.result-actions button {
+    padding: 11px 6px;
+    border-radius: 10px;
+    border: none;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.save-btn {
+    background: #2563eb;
+    color: white;
+}
+
+.share-result-btn {
+    background: #16a34a;
+    color: white;
+}
+
+.delete-btn {
+    background: #fee2e2;
+    color: #b91c1c;
+}
+
+.history-card {
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 15px;
+    margin-bottom: 10px;
+    background: #fff;
+}
+
+.history-card h3 {
+    color: var(--text-title);
+    font-size: 15px;
+    margin-bottom: 8px;
+}
+
+.history-card p {
+    color: var(--text-body);
+    font-size: 13px;
+    line-height: 1.5;
+    white-space: pre-line;
+    margin-bottom: 12px;
+}
+
+.history-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+}
+
+.history-actions button {
+    padding: 10px;
+    border: none;
+    border-radius: 9px;
+    font-weight: 700;
+}
+
+.no-history {
+    text-align: center;
+    padding: 20px;
+    color: var(--muted);
+    font-size: 14px;
+}
+
+.privacy-note {
+    margin-top: 24px;
+    padding: 15px;
+    border-radius: 14px;
+    background: #eff6ff;
+    color: var(--text-body);
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.privacy-note strong {
+    color: var(--text-title);
+}
+
+.back-link {
+    display: block;
+    text-align: center;
+    margin-top: 22px;
+    color: var(--primary);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.back-link:hover {
+    text-decoration: underline;
+}
+
+footer {
+    margin-top: 28px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.7;
+}
+
+@media (max-width: 430px) {
+
+    .container {
+        padding: 26px 20px;
+    }
+
+    .result-actions {
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<header>
+
+<h1>🎓 Student & Living Costs</h1>
+
+<p>
+Housing, rent, utilities, meals and study abroad budgets.
+</p>
+
+</header>
+
+
+<!-- =====================================================
+     CURRENCY
+===================================================== -->
+
+<section>
+
+<h2>💱 Currency</h2>
+
+<p class="description">
+Choose the currency you want to use for your calculations.
+</p>
+
+<div class="currency-search">
+
+<input
+type="text"
+id="currencySearch"
+placeholder="🔎 Search currency or country"
+autocomplete="off"
+>
+
+</div>
+
+<select id="currencySelect"></select>
+
+</section>
+
+
+<!-- =====================================================
+     STUDENT HOUSING
+===================================================== -->
+
+<div class="section-divider"></div>
+
+<section>
+
+<h2>🎓 Student Housing</h2>
+
+<p class="description">
+Calculate the total and monthly cost of student accommodation.
+</p>
+
+<div class="form-group">
+
+<label>Monthly Housing Cost</label>
+
+<input
+type="number"
+id="housingMonthly"
+placeholder="Example: 800"
+min="0"
+step="any"
+inputmode="decimal"
+>
+
+</div>
+
+<div class="form-group">
+
+<label>Number of Months</label>
+
+<input
+type="number"
+id="housingMonths"
+placeholder="Example: 12"
+min="1"
+step="1"
+inputmode="numeric"
+>
+
+</div>
+
+<button
+type="button"
+class="action-btn"
+id="calculateHousing">
+Calculate Housing Cost
+</button>
+
+<div
+id="housingResult"
+class="result-box">
+
+<h3>Student Housing Result</h3>
+
+<div id="housingContent"></div>
+
+<div class="result-actions">
+
+<button
+type="button"
+class="save-btn"
+id="saveHousing">
+💾 Save
+</button>
+
+<button
+type="button"
+class="share-result-btn"
+id="shareHousing">
+🔗 Share
+</button>
+
+<button
+type="button"
+class="delete-btn"
+id="deleteHousing">
+🗑️ Delete
+</button>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     RENT SPLIT
+===================================================== -->
+
+<div class="section-divider"></div>
+
+<section>
+
+<h2>🏠 Rent Split</h2>
+
+<p class="description">
+Split rent equally between roommates or housemates.
+</p>
+
+<div class="form-group">
+
+<label>Total Monthly Rent</label>
+
+<input
+type="number"
+id="rentTotal"
+placeholder="Example: 2000"
+min="0"
+step="any"
+inputmode="decimal"
+>
+
+</div>
+
+<div class="form-group">
+
+<label>Number of People</label>
+
+<input
+type="number"
+id="rentPeople"
+placeholder="Example: 4"
+min="1"
+step="1"
+inputmode="numeric"
+>
+
+</div>
+
+<button
+type="button"
+class="action-btn"
+id="calculateRent">
+Calculate Rent Split
+</button>
+
+<div
+id="rentResult"
+class="result-box">
+
+<h3>Rent Split Result</h3>
+
+<div id="rentContent"></div>
+
+<div class="result-actions">
+
+<button
+type="button"
+class="save-btn"
+id="saveRent">
+💾 Save
+</button>
+
+<button
+type="button"
+class="share-result-btn"
+id="shareRent">
+🔗 Share
+</button>
+
+<button
+type="button"
+class="delete-btn"
+id="deleteRent">
+🗑️ Delete
+</button>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     UTILITIES SPLIT
+===================================================== -->
+
+<div class="section-divider"></div>
+
+<section>
+
+<h2>💡 Utilities Split</h2>
+
+<p class="description">
+Split electricity, water, internet and other household utility costs.
+</p>
+
+<div class="form-group">
+
+<label>Total Utility Cost</label>
+
+<input
+type="number"
+id="utilitiesTotal"
+placeholder="Example: 400"
+min="0"
+step="any"
+inputmode="decimal"
+>
+
+</div>
+
+<div class="form-group">
+
+<label>Number of People</label>
+
+<input
+type="number"
+id="utilitiesPeople"
+placeholder="Example: 4"
+min="1"
+step="1"
+inputmode="numeric"
+>
+
+</div>
+
+<button
+type="button"
+class="action-btn"
+id="calculateUtilities">
+Calculate Utilities Split
+</button>
+
+<div
+id="utilitiesResult"
+class="result-box">
+
+<h3>Utilities Split Result</h3>
+
+<div id="utilitiesContent"></div>
+
+<div class="result-actions">
+
+<button
+type="button"
+class="save-btn"
+id="saveUtilities">
+💾 Save
+</button>
+
+<button
+type="button"
+class="share-result-btn"
+id="shareUtilities">
+🔗 Share
+</button>
+
+<button
+type="button"
+class="delete-btn"
+id="deleteUtilities">
+🗑️ Delete
+</button>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     MEAL BUDGET
+===================================================== -->
+
+<div class="section-divider"></div>
+
+<section>
+
+<h2>🍽️ Meal Budget</h2>
+
+<p class="description">
+Estimate your daily, weekly and monthly food budget.
+</p>
+
+<div class="form-group">
+
+<label>Daily Meal Budget</label>
+
+<input
+type="number"
+id="mealDaily"
+placeholder="Example: 25"
+min="0"
+step="any"
+inputmode="decimal"
+>
+
+</div>
+
+<div class="form-group">
+
+<label>Number of Days</label>
+
+<input
+type="number"
+id="mealDays"
+placeholder="Example: 30"
+min="1"
+step="1"
+inputmode="numeric"
+>
+
+</div>
+
+<button
+type="button"
+class="action-btn"
+id="calculateMeals">
+Calculate Meal Budget
+</button>
+
+<div
+id="mealResult"
+class="result-box">
+
+<h3>Meal Budget Result</h3>
+
+<div id="mealContent"></div>
+
+<div class="result-actions">
+
+<button
+type="button"
+class="save-btn"
+id="saveMeals">
+💾 Save
+</button>
+
+<button
+type="button"
+class="share-result-btn"
+id="shareMeals">
+🔗 Share
+</button>
+
+<button
+type="button"
+class="delete-btn"
+id="deleteMeals">
+🗑️ Delete
+</button>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     STUDY ABROAD BUDGET
+===================================================== -->
+
+<div class="section-divider"></div>
+
+<section>
+
+<h2>✈️ Study Abroad Budget</h2>
+
+<p class="description">
+Estimate accommodation, food, transportation and other living costs for your study period.
+</p>
+
+<div class="form-group">
+
+<label>Monthly Accommodation</label>
+
+<input
+type="number"
+id="abroadAccommodation"
+placeholder="Example: 900"
+min="0"
+step="any"
+inputmode="decimal"
+>
+
+</div>
+
+<div class="form-group">
+
+<label>Monthly Food</label>
+
+<input
+type="number"
+id="abroadFood"
+placeholder="Example: 400"
+min="0"
+step="any"
+inputmode="decimal"
+>
+
+</div>
+
+<div class="form-group">
+
+<label>Monthly Transportation</label>
+
+<input
+type="number"
+id="abroadTransport"
+placeholder="Example: 150"
+min="0"
+step="any"
+inputmode="decimal"
+>
+
+</div>
+
+<div class="form-group">
+
+<label>Monthly Other Costs</label>
+
+<input
+type="number"
+id="abroadOther"
+placeholder="Example: 200"
+min="0"
+step="any"
+inputmode="decimal"
+>
+
+</div>
+
+<div class="form-group">
+
+<label>Number of Months</label>
+
+<input
+type="number"
+id="abroadMonths"
+placeholder="Example: 12"
+min="1"
+step="1"
+inputmode="numeric"
+>
+
+</div>
+
+<button
+type="button"
+class="action-btn"
+id="calculateAbroad">
+Calculate Study Abroad Budget
+</button>
+
+<div
+id="abroadResult"
+class="result-box">
+
+<h3>Study Abroad Budget Result</h3>
+
+<div id="abroadContent"></div>
+
+<div class="result-actions">
+
+<button
+type="button"
+class="save-btn"
+id="saveAbroad">
+💾 Save
+</button>
+
+<button
+type="button"
+class="share-result-btn"
+id="shareAbroad">
+🔗 Share
+</button>
+
+<button
+type="button"
+class="delete-btn"
+id="deleteAbroad">
+🗑️ Delete
+</button>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     SAVED HISTORY
+===================================================== -->
+
+<div class="section-divider"></div>
+
+<section>
+
+<h2>💾 Saved Calculation History</h2>
+
+<p class="description">
+Saved calculations are stored locally on this device.
+</p>
+
+<div id="savedHistory"></div>
+
+<button
+type="button"
+class="secondary-btn"
+id="clearHistory">
+🗑️ Clear All History
+</button>
+
+</section>
+
+
+<!-- =====================================================
+     PRIVACY / BACK / FOOTER
+===================================================== -->
+
+<div class="privacy-note">
+
+<strong>Privacy:</strong><br>
+
+Your saved student & living cost calculations are
+stored locally on this device and are not uploaded
+to our server.
+
+</div>
+
+
+<a
+href="index.html"
+class="back-link">
+
+← Back to Split Bill Calculator
+
+</a>
+
+
+<footer>
+
+© <span id="currentYear"></span>
+Split Bill Calculator
+
+</footer>
+
+</div>
+
+
+<script>
+
+"use strict";
+
+
+/* =====================================================
+   CURRENCY LIST
+===================================================== */
+
+const currencies = [
+
+["AFN","Afghanistan — Afghan Afghani","؋"],
+["ALL","Albania — Albanian Lek","L"],
+["DZD","Algeria — Algerian Dinar","دج"],
+["AOA","Angola — Angolan Kwanza","Kz"],
+["ARS","Argentina — Argentine Peso","$"],
+["AMD","Armenia — Armenian Dram","֏"],
+["AWG","Aruba — Aruban Florin","ƒ"],
+["AUD","Australia — Australian Dollar","A$"],
+["AZN","Azerbaijan — Azerbaijani Manat","₼"],
+
+["BSD","Bahamas — Bahamian Dollar","$"],
+["BHD","Bahrain — Bahraini Dinar","د.ب"],
+["BDT","Bangladesh — Bangladeshi Taka","৳"],
+["BBD","Barbados — Barbadian Dollar","$"],
+["BYN","Belarus — Belarusian Ruble","Br"],
+["BZD","Belize — Belize Dollar","BZ$"],
+["BMD","Bermuda — Bermudian Dollar","$"],
+["BTN","Bhutan — Bhutanese Ngultrum","Nu."],
+["BOB","Bolivia — Bolivian Boliviano","Bs."],
+["BAM","Bosnia and Herzegovina — Convertible Mark","KM"],
+["BWP","Botswana — Botswana Pula","P"],
+["BRL","Brazil — Brazilian Real","R$"],
+["BND","Brunei — Brunei Dollar","B$"],
+["BGN","Bulgaria — Bulgarian Lev","лв"],
+["BIF","Burundi — Burundian Franc","FBu"],
+
+["KHR","Cambodia — Cambodian Riel","៛"],
+["CAD","Canada — Canadian Dollar","C$"],
+["CVE","Cape Verde — Cape Verdean Escudo","$"],
+["KYD","Cayman Islands — Cayman Islands Dollar","CI$"],
+["XAF","Central African CFA Franc","FCFA"],
+["CLP","Chile — Chilean Peso","$"],
+["CNY","China — Chinese Yuan","¥"],
+["COP","Colombia — Colombian Peso","$"],
+["KMF","Comoros — Comorian Franc","CF"],
+["CDF","Congo — Congolese Franc","FC"],
+["CRC","Costa Rica — Costa Rican Colón","₡"],
+["XOF","West African CFA Franc","CFA"],
+["CUP","Cuba — Cuban Peso","$"],
+["CZK","Czechia — Czech Koruna","Kč"],
+
+["DKK","Denmark — Danish Krone","kr"],
+["DJF","Djibouti — Djiboutian Franc","Fdj"],
+["DOP","Dominican Republic — Dominican Peso","RD$"],
+
+["EGP","Egypt — Egyptian Pound","£"],
+["ERN","Eritrea — Eritrean Nakfa","Nfk"],
+["ETB","Ethiopia — Ethiopian Birr","Br"],
+["EUR","European Union — Euro","€"],
+
+["FKP","Falkland Islands — Falkland Pound","£"],
+["FJD","Fiji — Fijian Dollar","FJ$"],
+["XPF","French Pacific Franc","₣"],
+
+["GMD","Gambia — Gambian Dalasi","D"],
+["GEL","Georgia — Georgian Lari","₾"],
+["GHS","Ghana — Ghanaian Cedi","₵"],
+["GIP","Gibraltar — Gibraltar Pound","£"],
+["GTQ","Guatemala — Guatemalan Quetzal","Q"],
+["GNF","Guinea — Guinean Franc","FG"],
+["GYD","Guyana — Guyanese Dollar","G$"],
+
+["HTG","Haiti — Haitian Gourde","G"],
+["HNL","Honduras — Honduran Lempira","L"],
+["HKD","Hong Kong — Hong Kong Dollar","HK$"],
+["HUF","Hungary — Hungarian Forint","Ft"],
+
+["ISK","Iceland — Icelandic Króna","kr"],
+["INR","India — Indian Rupee","₹"],
+["IDR","Indonesia — Indonesian Rupiah","Rp"],
+["IRR","Iran — Iranian Rial","﷼"],
+["IQD","Iraq — Iraqi Dinar","ع.د"],
+["ILS","Israel — Israeli New Shekel","₪"],
+
+["JMD","Jamaica — Jamaican Dollar","J$"],
+["JPY","Japan — Japanese Yen","¥"],
+["JOD","Jordan — Jordanian Dinar","د.ا"],
+
+["KZT","Kazakhstan — Kazakhstani Tenge","₸"],
+["KES","Kenya — Kenyan Shilling","KSh"],
+["KWD","Kuwait — Kuwaiti Dinar","د.ك"],
+["KGS","Kyrgyzstan — Kyrgyzstani Som","с"],
+
+["LAK","Laos — Lao Kip","₭"],
+["LBP","Lebanon — Lebanese Pound","ل.ل"],
+["LSL","Lesotho — Lesotho Loti","L"],
+["LRD","Liberia — Liberian Dollar","L$"],
+["LYD","Libya — Libyan Dinar","ل.د"],
+
+["MOP","Macau — Macanese Pataca","MOP$"],
+["MKD","North Macedonia — Macedonian Denar","ден"],
+["MGA","Madagascar — Malagasy Ariary","Ar"],
+["MWK","Malawi — Malawian Kwacha","MK"],
+["MYR","Malaysia — Malaysian Ringgit","RM"],
+["MVR","Maldives — Maldivian Rufiyaa","Rf"],
+["MRU","Mauritania — Mauritanian Ouguiya","UM"],
+["MUR","Mauritius — Mauritian Rupee","₨"],
+["MXN","Mexico — Mexican Peso","$"],
+["MDL","Moldova — Moldovan Leu","L"],
+["MNT","Mongolia — Mongolian Tögrög","₮"],
+["MAD","Morocco — Moroccan Dirham","د.م."],
+["MZN","Mozambique — Mozambican Metical","MT"],
+
+["NAD","Namibia — Namibian Dollar","N$"],
+["NPR","Nepal — Nepalese Rupee","₨"],
+["ANG","Netherlands — Caribbean Guilder","ƒ"],
+["NZD","New Zealand — New Zealand Dollar","NZ$"],
+["NIO","Nicaragua — Nicaraguan Córdoba","C$"],
+["NGN","Nigeria — Nigerian Naira","₦"],
+["NOK","Norway — Norwegian Krone","kr"],
+
+["OMR","Oman — Omani Rial","ر.ع."],
+
+["PKR","Pakistan — Pakistani Rupee","₨"],
+["PAB","Panama — Panamanian Balboa","B/."],
+["PGK","Papua New Guinea — Kina","K"],
+["PYG","Paraguay — Paraguayan Guaraní","₲"],
+["PEN","Peru — Peruvian Sol","S/"],
+["PHP","Philippines — Philippine Peso","₱"],
+["PLN","Poland — Polish Złoty","zł"],
+["QAR","Qatar — Qatari Riyal","ر.ق"],
+
+["RON","Romania — Romanian Leu","lei"],
+["RUB","Russia — Russian Ruble","₽"],
+["RWF","Rwanda — Rwandan Franc","FRw"],
+
+["SHP","Saint Helena — Saint Helena Pound","£"],
+["WST","Samoa — Samoan Tala","T"],
+["STN","São Tomé and Príncipe — Dobra","Db"],
+["SAR","Saudi Arabia — Saudi Riyal","ر.س"],
+["RSD","Serbia — Serbian Dinar","дин"],
+["SCR","Seychelles — Seychellois Rupee","₨"],
+["SLE","Sierra Leone — Leone","Le"],
+["SGD","Singapore — Singapore Dollar","S$"],
+["SBD","Solomon Islands — Solomon Islands Dollar","SI$"],
+["SOS","Somalia — Somali Shilling","Sh"],
+["ZAR","South Africa — South African Rand","R"],
+["KRW","South Korea — South Korean Won","₩"],
+["SSP","South Sudan — South Sudanese Pound","£"],
+["LKR","Sri Lanka — Sri Lankan Rupee","₨"],
+["SDG","Sudan — Sudanese Pound","ج.س."],
+["SRD","Suriname — Surinamese Dollar","$"],
+["SZL","Eswatini — Swazi Lilangeni","E"],
+["SEK","Sweden — Swedish Krona","kr"],
+["CHF","Switzerland — Swiss Franc","CHF"],
+["SYP","Syria — Syrian Pound","£"],
+
+["TWD","Taiwan — New Taiwan Dollar","NT$"],
+["TJS","Tajikistan — Somoni","SM"],
+["TZS","Tanzania — Tanzanian Shilling","TSh"],
+["THB","Thailand — Thai Baht","฿"],
+["TOP","Tonga — Tongan Paʻanga","T$"],
+["TTD","Trinidad and Tobago — Dollar","TT$"],
+["TND","Tunisia — Tunisian Dinar","د.ت"],
+["TRY","Turkey — Turkish Lira","₺"],
+["TMT","Turkmenistan — Turkmenistan Manat","m"],
+
+["UGX","Uganda — Ugandan Shilling","USh"],
+["UAH","Ukraine — Ukrainian Hryvnia","₴"],
+["AED","United Arab Emirates — Dirham","د.إ"],
+["GBP","United Kingdom — British Pound","£"],
+["USD","United States — US Dollar","$"],
+["UYU","Uruguay — Uruguayan Peso","$U"],
+["UZS","Uzbekistan — Uzbekistani Som","лв"],
+
+["VUV","Vanuatu — Vanuatu Vatu","VT"],
+["VES","Venezuela — Venezuelan Bolívar","Bs."],
+["VND","Vietnam — Vietnamese Dong","₫"],
+
+["YER","Yemen — Yemeni Rial","﷼"],
+["ZMW","Zambia — Zambian Kwacha","ZK"],
+["ZWL","Zimbabwe — Zimbabwe Dollar","Z$"]
+
+];
+
+
+/* =====================================================
+   CURRENCY
+===================================================== */
+
+function populateCurrencies(query = "") {
+
+    const select =
+        document.getElementById("currencySelect");
+
+    const current =
+        select.value;
+
+    select.innerHTML = "";
+
+    const search =
+        query.toLowerCase().trim();
+
+    currencies
+        .filter(function(item) {
+
+            return (
+                item[0].toLowerCase().includes(search) ||
+                item[1].toLowerCase().includes(search)
+            );
+
+        })
+        .forEach(function(item) {
+
+            const option =
+                document.createElement("option");
+
+            option.value =
+                item[0];
+
+            option.textContent =
+                item[1] +
+                " (" +
+                item[0] +
+                ")";
+
+            select.appendChild(option);
+
+        });
+
+    if (
+        [...select.options]
+            .some(option => option.value === current)
+    ) {
+        select.value = current;
+    }
+
+}
+
+
+populateCurrencies();
+
+document.getElementById(
+    "currencySelect"
+).value = "USD";
+
+
+document.getElementById(
+    "currencySearch"
+).addEventListener(
+    "input",
+    function() {
+
+        populateCurrencies(
+            this.value
+        );
+
+    }
+);
+
+
+function getCurrencyData() {
+
+    const code =
+        document.getElementById(
+            "currencySelect"
+        ).value;
+
+    return currencies.find(
+        function(item) {
+            return item[0] === code;
+        }
+    ) || currencies.find(
+        function(item) {
+            return item[0] === "USD";
+        }
+    );
+
+}
+
+
+function getCurrencySymbol() {
+
+    return getCurrencyData()[2];
+
+}
+
+
+function money(value) {
+
+    return (
+        getCurrencySymbol() +
+        Number(value).toLocaleString(
+            undefined,
+            {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            }
+        )
+    );
+
+}
+
+
+/* =====================================================
+   SHARING
+===================================================== */
+
+function shareResult(text) {
+
+    if (navigator.share) {
+
+        navigator.share({
+
+            title:
+                "Student & Living Costs",
+
+            text:
+                text
+
+        }).catch(function(error) {
+
+            if (
+                error &&
+                error.name === "AbortError"
+            ) {
+                return;
+            }
+
+            fallbackCopy(text);
+
+        });
+
+        return;
+
+    }
+
+    fallbackCopy(text);
+
+}
+
+
+function fallbackCopy(text) {
+
+    if (
+        navigator.clipboard &&
+        window.isSecureContext
+    ) {
+
+        navigator.clipboard
+            .writeText(text)
+            .then(function() {
+
+                alert(
+                    "Result copied to clipboard."
+                );
+
+            })
+            .catch(function() {
+
+                copyLegacy(text);
+
+            });
+
+        return;
+
+    }
+
+    copyLegacy(text);
+
+}
+
+
+function copyLegacy(text) {
+
+    const textarea =
+        document.createElement("textarea");
+
+    textarea.value =
+        text;
+
+    textarea.style.position =
+        "fixed";
+
+    textarea.style.left =
+        "-9999px";
+
+    document.body.appendChild(
+        textarea
+    );
+
+    textarea.focus();
+
+    textarea.select();
+
+    try {
+
+        document.execCommand("copy");
+
+        alert(
+            "Result copied to clipboard."
+        );
+
+    } catch (error) {
+
+        alert(text);
+
+    }
+
+    document.body.removeChild(
+        textarea
+    );
+
+}
+
+
+/* =====================================================
+   HISTORY
+===================================================== */
+
+const HISTORY_KEY =
+    "splitBillStudentLivingCostHistory";
+
+
+function getHistory() {
+
+    try {
+
+        return JSON.parse(
+            localStorage.getItem(
+                HISTORY_KEY
+            )
+        ) || [];
+
+    } catch (error) {
+
+        return [];
+
+    }
+
+}
+
+
+function saveHistory(tool, result) {
+
+    const history =
+        getHistory();
+
+    history.unshift({
+
+        id:
+            Date.now().toString() +
+            Math.random()
+                .toString(36)
+                .slice(2),
+
+        tool:
+            tool,
+
+        result:
+            result,
+
+        date:
+            new Date()
+                .toLocaleString()
+
+    });
+
+    try {
+
+        localStorage.setItem(
+            HISTORY_KEY,
+            JSON.stringify(history)
+        );
+
+    } catch (error) {
+
+        alert(
+            "Unable to save this calculation on your device."
+        );
+
+        return;
+
+    }
+
+    renderHistory();
+
+    alert(
+        "Calculation saved successfully."
+    );
+
+}
+
+
+function deleteHistory(id) {
+
+    const history =
+        getHistory().filter(
+            function(item) {
+
+                return item.id !== id;
+
+            }
+        );
+
+    localStorage.setItem(
+        HISTORY_KEY,
+        JSON.stringify(history)
+    );
+
+    renderHistory();
+
+}
+
+
+function renderHistory() {
+
+    const container =
+        document.getElementById(
+            "savedHistory"
+        );
+
+    const history =
+        getHistory();
+
+    container.innerHTML = "";
+
+    if (!history.length) {
+
+        container.innerHTML =
+            '<div class="no-history">' +
+            'No saved calculations yet.' +
+            '</div>';
+
+        return;
+
+    }
+
+    history.forEach(function(item) {
+
+        const card =
+            document.createElement("div");
+
+        card.className =
+            "history-card";
+
+        const title =
+            document.createElement("h3");
+
+        title.textContent =
+            "📌 " + item.tool;
+
+        const result =
+            document.createElement("p");
+
+        result.textContent =
+            item.result +
+            "\n\nSaved: " +
+            item.date;
+
+        const actions =
+            document.createElement("div");
+
+        actions.className =
+            "history-actions";
+
+        const share =
+            document.createElement("button");
+
+        share.textContent =
+            "🔗 Share";
+
+        share.className =
+            "share-result-btn";
+
+        share.addEventListener(
+            "click",
+            function() {
+
+                shareResult(
+                    item.result
+                );
+
+            }
+        );
+
+        const del =
+            document.createElement("button");
+
+        del.textContent =
+            "🗑️ Delete";
+
+        del.className =
+            "delete-btn";
+
+        del.addEventListener(
+            "click",
+            function() {
+
+                deleteHistory(
+                    item.id
+                );
+
+            }
+        );
+
+        actions.appendChild(share);
+        actions.appendChild(del);
+
+        card.appendChild(title);
+        card.appendChild(result);
+        card.appendChild(actions);
+
+        container.appendChild(card);
+
+    });
+
+}
+
+
+document.getElementById(
+    "clearHistory"
+).addEventListener(
+    "click",
+    function() {
+
+        if (
+            !confirm(
+                "Delete all saved calculations?"
+            )
+        ) {
+
+            return;
+
+        }
+
+        localStorage.removeItem(
+            HISTORY_KEY
+        );
+
+        renderHistory();
+
+    }
+);
+
+
+/* =====================================================
+   RESULT HELPER
+===================================================== */
+
+function showResult(
+    resultId,
+    contentId,
+    html
+) {
+
+    document.getElementById(
+        contentId
+    ).innerHTML = html;
+
+    document.getElementById(
+        resultId
+    ).style.display =
+        "block";
+
+}
+
+
+/* =====================================================
+   STUDENT HOUSING
+===================================================== */
+
+document.getElementById(
+    "calculateHousing"
+).addEventListener(
+    "click",
+    function() {
+
+        const monthly =
+            parseFloat(
+                document.getElementById(
+                    "housingMonthly"
+                ).value
+            );
+
+        const months =
+            parseInt(
+                document.getElementById(
+                    "housingMonths"
+                ).value,
+                10
+            );
+
+        if (
+            !Number.isFinite(monthly) ||
+            monthly < 0 ||
+            !Number.isFinite(months) ||
+            months <= 0
+        ) {
+
+            alert(
+                "Please enter a valid monthly housing cost and number of months."
+            );
+
+            return;
+
+        }
+
+        const total =
+            monthly * months;
+
+        showResult(
+            "housingResult",
+            "housingContent",
+
+            '<div class="result-item">' +
+            '<span>Monthly Housing</span>' +
+            '<span>' +
+            money(monthly) +
+            '</span>' +
+            '</div>' +
+
+            '<div class="result-item">' +
+            '<span>Months</span>' +
+            '<span>' +
+            months +
+            '</span>' +
+            '</div>' +
+
+            '<div class="result-item result-total">' +
+            '<span>Total Housing Cost</span>' +
+            '<span>' +
+            money(total) +
+            '</span>' +
+            '</div>'
+        );
+
+    }
+);
+
+
+document.getElementById(
+    "saveHousing"
+).addEventListener(
+    "click",
+    function() {
+
+        const result =
+            document.getElementById(
+                "housingContent"
+            ).innerText;
+
+        if (!result) {
+
+            alert(
+                "Calculate the housing cost first."
+            );
+
+            return;
+
+        }
+
+        saveHistory(
+            "🎓 Student Housing",
+            result
+        );
+
+    }
+);
+
+
+document.getElementById(
+    "shareHousing"
+).addEventListener(
+    "click",
+    function() {
+
+        const result =
+            document.getElementById(
+                "housingContent"
+            ).innerText;
+
+        if (!result) {
+
+            alert(
+                "Calculate the housing cost first."
+            );
+
+            return;
+
+        }
+
+        shareResult(
+            "🎓 Student Housing\n\n" +
+            result
+        );
+
+    }
+);
+
+
+document.getElementById(
+    "deleteHousing"
+).addEventListener(
+    "click",
+    function() {
+
+        document.getElementById(
+            "housingResult"
+        ).style.display =
+            "none";
+
+    }
+);
+
+
+/* =====================================================
+   RENT SPLIT
+===================================================== */
+
+document.getElementById(
+    "calculateRent"
+).addEventListener(
+    "click",
+    function() {
+
+        const total =
+            parseFloat(
+                document.getElementById(
+                    "rentTotal"
+                ).value
+            );
+
+        const people =
+            parseInt(
+                document.getElementById(
+                    "rentPeople"
+                ).value,
+                10
+            );
+
+        if (
+            !Number.isFinite(total) ||
+            total < 0 ||
+            !Number.isFinite(people) ||
+            people <= 0
+        ) {
+
+            alert(
+                "Please enter a valid rent amount and number of people."
+            );
+
+            return;
+
+        }
+
+        const share =
+            total / people;
+
+        showResult(
+            "rentResult",
+            "rentContent",
+
+            '<div class="result-item">' +
+            '<span>Total Rent</span>' +
+            '<span>' +
+            money(total) +
+            '</span>' +
+            '</div>' +
+
+            '<div class="result-item">' +
+            '<span>People</span>' +
+            '<span>' +
+            people +
+            '</span>' +
+            '</div>' +
+
+            '<div class="result-item result-total">' +
+            '<span>Each Person Pays</span>' +
+            '<span>' +
+            money(share) +
+            '</span>' +
+            '</div>'
+        );
+
+    }
+);
+
+
+document.getElementById(
+    "saveRent"
+).addEventListener(
+    "click",
+    function() {
+
+        const result =
+            document.getElementById(
+                "rentContent"
+            ).innerText;
+
+        if (!result) {
+
+            alert(
+                "Calculate the rent split first."
+            );
+
+            return;
+
+        }
+
+        saveHistory(
+            "🏠 Rent Split",
+            result
+        );
+
+    }
+);
+
+
+document.getElementById(
+    "shareRent"
+).addEventListener(
+    "click",
+    function() {
+
+        const result =
+            document.getElementById(
+                "rentContent"
+            ).innerText;
+
+        if (!result) {
+
+            alert(
+                "Calculate the rent split first."
+            );
+
+            return;
+
+        }
+
+        shareResult(
+            "🏠 Rent Split\n\n" +
+            result
+        );
+
+    }
+);
+
+
+document.getElementById(
+    "deleteRent"
+).addEventListener(
+    "click",
+    function() {
+
+        document.getElementById(
+            "rentResult"
+        ).style.display =
+            "none";
+
+    }
+);
+
+
+/* =====================================================
+   UTILITIES SPLIT
+===================================================== */
+
+document.getElementById(
+    "calculateUtilities"
+).addEventListener(
+    "click",
+    function() {
+
+        const total =
+            parseFloat(
+                document.getElementById(
+                    "utilitiesTotal"
+                ).value
+            );
+
+        const people =
+            parseInt(
+                document.getElementById(
+                    "utilitiesPeople"
+                ).value,
+                10
+            );
+
+        if (
+            !Number.isFinite(total) ||
+            total < 0 ||
+            !Number.isFinite(people) ||
+            people <= 0
+        ) {
+
+            alert(
+                "Please enter a valid utility cost and number of people."
+            );
+
+            return;
+
+        }
+
+        const share =
+            total / people;
+
+        showResult(
+            "utilitiesResult",
+            "utilitiesContent",
+
+            '<div class="result-item">' +
+            '<span>Total Utilities</span>' +
+            '<span>' +
+            money(total) +
+            '</span>' +
+            '</div>' +
+
+            '<div class="result-item">' +
+            '<span>People</span>' +
+            '<span>' +
+            people +
+            '</span>' +
+            '</div>' +
+
+            '<div class="result-item result-total">' +
+            '<span>Each Person Pays</span>' +
+            '<span>' +
+            money(share) +
+            '</span>' +
+            '</div>'
+        );
+
+    }
+);
+
+
+document.getElementById(
+    "saveUtilities"
+).addEventListener(
+    "click",
+    function() {
+
+        const result =
+            document.getElementById(
+                "utilitiesContent"
+            ).innerText;
+
+        if (!result) {
+
+            alert(
+                "Calculate the utilities split first."
+            );
+
+            return;
+
+        }
+
+        saveHistory(
+            "💡 Utilities Split",
+            result
+        );
+
+    }
+);
+
+
+document.getElementById(
+    "shareUtilities"
+).addEventListener(
+    "click",
+    function() {
+
+        const result =
+            document.getElementById(
+                "utilitiesContent"
+            ).innerText;
+
+        if (!result) {
+
+            alert(
+                "Calculate the utilities split first."
+            );
+
+            return;
+
+        }
+
+        shareResult(
+            "💡 Utilities Split\n\n" +
+            result
+        );
+
+    }
+);
+
+
+document.getElementById(
+    "deleteUtilities"
+).addEventListener(
+    "click",
+    function() {
+
+        document.getElementById(
+            "utilitiesResult"
+        ).style.display =
+            "none";
+
+    }
+);
+
+
+/* =====================================================
+   MEAL BUDGET
+===================================================== */
+
+document.getElementById(
+    "calculateMeals"
+).addEventListener(
+    "click",
+    function() {
+
+        const daily =
+            parseFloat(
+                document.getElementById(
+                    "mealDaily"
+                ).value
+            );
+
+        const days =
+            parseInt(
+                document.getElementById(
+                    "mealDays"
+                ).value,
+                10
+            );
+
+        if (
+            !Number.isFinite(daily) ||
+            daily < 0 ||
+            !Number.isFinite(days) ||
+            days <= 0
+        ) {
+
+            alert(
+                "Please enter a valid daily meal budget and number of days."
+            );
+
+            return;
+
+        }
+
+        const total =
+            daily * days;
+
+        const weekly =
+            daily * 7;
+
+        showResult(
+            "mealResult",
+            "mealContent",
+
+            '<div class="result-item">' +
+            '<span>Daily Budget</span>' +
+            '<span>' +
+            money(daily) +
+            '</span>' +
+            '</div>' +
+
+            '<div class="result-item">' +
+            '<span>Estimated Weekly Budget</span>' +
+            '<span>' +
+            money(weekly) +
+            '</span>' +
+            '</div>' +
+
+            '<div class="result-item">' +
+            '<span>Days</span>' +
+            '<span>' +
+            days +
+            '</span>' +
+            '</div>' +
+
+            '<div class="result-item result-total">' +
+            '<span>Total Meal Budget</span>' +
+            '<span>' +
+            money(total) +
+            '</span>' +
+            '</div>'
+        );
+
+    }
+);
+
+
+document.getElementById(
+    "saveMeals"
+).addEventListener(
+    "click",
+    function() {
+
+        const result =
+            document.getElementById(
+                "mealContent"
+            ).innerText;
+
+        if (!result) {
+
+            alert(
+                "Calculate the meal budget first."
+            );
+
+            return;
+
+        }
+
+        saveHistory(
+            "🍽️ Meal Budget",
+            result
+        );
+
+    }
+);
+
+
+document.getElementById(
+    "shareMeals"
+).addEventListener(
+    "click",
+    function() {
+
+        const result =
+            document.getElementById(
+                "mealContent"
+            ).innerText;
+
+        if (!result) {
+
+            alert(
+                "Calculate the meal budget first."
+            );
+
+            return;
+
+        }
+
+        shareResult(
+            "🍽️ Meal Budget\n\n" +
+            result
+        );
+
+    }
+);
+
+
+document.getElementById(
+    "deleteMeals"
+).addEventListener(
+    "click",
+    function() {
+
+        document.getElementById(
+            "mealResult"
+        ).style.display =
+            "none";
+
+    }
+);
+
+
+/* =====================================================
+   STUDY ABROAD
+===================================================== */
+
+document.getElementById(
+    "calculateAbroad"
+).addEventListener(
+    "click",
+    function() {
+
+        const accommodation =
+            parseFloat(
+                document.getElementById(
+                    "abroadAccommodation"
+                ).value
+            ) || 0;
+
+        const food =
+            parseFloat(
+                document.getElementById(
+                    "abroadFood"
+                ).value
+            ) || 0;
+
+        const transport =
+            parseFloat(
+                document.getElementById(
+                    "abroadTransport"
+                ).value
+            ) || 0;
+
+        const other =
+            parseFloat(
+                document.getElementById(
+                    "abroadOther"
+                ).value
+            ) || 0;
+
+        const months =
+            parseInt(
+                document.getElementById(
+                    "abroadMonths"
+                ).value,
+                10
+            );
+
+        if (
+            accommodation < 0 ||
+            food < 0 ||
+            transport < 0 ||
+            other < 0 ||
+            !Number.isFinite(months) ||
+            months <= 0
+        ) {
+
+            alert(
+                "Please enter valid study abroad budget values."
+            );
+
+            return;
+
+        }
+
+        const monthlyTotal =
+            accommodation +
+            food +
+            transport +
+            other;
+
+        const total =
+            monthlyTotal * months;
+
+        showResult(
+            "abroadResult",
+            "abroadContent",
+
+            '<div class="result-item">' +
+            '<span>Accommodation / Month</span>' +
+            '<span>' +
+            money(accommodation) +
+            '</span>' +
+            '</div>' +
+
+            '<div class="result-item">' +
+            '<span>Food / Month</span>' +
+            '<span>' +
+            money(food) +
+            '</span>' +
+            '</div>' +
+
+            '<div class="result-item">' +
+            '<span>Transportation / Month</span>' +
+            '<span>' +
+            money(transport) +
+            '</span>' +
+            '</div>' +
+
+            '<div class="result-item">' +
+            '<span>Other Costs / Month</span>' +
+            '<span>' +
+            money(other) +
+            '</span>' +
+            '</div>' +
+
+            '<div class="result-item">' +
+            '<span>Monthly Total</span>' +
+            '<span>' +
+            money(monthlyTotal) +
+            '</span>' +
+            '</div>' +
+
+            '<div class="result-item">' +
+            '<span>Study Period</span>' +
+            '<span>' +
+            months +
+            ' months</span>' +
+            '</div>' +
+
+            '<div class="result-item result-total">' +
+            '<span>Total Study Abroad Budget</span>' +
+            '<span>' +
+            money(total) +
+            '</span>' +
+            '</div>'
+        );
+
+    }
+);
+
+
+document.getElementById(
+    "saveAbroad"
+).addEventListener(
+    "click",
+    function() {
+
+        const result =
+            document.getElementById(
+                "abroadContent"
+            ).innerText;
+
+        if (!result) {
+
+            alert(
+                "Calculate the study abroad budget first."
+            );
+
+            return;
+
+        }
+
+        saveHistory(
+            "✈️ Study Abroad Budget",
+            result
+        );
+
+    }
+);
+
+
+document.getElementById(
+    "shareAbroad"
+).addEventListener(
+    "click",
+    function() {
+
+        const result =
+            document.getElementById(
+                "abroadContent"
+            ).innerText;
+
+        if (!result) {
+
+            alert(
+                "Calculate the study abroad budget first."
+            );
+
+            return;
+
+        }
+
+        shareResult(
+            "✈️ Study Abroad Budget\n\n" +
+            result
+        );
+
+    }
+);
+
+
+document.getElementById(
+    "deleteAbroad"
+).addEventListener(
+    "click",
+    function() {
+
+        document.getElementById(
+            "abroadResult"
+        ).style.display =
+            "none";
+
+    }
+);
+
+
+/* =====================================================
+   CURRENCY CHANGE
+===================================================== */
+
+document.getElementById(
+    "currencySelect"
+).addEventListener(
+    "change",
+    function() {
+
+        document
+            .querySelectorAll(".result-box")
+            .forEach(function(box) {
+
+                /*
+                 * Existing results remain visible.
+                 * Recalculate them if the user wants
+                 * the newly selected currency.
+                 */
+
+            });
+
+    }
+);
+
+
+/* =====================================================
+   INITIAL HISTORY
+===================================================== */
+
+renderHistory();
+
+
+/* =====================================================
+   YEAR
+===================================================== */
+
+document.getElementById(
+    "currentYear"
+).textContent =
+    new Date().getFullYear();
+
+</script>
+
+</body>
+</html>
