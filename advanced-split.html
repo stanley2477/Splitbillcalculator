@@ -1,0 +1,3231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="icon" type="image/png" href="/favicon.png">
+
+<link rel="manifest" href="/manifest.json">
+
+<meta name="theme-color" content="#2563eb">
+
+<meta
+name="description"
+content="Advanced bill splitting tools for proportional splits, item-based bills, tax and tip, unequal expenses, IOUs, shared items, and settlement rounding."
+>
+
+<title>Advanced Bill Splitting | Split Bill Calculator</title>
+
+<style>
+
+:root {
+    --primary: #2563eb;
+    --primary-hover: #1d4ed8;
+    --bg-main: #f8fafc;
+    --card-bg: #ffffff;
+    --text-title: #0f172a;
+    --text-body: #334155;
+    --border: #e2e8f0;
+    --success-bg: #f0fdf4;
+    --success-border: #10b981;
+    --success-text: #166534;
+}
+
+* {
+    box-sizing: border-box;
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        sans-serif;
+
+    margin: 0;
+    padding: 0;
+}
+
+body {
+
+    background: var(--bg-main);
+
+    color: var(--text-body);
+
+    padding: 20px 15px;
+
+    min-height: 100vh;
+
+}
+
+.container {
+
+    max-width: 520px;
+
+    width: 100%;
+
+    margin: 10px auto;
+
+    background: var(--card-bg);
+
+    padding: 30px 24px;
+
+    border-radius: 24px;
+
+    box-shadow:
+        0 10px 25px -5px rgba(0,0,0,0.05);
+
+}
+
+header h1 {
+
+    color: var(--text-title);
+
+    font-size: 26px;
+
+    font-weight: 800;
+
+    margin-bottom: 6px;
+
+    text-align: center;
+
+}
+
+header p {
+
+    color: #64748b;
+
+    font-size: 14px;
+
+    margin-bottom: 25px;
+
+    text-align: center;
+
+}
+
+h2 {
+
+    color: var(--text-title);
+
+    font-size: 18px;
+
+    margin-bottom: 10px;
+
+}
+
+h3 {
+
+    color: var(--text-title);
+
+}
+
+.section-divider {
+
+    margin: 35px 0 25px;
+
+    border-top: 2px solid var(--border);
+
+    padding-top: 25px;
+
+}
+
+.receipt-description {
+
+    color: #64748b;
+
+    font-size: 13px;
+
+    line-height: 1.5;
+
+    margin-bottom: 15px;
+
+}
+
+.form-group {
+
+    margin-bottom: 16px;
+
+}
+
+label {
+
+    display: block;
+
+    font-weight: 600;
+
+    margin-bottom: 7px;
+
+    color: #475569;
+
+    font-size: 13px;
+
+}
+
+input,
+select {
+
+    padding: 14px 16px;
+
+    font-size: 16px;
+
+    border-radius: 12px;
+
+    border: 1px solid var(--border);
+
+    width: 100%;
+
+    background: #fff;
+
+    color: var(--text-title);
+
+}
+
+.currency-search {
+
+    margin-bottom: 8px;
+
+}
+
+.currency-search input {
+
+    padding: 12px 14px;
+
+}
+
+button {
+
+    cursor: pointer;
+
+}
+
+button.action-btn {
+
+    padding: 15px;
+
+    font-size: 16px;
+
+    border-radius: 12px;
+
+    border: none;
+
+    width: 100%;
+
+    font-weight: 700;
+
+    background: var(--primary);
+
+    color: white;
+
+    box-shadow:
+        0 4px 12px rgba(37,99,235,0.2);
+
+    margin-top: 8px;
+
+}
+
+button.action-btn:hover {
+
+    background: var(--primary-hover);
+
+}
+
+button.secondary-btn {
+
+    padding: 13px;
+
+    font-size: 15px;
+
+    border-radius: 12px;
+
+    border: 1px solid var(--border);
+
+    width: 100%;
+
+    font-weight: 700;
+
+    background: #fff;
+
+    color: var(--text-title);
+
+    margin-top: 8px;
+
+}
+
+button.share-btn {
+
+    background: #16a34a;
+
+    color: white;
+
+    border: none;
+
+}
+
+.result-box {
+
+    display: none;
+
+    margin-top: 20px;
+
+    background: var(--success-bg);
+
+    border: 1px solid var(--success-border);
+
+    padding: 20px;
+
+    border-radius: 16px;
+
+    text-align: left;
+
+}
+
+.result-box h3 {
+
+    color: var(--success-text);
+
+    margin-bottom: 14px;
+
+    font-size: 15px;
+
+    text-transform: uppercase;
+
+    text-align: center;
+
+    border-bottom: 1px dashed
+        rgba(16,185,129,0.3);
+
+    padding-bottom: 7px;
+
+}
+
+.result-item {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    gap: 10px;
+
+    margin-bottom: 10px;
+
+    color: var(--success-text);
+
+    font-size: 15px;
+
+}
+
+.result-total {
+
+    font-size: 21px;
+
+    font-weight: 800;
+
+    border-top: 1px dashed #10b981;
+
+    padding-top: 12px;
+
+    margin-top: 12px;
+
+    color: #064e3b;
+
+}
+
+.result-actions {
+
+    display: grid;
+
+    grid-template-columns:
+        1fr 1fr 1fr;
+
+    gap: 8px;
+
+    margin-top: 14px;
+
+}
+
+.result-actions button {
+
+    padding: 11px 7px;
+
+    border-radius: 10px;
+
+    border: none;
+
+    font-weight: 700;
+
+    font-size: 13px;
+
+}
+
+.save-btn {
+
+    background: #2563eb;
+
+    color: white;
+
+}
+
+.share-result-btn {
+
+    background: #16a34a;
+
+    color: white;
+
+}
+
+.delete-btn {
+
+    background: #fee2e2;
+
+    color: #b91c1c;
+
+}
+
+.person-row {
+
+    display: grid;
+
+    grid-template-columns: 1fr 100px 38px;
+
+    gap: 7px;
+
+    margin-bottom: 8px;
+
+}
+
+.person-row input {
+
+    padding: 11px;
+
+    font-size: 14px;
+
+}
+
+.remove-person {
+
+    width: 38px;
+
+    border: 1px solid #fecaca;
+
+    background: white;
+
+    color: #dc2626;
+
+    border-radius: 10px;
+
+    font-size: 20px;
+
+}
+
+.item-row {
+
+    display: grid;
+
+    grid-template-columns:
+        1fr 90px;
+
+    gap: 8px;
+
+    margin-bottom: 8px;
+
+}
+
+.item-row input {
+
+    padding: 11px;
+
+    font-size: 14px;
+
+}
+
+.item-assignment {
+
+    border: 1px solid var(--border);
+
+    padding: 12px;
+
+    border-radius: 12px;
+
+    margin-bottom: 10px;
+
+}
+
+.assignment-person {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    margin-top: 7px;
+
+}
+
+.assignment-person input {
+
+    width: auto;
+
+}
+
+.history-card {
+
+    border: 1px solid var(--border);
+
+    border-radius: 14px;
+
+    padding: 15px;
+
+    margin-bottom: 10px;
+
+    background: #fff;
+
+}
+
+.history-card h3 {
+
+    font-size: 15px;
+
+    margin-bottom: 8px;
+
+}
+
+.history-card p {
+
+    font-size: 13px;
+
+    line-height: 1.5;
+
+    white-space: pre-line;
+
+    margin-bottom: 12px;
+
+}
+
+.history-actions {
+
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 8px;
+
+}
+
+.history-actions button {
+
+    padding: 10px;
+
+    border: none;
+
+    border-radius: 9px;
+
+    font-weight: 700;
+
+}
+
+.no-history {
+
+    text-align: center;
+
+    padding: 20px;
+
+    color: #64748b;
+
+    font-size: 14px;
+
+}
+
+footer {
+
+    margin-top: 30px;
+
+    padding: 24px 0 10px;
+
+    font-size: 13px;
+
+    color: #64748b;
+
+    text-align: center;
+
+}
+
+footer a {
+
+    color: #2563eb;
+
+    text-decoration: none;
+
+    font-weight: 600;
+
+}
+
+@media (max-width: 430px) {
+
+    .person-row {
+
+        grid-template-columns:
+            1fr 85px 38px;
+
+    }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<header>
+
+<h1>⚖️ Advanced Bill Splitting</h1>
+
+<p>
+Advanced tools for splitting bills, group expenses,
+shared items, taxes, tips, and settlements.
+</p>
+
+</header>
+
+
+<!-- =====================================================
+     CURRENCY
+===================================================== -->
+
+<section>
+
+<h2>💱 Currency</h2>
+
+<p class="receipt-description">
+Choose the currency you want to use for your calculations.
+</p>
+
+<div class="currency-search">
+
+<input
+type="text"
+id="currencySearch"
+placeholder="🔎 Search currency or country"
+autocomplete="off"
+>
+
+</div>
+
+<select id="currencySelect"></select>
+
+</section>
+
+
+<!-- =====================================================
+     PROPORTIONAL SPLIT
+===================================================== -->
+
+<div class="section-divider"></div>
+
+<section>
+
+<h2>⚖️ Proportional Split</h2>
+
+<p class="receipt-description">
+Split a bill according to each person's percentage share.
+The percentages should total 100%.
+</p>
+
+<div class="form-group">
+
+<label>Total Bill</label>
+
+<input
+type="number"
+id="proportionalTotal"
+placeholder="Example: 200"
+min="0"
+step="any"
+>
+
+</div>
+
+<div id="proportionalPeople"></div>
+
+<button
+type="button"
+class="secondary-btn"
+id="addProportionalPerson">
++ Add Person
+</button>
+
+<button
+type="button"
+class="action-btn"
+id="calculateProportional">
+Calculate Proportional Split
+</button>
+
+<div
+id="proportionalResult"
+class="result-box">
+
+<h3>Proportional Split Result</h3>
+
+<div id="proportionalContent"></div>
+
+<div class="result-actions">
+
+<button
+type="button"
+class="save-btn"
+id="saveProportional">
+💾 Save
+</button>
+
+<button
+type="button"
+class="share-result-btn"
+id="shareProportional">
+🔗 Share
+</button>
+
+<button
+type="button"
+class="delete-btn"
+id="deleteProportional">
+🗑️ Delete
+</button>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     ITEM BASED SPLIT
+===================================================== -->
+
+<div class="section-divider"></div>
+
+<section>
+
+<h2>🍕 Item-Based Split</h2>
+
+<p class="receipt-description">
+Add items and select which people share each item.
+</p>
+
+<div id="itemPeople"></div>
+
+<button
+type="button"
+class="secondary-btn"
+id="addItemPerson">
++ Add Person
+</button>
+
+<div id="billItems"></div>
+
+<button
+type="button"
+class="secondary-btn"
+id="addBillItem">
++ Add Item
+</button>
+
+<button
+type="button"
+class="action-btn"
+id="calculateItemSplit">
+Calculate Item Split
+</button>
+
+<div
+id="itemSplitResult"
+class="result-box">
+
+<h3>Item-Based Split Result</h3>
+
+<div id="itemSplitContent"></div>
+
+<div class="result-actions">
+
+<button
+type="button"
+class="save-btn"
+id="saveItemSplit">
+💾 Save
+</button>
+
+<button
+type="button"
+class="share-result-btn"
+id="shareItemSplit">
+🔗 Share
+</button>
+
+<button
+type="button"
+class="delete-btn"
+id="deleteItemSplit">
+🗑️ Delete
+</button>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     TAX AND TIP
+===================================================== -->
+
+<div class="section-divider"></div>
+
+<section>
+
+<h2>🧾 Tax & Tip Split</h2>
+
+<p class="receipt-description">
+Calculate tax and tip, then divide the final amount equally.
+</p>
+
+<div class="form-group">
+
+<label>Bill Amount</label>
+
+<input
+type="number"
+id="taxTipBill"
+placeholder="Example: 150"
+min="0"
+step="any"
+>
+
+</div>
+
+<div class="form-group">
+
+<label>Tax (%)</label>
+
+<input
+type="number"
+id="taxPercent"
+placeholder="Example: 8"
+min="0"
+step="any"
+>
+
+</div>
+
+<div class="form-group">
+
+<label>Tip (%)</label>
+
+<input
+type="number"
+id="tipPercent"
+placeholder="Example: 15"
+min="0"
+step="any"
+>
+
+</div>
+
+<div class="form-group">
+
+<label>Number of People</label>
+
+<input
+type="number"
+id="taxTipPeople"
+placeholder="Example: 4"
+min="1"
+step="1"
+>
+
+</div>
+
+<button
+type="button"
+class="action-btn"
+id="calculateTaxTip">
+Calculate Tax & Tip Split
+</button>
+
+<div
+id="taxTipResult"
+class="result-box">
+
+<h3>Tax & Tip Result</h3>
+
+<div id="taxTipContent"></div>
+
+<div class="result-actions">
+
+<button
+type="button"
+class="save-btn"
+id="saveTaxTip">
+💾 Save
+</button>
+
+<button
+type="button"
+class="share-result-btn"
+id="shareTaxTip">
+🔗 Share
+</button>
+
+<button
+type="button"
+class="delete-btn"
+id="deleteTaxTip">
+🗑️ Delete
+</button>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     UNEQUAL SPLIT
+===================================================== -->
+
+<div class="section-divider"></div>
+
+<section>
+
+<h2>👥 Unequal Split</h2>
+
+<p class="receipt-description">
+Set a different amount for each person and check the total.
+</p>
+
+<div class="form-group">
+
+<label>Total Bill</label>
+
+<input
+type="number"
+id="unequalTotal"
+placeholder="Example: 300"
+min="0"
+step="any"
+>
+
+</div>
+
+<div id="unequalPeople"></div>
+
+<button
+type="button"
+class="secondary-btn"
+id="addUnequalPerson">
++ Add Person
+</button>
+
+<button
+type="button"
+class="action-btn"
+id="calculateUnequal">
+Calculate Unequal Split
+</button>
+
+<div
+id="unequalResult"
+class="result-box">
+
+<h3>Unequal Split Result</h3>
+
+<div id="unequalContent"></div>
+
+<div class="result-actions">
+
+<button
+type="button"
+class="save-btn"
+id="saveUnequal">
+💾 Save
+</button>
+
+<button
+type="button"
+class="share-result-btn"
+id="shareUnequal">
+🔗 Share
+</button>
+
+<button
+type="button"
+class="delete-btn"
+id="deleteUnequal">
+🗑️ Delete
+</button>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     IOU SIMPLIFIER
+===================================================== -->
+
+<div class="section-divider"></div>
+
+<section>
+
+<h2>💸 IOU Simplifier</h2>
+
+<p class="receipt-description">
+Enter what each person paid. The tool calculates a simplified
+settlement showing who should pay whom.
+</p>
+
+<div id="iouPeople"></div>
+
+<button
+type="button"
+class="secondary-btn"
+id="addIouPerson">
++ Add Person
+</button>
+
+<button
+type="button"
+class="action-btn"
+id="calculateIou">
+Simplify IOUs
+</button>
+
+<div
+id="iouResult"
+class="result-box">
+
+<h3>IOU Settlement</h3>
+
+<div id="iouContent"></div>
+
+<div class="result-actions">
+
+<button
+type="button"
+class="save-btn"
+id="saveIou">
+💾 Save
+</button>
+
+<button
+type="button"
+class="share-result-btn"
+id="shareIou">
+🔗 Share
+</button>
+
+<button
+type="button"
+class="delete-btn"
+id="deleteIou">
+🗑️ Delete
+</button>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     SHARED ITEM SPLIT
+===================================================== -->
+
+<div class="section-divider"></div>
+
+<section>
+
+<h2>🍽️ Shared-Item Split</h2>
+
+<p class="receipt-description">
+Split the cost of individual shared items among selected people.
+</p>
+
+<div id="sharedPeople"></div>
+
+<button
+type="button"
+class="secondary-btn"
+id="addSharedPerson">
++ Add Person
+</button>
+
+<div id="sharedItems"></div>
+
+<button
+type="button"
+class="secondary-btn"
+id="addSharedItem">
++ Add Shared Item
+</button>
+
+<button
+type="button"
+class="action-btn"
+id="calculateShared">
+Calculate Shared Items
+</button>
+
+<div
+id="sharedResult"
+class="result-box">
+
+<h3>Shared-Item Result</h3>
+
+<div id="sharedContent"></div>
+
+<div class="result-actions">
+
+<button
+type="button"
+class="save-btn"
+id="saveShared">
+💾 Save
+</button>
+
+<button
+type="button"
+class="share-result-btn"
+id="shareShared">
+🔗 Share
+</button>
+
+<button
+type="button"
+class="delete-btn"
+id="deleteShared">
+🗑️ Delete
+</button>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     ROUNDING AND SETTLEMENT
+===================================================== -->
+
+<div class="section-divider"></div>
+
+<section>
+
+<h2>🔢 Rounding & Settlement</h2>
+
+<p class="receipt-description">
+Round each person's share and see the difference created by rounding.
+</p>
+
+<div class="form-group">
+
+<label>Total Bill</label>
+
+<input
+type="number"
+id="roundingTotal"
+placeholder="Example: 100"
+min="0"
+step="any"
+>
+
+</div>
+
+<div class="form-group">
+
+<label>Number of People</label>
+
+<input
+type="number"
+id="roundingPeople"
+placeholder="Example: 3"
+min="1"
+step="1"
+>
+
+</div>
+
+<div class="form-group">
+
+<label>Round Each Share To</label>
+
+<select id="roundingUnit">
+
+<option value="1">Nearest whole unit</option>
+
+<option value="0.5">Nearest 0.50</option>
+
+<option value="5">Nearest 5</option>
+
+<option value="10">Nearest 10</option>
+
+</select>
+
+</div>
+
+<button
+type="button"
+class="action-btn"
+id="calculateRounding">
+Calculate Rounding & Settlement
+</button>
+
+<div
+id="roundingResult"
+class="result-box">
+
+<h3>Rounding Result</h3>
+
+<div id="roundingContent"></div>
+
+<div class="result-actions">
+
+<button
+type="button"
+class="save-btn"
+id="saveRounding">
+💾 Save
+</button>
+
+<button
+type="button"
+class="share-result-btn"
+id="shareRounding">
+🔗 Share
+</button>
+
+<button
+type="button"
+class="delete-btn"
+id="deleteRounding">
+🗑️ Delete
+</button>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     SAVED HISTORY
+===================================================== -->
+
+<div class="section-divider"></div>
+
+<section>
+
+<h2>💾 Saved Calculation History</h2>
+
+<p class="receipt-description">
+Saved calculations are stored on this device.
+</p>
+
+<div id="savedHistory"></div>
+
+<button
+type="button"
+class="secondary-btn"
+id="clearHistory">
+🗑️ Clear All History
+</button>
+
+</section>
+
+
+<footer>
+
+<p>
+
+© <span id="currentYear"></span>
+Split Bill Calculator |
+
+<a href="index.html">
+Page 1
+</a>
+
+</p>
+
+</footer>
+
+</div>
+
+
+<script>
+
+"use strict";
+
+
+/* =====================================================
+   SAME CURRENCY LIST AS PAGE 1
+===================================================== */
+
+const currencies = [
+
+["AFN","Afghanistan — Afghan Afghani","؋"],
+["ALL","Albania — Albanian Lek","L"],
+["DZD","Algeria — Algerian Dinar","دج"],
+["AOA","Angola — Angolan Kwanza","Kz"],
+["ARS","Argentina — Argentine Peso","$"],
+["AMD","Armenia — Armenian Dram","֏"],
+["AWG","Aruba — Aruban Florin","ƒ"],
+["AUD","Australia — Australian Dollar","A$"],
+["AZN","Azerbaijan — Azerbaijani Manat","₼"],
+
+["BSD","Bahamas — Bahamian Dollar","$"],
+["BHD","Bahrain — Bahraini Dinar","د.ب"],
+["BDT","Bangladesh — Bangladeshi Taka","৳"],
+["BBD","Barbados — Barbadian Dollar","$"],
+["BYN","Belarus — Belarusian Ruble","Br"],
+["BZD","Belize — Belize Dollar","BZ$"],
+["BMD","Bermuda — Bermudian Dollar","$"],
+["BTN","Bhutan — Bhutanese Ngultrum","Nu."],
+["BOB","Bolivia — Bolivian Boliviano","Bs."],
+["BAM","Bosnia and Herzegovina — Convertible Mark","KM"],
+["BWP","Botswana — Botswana Pula","P"],
+["BRL","Brazil — Brazilian Real","R$"],
+["BND","Brunei — Brunei Dollar","B$"],
+["BGN","Bulgaria — Bulgarian Lev","лв"],
+["BIF","Burundi — Burundian Franc","FBu"],
+
+["KHR","Cambodia — Cambodian Riel","៛"],
+["CAD","Canada — Canadian Dollar","C$"],
+["CVE","Cape Verde — Cape Verdean Escudo","$"],
+["KYD","Cayman Islands — Cayman Islands Dollar","CI$"],
+["XAF","Central African CFA Franc","FCFA"],
+["CLP","Chile — Chilean Peso","$"],
+["CNY","China — Chinese Yuan","¥"],
+["COP","Colombia — Colombian Peso","$"],
+["KMF","Comoros — Comorian Franc","CF"],
+["CDF","Congo — Congolese Franc","FC"],
+["CRC","Costa Rica — Costa Rican Colón","₡"],
+["XOF","West African CFA Franc","CFA"],
+["CUP","Cuba — Cuban Peso","$"],
+["CZK","Czechia — Czech Koruna","Kč"],
+
+["DKK","Denmark — Danish Krone","kr"],
+["DJF","Djibouti — Djiboutian Franc","Fdj"],
+["DOP","Dominican Republic — Dominican Peso","RD$"],
+
+["EGP","Egypt — Egyptian Pound","£"],
+["ERN","Eritrea — Eritrean Nakfa","Nfk"],
+["ETB","Ethiopia — Ethiopian Birr","Br"],
+["EUR","European Union — Euro","€"],
+
+["FKP","Falkland Islands — Falkland Pound","£"],
+["FJD","Fiji — Fijian Dollar","FJ$"],
+["XPF","French Pacific Franc","₣"],
+
+["GMD","Gambia — Gambian Dalasi","D"],
+["GEL","Georgia — Georgian Lari","₾"],
+["GHS","Ghana — Ghanaian Cedi","₵"],
+["GIP","Gibraltar — Gibraltar Pound","£"],
+["GTQ","Guatemala — Guatemalan Quetzal","Q"],
+["GNF","Guinea — Guinean Franc","FG"],
+["GYD","Guyana — Guyanese Dollar","G$"],
+
+["HTG","Haiti — Haitian Gourde","G"],
+["HNL","Honduras — Honduran Lempira","L"],
+["HKD","Hong Kong — Hong Kong Dollar","HK$"],
+["HUF","Hungary — Hungarian Forint","Ft"],
+
+["ISK","Iceland — Icelandic Króna","kr"],
+["INR","India — Indian Rupee","₹"],
+["IDR","Indonesia — Indonesian Rupiah","Rp"],
+["IRR","Iran — Iranian Rial","﷼"],
+["IQD","Iraq — Iraqi Dinar","ع.د"],
+["ILS","Israel — Israeli New Shekel","₪"],
+
+["JMD","Jamaica — Jamaican Dollar","J$"],
+["JPY","Japan — Japanese Yen","¥"],
+["JOD","Jordan — Jordanian Dinar","د.ا"],
+
+["KZT","Kazakhstan — Kazakhstani Tenge","₸"],
+["KES","Kenya — Kenyan Shilling","KSh"],
+["KWD","Kuwait — Kuwaiti Dinar","د.ك"],
+["KGS","Kyrgyzstan — Kyrgyzstani Som","с"],
+
+["LAK","Laos — Lao Kip","₭"],
+["LBP","Lebanon — Lebanese Pound","ل.ل"],
+["LSL","Lesotho — Lesotho Loti","L"],
+["LRD","Liberia — Liberian Dollar","L$"],
+["LYD","Libya — Libyan Dinar","ل.د"],
+
+["MOP","Macau — Macanese Pataca","MOP$"],
+["MKD","North Macedonia — Macedonian Denar","ден"],
+["MGA","Madagascar — Malagasy Ariary","Ar"],
+["MWK","Malawi — Malawian Kwacha","MK"],
+["MYR","Malaysia — Malaysian Ringgit","RM"],
+["MVR","Maldives — Maldivian Rufiyaa","Rf"],
+["MRU","Mauritania — Mauritanian Ouguiya","UM"],
+["MUR","Mauritius — Mauritian Rupee","₨"],
+["MXN","Mexico — Mexican Peso","$"],
+["MDL","Moldova — Moldovan Leu","L"],
+["MNT","Mongolia — Mongolian Tögrög","₮"],
+["MAD","Morocco — Moroccan Dirham","د.م."],
+["MZN","Mozambique — Mozambican Metical","MT"],
+
+["NAD","Namibia — Namibian Dollar","N$"],
+["NPR","Nepal — Nepalese Rupee","₨"],
+["XCG","Caribbean Guilder","Cg"],
+["NZD","New Zealand — New Zealand Dollar","NZ$"],
+["NIO","Nicaragua — Nicaraguan Córdoba","C$"],
+["NGN","Nigeria — Nigerian Naira","₦"],
+["NOK","Norway — Norwegian Krone","kr"],
+
+["OMR","Oman — Omani Rial","ر.ع."],
+
+["PKR","Pakistan — Pakistani Rupee","₨"],
+["PAB","Panama — Panamanian Balboa","B/."],
+["PGK","Papua New Guinea — Kina","K"],
+["PYG","Paraguay — Paraguayan Guaraní","₲"],
+["PEN","Peru — Peruvian Sol","S/"],
+["PHP","Philippines — Philippine Peso","₱"],
+["PLN","Poland — Polish Złoty","zł"],
+["QAR","Qatar — Qatari Riyal","ر.ق"],
+
+["RON","Romania — Romanian Leu","lei"],
+["RUB","Russia — Russian Ruble","₽"],
+["RWF","Rwanda — Rwandan Franc","FRw"],
+
+["SHP","Saint Helena — Saint Helena Pound","£"],
+["WST","Samoa — Samoan Tala","T"],
+["STN","São Tomé and Príncipe — Dobra","Db"],
+["SAR","Saudi Arabia — Saudi Riyal","ر.س"],
+["RSD","Serbia — Serbian Dinar","дин"],
+["SCR","Seychelles — Seychellois Rupee","₨"],
+["SGD","Singapore — Singapore Dollar","S$"],
+["SBD","Solomon Islands — Solomon Islands Dollar","SI$"],
+["SOS","Somalia — Somali Shilling","Sh"],
+["ZAR","South Africa — South African Rand","R"],
+["KRW","South Korea — South Korean Won","₩"],
+["SSP","South Sudan — South Sudanese Pound","£"],
+["LKR","Sri Lanka — Sri Lankan Rupee","₨"],
+["SDG","Sudan — Sudanese Pound","ج.س."],
+["SRD","Suriname — Surinamese Dollar","$"],
+["SZL","Eswatini — Swazi Lilangeni","E"],
+["SEK","Sweden — Swedish Krona","kr"],
+["CHF","Switzerland — Swiss Franc","CHF"],
+["SYP","Syria — Syrian Pound","£"],
+
+["TWD","Taiwan — New Taiwan Dollar","NT$"],
+["TJS","Tajikistan — Somoni","SM"],
+["TZS","Tanzania — Tanzanian Shilling","TSh"],
+["THB","Thailand — Thai Baht","฿"],
+["TOP","Tonga — Tongan Paʻanga","T$"],
+["TTD","Trinidad and Tobago — Dollar","TT$"],
+["TND","Tunisia — Tunisian Dinar","د.ت"],
+["TRY","Turkey — Turkish Lira","₺"],
+["TMT","Turkmenistan — Turkmenistan Manat","m"],
+
+["UGX","Uganda — Ugandan Shilling","USh"],
+["UAH","Ukraine — Ukrainian Hryvnia","₴"],
+["AED","United Arab Emirates — Dirham","د.إ"],
+["GBP","United Kingdom — British Pound","£"],
+["USD","United States — US Dollar","$"],
+["UYU","Uruguay — Uruguayan Peso","$U"],
+["UZS","Uzbekistan — Uzbekistani Som","лв"],
+
+["VUV","Vanuatu — Vanuatu Vatu","VT"],
+["VES","Venezuela — Venezuelan Bolívar","Bs."],
+["VND","Vietnam — Vietnamese Dong","₫"],
+
+["YER","Yemen — Yemeni Rial","﷼"],
+["ZMW","Zambia — Zambian Kwacha","ZK"],
+["ZWL","Zimbabwe — Zimbabwe Dollar","Z$"]
+
+];
+
+
+/* =====================================================
+   CURRENCY
+===================================================== */
+
+function populateCurrencies(query = "") {
+
+    const select =
+        document.getElementById("currencySelect");
+
+    select.innerHTML = "";
+
+    const search =
+        query.toLowerCase().trim();
+
+    currencies
+        .filter(function(item) {
+
+            return (
+                item[0]
+                    .toLowerCase()
+                    .includes(search) ||
+
+                item[1]
+                    .toLowerCase()
+                    .includes(search)
+            );
+
+        })
+        .forEach(function(item) {
+
+            const option =
+                document.createElement("option");
+
+            option.value =
+                item[0];
+
+            option.textContent =
+                item[1] +
+                " (" +
+                item[0] +
+                ")";
+
+            select.appendChild(option);
+
+        });
+
+}
+
+
+/*
+   IMPORTANT:
+   USA / USD is selected publicly by default.
+*/
+
+populateCurrencies();
+
+document.getElementById(
+    "currencySelect"
+).value = "USD";
+
+
+document.getElementById(
+    "currencySearch"
+).addEventListener(
+    "input",
+    function() {
+
+        const current =
+            document.getElementById(
+                "currencySelect"
+            ).value;
+
+        populateCurrencies(
+            this.value
+        );
+
+        if(
+            currencies.some(
+                function(item) {
+                    return item[0] === current;
+                }
+            )
+        ) {
+
+            document.getElementById(
+                "currencySelect"
+            ).value = current;
+
+        }
+
+    }
+);
+
+
+function getCurrencyData() {
+
+    const code =
+        document.getElementById(
+            "currencySelect"
+        ).value;
+
+    return currencies.find(
+        function(item) {
+            return item[0] === code;
+        }
+    ) || currencies.find(
+        function(item) {
+            return item[0] === "USD";
+        }
+    );
+
+}
+
+
+function getCurrencySymbol() {
+
+    return getCurrencyData()[2];
+
+}
+
+
+function money(value) {
+
+    return (
+        getCurrencySymbol() +
+        Number(value).toFixed(2)
+    );
+
+}
+
+
+/* =====================================================
+   SHARING
+===================================================== */
+
+function shareResult(text) {
+
+    if(
+        navigator.share
+    ) {
+
+        navigator.share({
+
+            title:
+                "Split Bill Calculator",
+
+            text: text
+
+        }).catch(
+            function(error) {
+
+                if(
+                    error &&
+                    error.name ===
+                    "AbortError"
+                ) {
+
+                    return;
+
+                }
+
+                fallbackCopy(text);
+
+            }
+        );
+
+        return;
+
+    }
+
+    fallbackCopy(text);
+
+}
+
+
+function fallbackCopy(text) {
+
+    const textarea =
+        document.createElement(
+            "textarea"
+        );
+
+    textarea.value = text;
+
+    textarea.style.position =
+        "fixed";
+
+    textarea.style.left =
+        "-9999px";
+
+    document.body.appendChild(
+        textarea
+    );
+
+    textarea.focus();
+
+    textarea.select();
+
+    try {
+
+        document.execCommand(
+            "copy"
+        );
+
+        alert(
+            "Result copied to clipboard."
+        );
+
+    } catch(error) {
+
+        alert(text);
+
+    }
+
+    document.body.removeChild(
+        textarea
+    );
+
+}
+
+
+/* =====================================================
+   HISTORY
+===================================================== */
+
+const HISTORY_KEY =
+    "splitBillCalculatorAdvancedHistory";
+
+
+function getHistory() {
+
+    try {
+
+        return JSON.parse(
+            localStorage.getItem(
+                HISTORY_KEY
+            )
+        ) || [];
+
+    } catch(error) {
+
+        return [];
+
+    }
+
+}
+
+
+function saveHistory(
+    tool,
+    result
+) {
+
+    const history =
+        getHistory();
+
+    history.unshift({
+
+        id:
+            Date.now().toString() +
+            Math.random()
+                .toString(36)
+                .slice(2),
+
+        tool:
+            tool,
+
+        result:
+            result,
+
+        date:
+            new Date()
+                .toLocaleString()
+
+    });
+
+    try {
+
+        localStorage.setItem(
+            HISTORY_KEY,
+            JSON.stringify(history)
+        );
+
+    } catch(error) {
+
+        alert(
+            "Unable to save this calculation on your device."
+        );
+
+        return;
+
+    }
+
+    renderHistory();
+
+    alert(
+        "Calculation saved successfully."
+    );
+
+}
+
+
+function deleteHistory(id) {
+
+    const history =
+        getHistory()
+        .filter(
+            function(item) {
+                return item.id !== id;
+            }
+        );
+
+    localStorage.setItem(
+        HISTORY_KEY,
+        JSON.stringify(history)
+    );
+
+    renderHistory();
+
+}
+
+
+function renderHistory() {
+
+    const container =
+        document.getElementById(
+            "savedHistory"
+        );
+
+    const history =
+        getHistory();
+
+    container.innerHTML = "";
+
+    if(!history.length) {
+
+        container.innerHTML =
+            '<div class="no-history">' +
+            'No saved calculations yet.' +
+            '</div>';
+
+        return;
+
+    }
+
+    history.forEach(
+        function(item) {
+
+            const card =
+                document.createElement(
+                    "div"
+                );
+
+            card.className =
+                "history-card";
+
+            const title =
+                document.createElement(
+                    "h3"
+                );
+
+            title.textContent =
+                "📌 " +
+                item.tool;
+
+            const result =
+                document.createElement(
+                    "p"
+                );
+
+            result.textContent =
+                item.result +
+                "\n\nSaved: " +
+                item.date;
+
+            const actions =
+                document.createElement(
+                    "div"
+                );
+
+            actions.className =
+                "history-actions";
+
+            const share =
+                document.createElement(
+                    "button"
+                );
+
+            share.textContent =
+                "🔗 Share";
+
+            share.className =
+                "share-result-btn";
+
+            share.addEventListener(
+                "click",
+                function() {
+
+                    shareResult(
+                        item.result
+                    );
+
+                }
+            );
+
+            const del =
+                document.createElement(
+                    "button"
+                );
+
+            del.textContent =
+                "🗑️ Delete";
+
+            del.className =
+                "delete-btn";
+
+            del.addEventListener(
+                "click",
+                function() {
+
+                    deleteHistory(
+                        item.id
+                    );
+
+                }
+            );
+
+            actions.appendChild(
+                share
+            );
+
+            actions.appendChild(
+                del
+            );
+
+            card.appendChild(
+                title
+            );
+
+            card.appendChild(
+                result
+            );
+
+            card.appendChild(
+                actions
+            );
+
+            container.appendChild(
+                card
+            );
+
+        }
+    );
+
+}
+
+
+document.getElementById(
+    "clearHistory"
+).addEventListener(
+    "click",
+    function() {
+
+        if(
+            !confirm(
+                "Delete all saved calculations?"
+            )
+        ) {
+
+            return;
+
+        }
+
+        localStorage.removeItem(
+            HISTORY_KEY
+        );
+
+        renderHistory();
+
+    }
+);
+
+
+/* =====================================================
+   PROPORTIONAL SPLIT
+===================================================== */
+
+function addProportionalPerson(
+    name = "",
+    percentage = ""
+) {
+
+    const container =
+        document.getElementById(
+            "proportionalPeople"
+        );
+
+    const row =
+        document.createElement(
+            "div"
+        );
+
+    row.className =
+        "person-row";
+
+    row.innerHTML =
+
+        '<input type="text" ' +
+        'placeholder="Person name" ' +
+        'value="' +
+        name +
+        '">' +
+
+        '<input type="number" ' +
+        'placeholder="%" ' +
+        'min="0" ' +
+        'step="any" ' +
+        'value="' +
+        percentage +
+        '">' +
+
+        '<button type="button" ' +
+        'class="remove-person">' +
+        '×' +
+        '</button>';
+
+    row.querySelector(
+        ".remove-person"
+    ).addEventListener(
+        "click",
+        function() {
+
+            row.remove();
+
+        }
+    );
+
+    container.appendChild(row);
+
+}
+
+
+addProportionalPerson(
+    "Person 1",
+    50
+);
+
+addProportionalPerson(
+    "Person 2",
+    50
+);
+
+
+document.getElementById(
+    "addProportionalPerson"
+).addEventListener(
+    "click",
+    function() {
+
+        addProportionalPerson();
+
+    }
+);
+
+
+document.getElementById(
+    "calculateProportional"
+).addEventListener(
+    "click",
+    function() {
+
+        const total =
+            parseFloat(
+                document.getElementById(
+                    "proportionalTotal"
+                ).value
+            );
+
+        if(
+            !Number.isFinite(total) ||
+            total < 0
+        ) {
+
+            alert(
+                "Please enter a valid bill amount."
+            );
+
+            return;
+
+        }
+
+        const rows =
+            document.querySelectorAll(
+                "#proportionalPeople .person-row"
+            );
+
+        let totalPercentage = 0;
+
+        const people = [];
+
+        rows.forEach(
+            function(row) {
+
+                const name =
+                    row.querySelector(
+                        'input[type="text"]'
+                    ).value.trim()
+                    || "Person";
+
+                const percentage =
+                    parseFloat(
+                        row.querySelector(
+                            'input[type="number"]'
+                        ).value
+                    );
+
+                if(
+                    Number.isFinite(
+                        percentage
+                    )
+                ) {
+
+                    totalPercentage +=
+                        percentage;
+
+                    people.push({
+
+                        name:
+                            name,
+
+                        percentage:
+                            percentage,
+
+                        amount:
+                            total *
+                            percentage /
+                            100
+
+                    });
+
+                }
+
+            }
+        );
+
+        if(
+            Math.abs(
+                totalPercentage - 100
+            ) > 0.01
+        ) {
+
+            alert(
+                "The percentages must total 100%."
+            );
+
+            return;
+
+        }
+
+        let output = "";
+
+        people.forEach(
+            function(person) {
+
+                output +=
+
+                    '<div class="result-item">' +
+
+                    '<span>' +
+                    person.name +
+                    ' (' +
+                    person.percentage +
+                    '%)</span>' +
+
+                    '<span>' +
+                    money(person.amount) +
+                    '</span>' +
+
+                    '</div>';
+
+            }
+        );
+
+        output +=
+
+            '<div class="result-item result-total">' +
+
+            '<span>Total</span>' +
+
+            '<span>' +
+            money(total) +
+            '</span>' +
+
+            '</div>';
+
+        document.getElementById(
+            "proportionalContent"
+        ).innerHTML = output;
+
+        document.getElementById(
+            "proportionalResult"
+        ).style.display =
+            "block";
+
+    }
+);
+
+
+document.getElementById(
+    "saveProportional"
+).addEventListener(
+    "click",
+    function() {
+
+        const result =
+            document.getElementById(
+                "proportionalContent"
+            ).innerText;
+
+        if(!result) {
+
+            alert(
+                "Calculate the proportional split first."
+            );
+
+            return;
+
+        }
+
+        saveHistory(
+            "⚖️ Proportional Split",
+            result
+        );
+
+    }
+);
+
+
+document.getElementById(
+    "shareProportional"
+).addEventListener(
+    "click",
+    function() {
+
+        const result =
+            document.getElementById(
+                "proportionalContent"
+            ).innerText;
+
+        if(!result) {
+
+            alert(
+                "Calculate the proportional split first."
+            );
+
+            return;
+
+        }
+
+        shareResult(
+            "⚖️ Proportional Split\n\n" +
+            result
+        );
+
+    }
+);
+
+
+document.getElementById(
+    "deleteProportional"
+).addEventListener(
+    "click",
+    function() {
+
+        document.getElementById(
+            "proportionalResult"
+        ).style.display =
+            "none";
+
+    }
+);
+
+
+/* =====================================================
+   TAX & TIP
+===================================================== */
+
+document.getElementById(
+    "calculateTaxTip"
+).addEventListener(
+    "click",
+    function() {
+
+        const bill =
+            parseFloat(
+                document.getElementById(
+                    "taxTipBill"
+                ).value
+            );
+
+        const tax =
+            parseFloat(
+                document.getElementById(
+                    "taxPercent"
+                ).value
+            ) || 0;
+
+        const tip =
+            parseFloat(
+                document.getElementById(
+                    "tipPercent"
+                ).value
+            ) || 0;
+
+        const people =
+            parseInt(
+                document.getElementById(
+                    "taxTipPeople"
+                ).value,
+                10
+            );
+
+        if(
+            !Number.isFinite(bill) ||
+            bill < 0 ||
+            !Number.isFinite(people) ||
+            people <= 0
+        ) {
+
+            alert(
+                "Please enter valid bill and people values."
+            );
+
+            return;
+
+        }
+
+        const taxAmount =
+            bill * tax / 100;
+
+        const tipAmount =
+            bill * tip / 100;
+
+        const total =
+            bill +
+            taxAmount +
+            tipAmount;
+
+        const perPerson =
+            total / people;
+
+        document.getElementById(
+            "taxTipContent"
+        ).innerHTML =
+
+            '<div class="result-item">' +
+            '<span>Bill</span>' +
+            '<span>' +
+            money(bill) +
+            '</span>' +
+            '</div>' +
+
+            '<div class="result-item">' +
+            '<span>Tax</span>' +
+            '<span>' +
+            money(taxAmount) +
+            '</span>' +
+            '</div>' +
+
+            '<div class="result-item">' +
+            '<span>Tip</span>' +
+            '<span>' +
+            money(tipAmount) +
+            '</span>' +
+            '</div>' +
+
+            '<div class="result-item">' +
+            '<span>People</span>' +
+            '<span>' +
+            people +
+            '</span>' +
+            '</div>' +
+
+            '<div class="result-item result-total">' +
+            '<span>Each Person Pays</span>' +
+            '<span>' +
+            money(perPerson) +
+            '</span>' +
+            '</div>';
+
+        document.getElementById(
+            "taxTipResult"
+        ).style.display =
+            "block";
+
+    }
+);
+
+
+document.getElementById(
+    "saveTaxTip"
+).addEventListener(
+    "click",
+    function() {
+
+        const result =
+            document.getElementById(
+                "taxTipContent"
+            ).innerText;
+
+        if(!result) {
+
+            alert(
+                "Calculate Tax & Tip first."
+            );
+
+            return;
+
+        }
+
+        saveHistory(
+            "🧾 Tax & Tip Split",
+            result
+        );
+
+    }
+);
+
+
+document.getElementById(
+    "shareTaxTip"
+).addEventListener(
+    "click",
+    function() {
+
+        const result =
+            document.getElementById(
+                "taxTipContent"
+            ).innerText;
+
+        if(!result) {
+
+            alert(
+                "Calculate Tax & Tip first."
+            );
+
+            return;
+
+        }
+
+        shareResult(
+            "🧾 Tax & Tip Split\n\n" +
+            result
+        );
+
+    }
+);
+
+
+document.getElementById(
+    "deleteTaxTip"
+).addEventListener(
+    "click",
+    function() {
+
+        document.getElementById(
+            "taxTipResult"
+        ).style.display =
+            "none";
+
+    }
+);
+
+
+/* =====================================================
+   UNEQUAL SPLIT
+===================================================== */
+
+function addUnequalPerson(
+    name = "",
+    amount = ""
+) {
+
+    const container =
+        document.getElementById(
+            "unequalPeople"
+        );
+
+    const row =
+        document.createElement(
+            "div"
+        );
+
+    row.className =
+        "person-row";
+
+    row.innerHTML =
+
+        '<input type="text" ' +
+        'placeholder="Person name" ' +
+        'value="' +
+        name +
+        '">' +
+
+        '<input type="number" ' +
+        'placeholder="Amount" ' +
+        'min="0" ' +
+        'step="any" ' +
+        'value="' +
+        amount +
+        '">' +
+
+        '<button type="button" ' +
+        'class="remove-person">×</button>';
+
+    row.querySelector(
+        ".remove-person"
+    ).addEventListener(
+        "click",
+        function() {
+
+            row.remove();
+
+        }
+    );
+
+    container.appendChild(row);
+
+}
+
+
+addUnequalPerson(
+    "Person 1"
+);
+
+addUnequalPerson(
+    "Person 2"
+);
+
+
+document.getElementById(
+    "addUnequalPerson"
+).addEventListener(
+    "click",
+    function() {
+
+        addUnequalPerson();
+
+    }
+);
+
+
+document.getElementById(
+    "calculateUnequal"
+).addEventListener(
+    "click",
+    function() {
+
+        const total =
+            parseFloat(
+                document.getElementById(
+                    "unequalTotal"
+                ).value
+            );
+
+        if(
+            !Number.isFinite(total) ||
+            total < 0
+        ) {
+
+            alert(
+                "Please enter a valid total bill."
+            );
+
+            return;
+
+        }
+
+        const rows =
+            document.querySelectorAll(
+                "#unequalPeople .person-row"
+            );
+
+        let assigned = 0;
+
+        let output = "";
+
+        rows.forEach(
+            function(row) {
+
+                const name =
+                    row.querySelector(
+                        'input[type="text"]'
+                    ).value.trim()
+                    || "Person";
+
+                const amount =
+                    parseFloat(
+                        row.querySelector(
+                            'input[type="number"]'
+                        ).value
+                    ) || 0;
+
+                assigned += amount;
+
+                output +=
+
+                    '<div class="result-item">' +
+
+                    '<span>' +
+                    name +
+                    '</span>' +
+
+                    '<span>' +
+                    money(amount) +
+                    '</span>' +
+
+                    '</div>';
+
+            }
+        );
+
+        const difference =
+            total - assigned;
+
+        output +=
+
+            '<div class="result-item result-total">' +
+
+            '<span>Difference</span>' +
+
+            '<span>' +
+            money(difference) +
+            '</span>' +
+
+            '</div>';
+
+        document.getElementById(
+            "unequalContent"
+        ).innerHTML = output;
+
+        document.getElementById(
+            "unequalResult"
+        ).style.display =
+            "block";
+
+    }
+);
+
+
+document.getElementById(
+    "saveUnequal"
+).addEventListener(
+    "click",
+    function() {
+
+        const result =
+            document.getElementById(
+                "unequalContent"
+            ).innerText;
+
+        if(!result) {
+
+            alert(
+                "Calculate the unequal split first."
+            );
+
+            return;
+
+        }
+
+        saveHistory(
+            "👥 Unequal Split",
+            result
+        );
+
+    }
+);
+
+
+document.getElementById(
+    "shareUnequal"
+).addEventListener(
+    "click",
+    function() {
+
+        const result =
+            document.getElementById(
+                "unequalContent"
+            ).innerText;
+
+        if(!result) {
+
+            alert(
+                "Calculate the unequal split first."
+            );
+
+            return;
+
+        }
+
+        shareResult(
+            "👥 Unequal Split\n\n" +
+            result
+        );
+
+    }
+);
+
+
+document.getElementById(
+    "deleteUnequal"
+).addEventListener(
+    "click",
+    function() {
+
+        document.getElementById(
+            "unequalResult"
+        ).style.display =
+            "none";
+
+    }
+);
+
+
+/* =====================================================
+   IOU SIMPLIFIER
+===================================================== */
+
+function addIouPerson(
+    name = "",
+    paid = ""
+) {
+
+    const container =
+        document.getElementById(
+            "iouPeople"
+        );
+
+    const row =
+        document.createElement(
+            "div"
+        );
+
+    row.className =
+        "person-row";
+
+    row.innerHTML =
+
+        '<input type="text" ' +
+        'placeholder="Person name" ' +
+        'value="' +
+        name +
+        '">' +
+
+        '<input type="number" ' +
+        'placeholder="Paid" ' +
+        'min="0" ' +
+        'step="any" ' +
+        'value="' +
+        paid +
+        '">' +
+
+        '<button type="button" ' +
+        'class="remove-person">×</button>';
+
+    row.querySelector(
+        ".remove-person"
+    ).addEventListener(
+        "click",
+        function() {
+
+            row.remove();
+
+        }
+    );
+
+    container.appendChild(row);
+
+}
+
+
+addIouPerson("Person 1");
+
+addIouPerson("Person 2");
+
+addIouPerson("Person 3");
+
+
+document.getElementById(
+    "addIouPerson"
+).addEventListener(
+    "click",
+    function() {
+
+        addIouPerson();
+
+    }
+);
+
+
+document.getElementById(
+    "calculateIou"
+).addEventListener(
+    "click",
+    function() {
+
+        const rows =
+            document.querySelectorAll(
+                "#iouPeople .person-row"
+            );
+
+        const people = [];
+
+        let totalPaid = 0;
+
+        rows.forEach(
+            function(row) {
+
+                const name =
+                    row.querySelector(
+                        'input[type="text"]'
+                    ).value.trim()
+                    || "Person";
+
+                const paid =
+                    parseFloat(
+                        row.querySelector(
+                            'input[type="number"]'
+                        ).value
+                    ) || 0;
+
+                totalPaid += paid;
+
+                people.push({
+                    name: name,
+                    paid: paid
+                });
+
+            }
+        );
+
+        if(
+            people.length < 2 ||
+            totalPaid <= 0
+        ) {
+
+            alert(
+                "Add at least two people and enter payments."
+            );
+
+            return;
+
+        }
+
+        const share =
+            totalPaid /
+            people.length;
+
+        people.forEach(
+            function(person) {
+
+                person.balance =
+                    person.paid -
+                    share;
+
+            }
+        );
+
+        const creditors =
+            people
+                .filter(
+                    p => p.balance > 0.005
+                )
+                .map(
+                    p => ({
+                        name: p.name,
+                        amount: p.balance
+                    })
+                );
+
+        const debtors =
+            people
+                .filter(
+                    p => p.balance < -0.005
+                )
+                .map(
+                    p => ({
+                        name: p.name,
+                        amount: -p.balance
+                    })
+                );
+
+        let transactions = [];
+
+        let i = 0;
+
+        let j = 0;
+
+        while(
+            i < debtors.length &&
+            j < creditors.length
+        ) {
+
+            const amount =
+                Math.min(
+                    debtors[i].amount,
+                    creditors[j].amount
+                );
+
+            transactions.push(
+                debtors[i].name +
+                " pays " +
+                creditors[j].name +
+                " " +
+                money(amount)
+            );
+
+            debtors[i].amount -= amount;
+
+            creditors[j].amount -= amount;
+
+            if(
+                debtors[i].amount <
+                0.005
+            ) {
+
+                i++;
+
+            }
+
+            if(
+                creditors[j].amount <
+                0.005
+            ) {
+
+                j++;
+
+            }
+
+        }
+
+        let output = "";
+
+        output +=
+
+            '<div class="result-item">' +
+            '<span>Total Paid</span>' +
+            '<span>' +
+            money(totalPaid) +
+            '</span>' +
+            '</div>';
+
+        output +=
+
+            '<div class="result-item">' +
+            '<span>Equal Share</span>' +
+            '<span>' +
+            money(share) +
+            '</span>' +
+            '</div>';
+
+        transactions.forEach(
+            function(transaction) {
+
+                output +=
+
+                    '<div class="result-item">' +
+                    '<span>' +
+                    transaction +
+                    '</span>' +
+                    '</div>';
+
+            }
+        );
+
+        if(!transactions.length) {
+
+            output +=
+
+                '<div class="result-item">' +
+                '<span>No payments are needed.</span>' +
+                '</div>';
+
+        }
+
+        document.getElementById(
+            "iouContent"
+        ).innerHTML = output;
+
+        document.getElementById(
+            "iouResult"
+        ).style.display =
+            "block";
+
+    }
+);
+
+
+document.getElementById(
+    "saveIou"
+).addEventListener(
+    "click",
+    function() {
+
+        const result =
+            document.getElementById(
+                "iouContent"
+            ).innerText;
+
+        if(!result) {
+
+            alert(
+                "Simplify the IOUs first."
+            );
+
+            return;
+
+        }
+
+        saveHistory(
+            "💸 IOU Simplifier",
+            result
+        );
+
+    }
+);
+
+
+document.getElementById(
+    "shareIou"
+).addEventListener(
+    "click",
+    function() {
+
+        const result =
+            document.getElementById(
+                "iouContent"
+            ).innerText;
+
+        if(!result) {
+
+            alert(
+                "Simplify the IOUs first."
+            );
+
+            return;
+
+        }
+
+        shareResult(
+            "💸 IOU Settlement\n\n" +
+            result
+        );
+
+    }
+);
+
+
+document.getElementById(
+    "deleteIou"
+).addEventListener(
+    "click",
+    function() {
+
+        document.getElementById(
+            "iouResult"
+        ).style.display =
+            "none";
+
+    }
+);
+
+
+/* =====================================================
+   ROUNDING & SETTLEMENT
+===================================================== */
+
+document.getElementById(
+    "calculateRounding"
+).addEventListener(
+    "click",
+    function() {
+
+        const total =
+            parseFloat(
+                document.getElementById(
+                    "roundingTotal"
+                ).value
+            );
+
+        const people =
+            parseInt(
+                document.getElementById(
+                    "roundingPeople"
+                ).value,
+                10
+            );
+
+        const unit =
+            parseFloat(
+                document.getElementById(
+                    "roundingUnit"
+                ).value
+            );
+
+        if(
+            !Number.isFinite(total) ||
+            total < 0 ||
+            !Number.isFinite(people) ||
+            people <= 0
+        ) {
+
+            alert(
+                "Please enter valid values."
+            );
+
+            return;
+
+        }
+
+        const exact =
+            total / people;
+
+        const rounded =
+            Math.round(
+                exact / unit
+            ) * unit;
+
+        const roundedTotal =
+            rounded * people;
+
+        const difference =
+            roundedTotal - total;
+
+        document.getElementById(
+            "roundingContent"
+        ).innerHTML =
+
+            '<div class="result-item">' +
+            '<span>Exact Share</span>' +
+            '<span>' +
+            money(exact) +
+            '</span>' +
+            '</div>' +
+
+            '<div class="result-item">' +
+            '<span>Rounded Share</span>' +
+            '<span>' +
+            money(rounded) +
+            '</span>' +
+            '</div>' +
+
+            '<div class="result-item">' +
+            '<span>Rounded Total</span>' +
+            '<span>' +
+            money(roundedTotal) +
+            '</span>' +
+            '</div>' +
+
+            '<div class="result-item result-total">' +
+            '<span>Settlement Difference</span>' +
+            '<span>' +
+            money(difference) +
+            '</span>' +
+            '</div>';
+
+        document.getElementById(
+            "roundingResult"
+        ).style.display =
+            "block";
+
+    }
+);
+
+
+document.getElementById(
+    "saveRounding"
+).addEventListener(
+    "click",
+    function() {
+
+        const result =
+            document.getElementById(
+                "roundingContent"
+            ).innerText;
+
+        if(!result) {
+
+            alert(
+                "Calculate rounding first."
+            );
+
+            return;
+
+        }
+
+        saveHistory(
+            "🔢 Rounding & Settlement",
+            result
+        );
+
+    }
+);
+
+
+document.getElementById(
+    "shareRounding"
+).addEventListener(
+    "click",
+    function() {
+
+        const result =
+            document.getElementById(
+                "roundingContent"
+            ).innerText;
+
+        if(!result) {
+
+            alert(
+                "Calculate rounding first."
+            );
+
+            return;
+
+        }
+
+        shareResult(
+            "🔢 Rounding & Settlement\n\n" +
+            result
+        );
+
+    }
+);
+
+
+document.getElementById(
+    "deleteRounding"
+).addEventListener(
+    "click",
+    function() {
+
+        document.getElementById(
+            "roundingResult"
+        ).style.display =
+            "none";
+
+    }
+);
+
+
+/* =====================================================
+   INITIAL HISTORY
+===================================================== */
+
+renderHistory();
+
+
+/* =====================================================
+   YEAR
+===================================================== */
+
+document.getElementById(
+    "currentYear"
+).textContent =
+    new Date().getFullYear();
+
+</script>
+
+</body>
+</html>
