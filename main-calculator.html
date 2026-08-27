@@ -2339,6 +2339,108 @@ function saveResult(
 }
 
 
+/* =====================================================
+   SAVE RECEIPT HISTORY
+===================================================== */
+
+function saveReceiptHistory(
+    containerId,
+    tool
+) {
+
+    const container =
+        document.getElementById(
+            containerId
+        );
+
+    const rows =
+        container.querySelectorAll(
+            ".receipt-row"
+        );
+
+    const lines = [];
+
+    let total = 0;
+
+
+    rows.forEach(
+        function(row) {
+
+            const nameInput =
+                row.querySelector(
+                    'input[type="text"]'
+                );
+
+            const priceInput =
+                row.querySelector(
+                    'input[type="number"]'
+                );
+
+
+            const name =
+                nameInput
+                    ? nameInput.value.trim()
+                    : "";
+
+
+            const price =
+                priceInput
+                    ? parseFloat(
+                        priceInput.value
+                    )
+                    : NaN;
+
+
+            if(
+                name &&
+                Number.isFinite(price)
+            ) {
+
+                lines.push(
+                    name +
+                    ": " +
+                    money(price)
+                );
+
+                total += price;
+
+            }
+
+        }
+    );
+
+
+    if(!lines.length) {
+
+        alert(
+            "Please add at least one receipt item before saving."
+        );
+
+        return;
+
+    }
+
+
+    const result =
+        lines.join("\n") +
+
+        "\n\nReceipt Total: " +
+
+        money(total);
+
+
+    saveHistory(
+        tool,
+        result
+    );
+
+}
+
+
+/* =====================================================
+   DELETE RESULT
+===================================================== */
+
 function deleteResult(
     resultId
 ) {
@@ -2351,15 +2453,19 @@ function deleteResult(
 }
 
 
+/* =====================================================
+   SCANNED RECEIPT
+===================================================== */
+
 document.getElementById(
     "saveScan"
 ).addEventListener(
     "click",
     function() {
 
-        saveResult(
-            "📷 Scanned Receipt",
-            "scanItems"
+        saveReceiptHistory(
+            "scanItems",
+            "📷 Scanned Receipt"
         );
 
     }
@@ -2395,15 +2501,19 @@ document.getElementById(
 );
 
 
+/* =====================================================
+   COPY & PASTE RECEIPT
+===================================================== */
+
 document.getElementById(
     "savePaste"
 ).addEventListener(
     "click",
     function() {
 
-        saveResult(
-            "📋 Copy & Paste Receipt",
-            "pasteItems"
+        saveReceiptHistory(
+            "pasteItems",
+            "📋 Copy & Paste Receipt"
         );
 
     }
@@ -2433,185 +2543,6 @@ document.getElementById(
         shareReceiptItems(
             "pasteItems",
             "📋 Receipt"
-        );
-
-    }
-);
-
-
-/* =====================================================
-   BILL SPLITTER
-===================================================== */
-
-document.getElementById(
-    "calculateSplitButton"
-).addEventListener(
-    "click",
-    function() {
-
-        const bill =
-            parseFloat(
-                document.getElementById(
-                    "totalBill"
-                ).value
-            );
-
-
-        const people =
-            parseInt(
-                document.getElementById(
-                    "peopleCount"
-                ).value,
-                10
-            );
-
-
-        if(
-            !Number.isFinite(bill) ||
-            bill < 0 ||
-            !Number.isFinite(people) ||
-            people <= 0
-        ) {
-
-            alert(
-                "Please enter valid amounts and total number of people."
-            );
-
-            return;
-
-        }
-
-
-        const share =
-            bill / people;
-
-
-        document.getElementById(
-            "splitContent"
-        ).innerHTML =
-
-            '<div class="result-item">' +
-
-            '<span>Total Bill Pool:</span>' +
-
-            '<span>' +
-            money(bill) +
-            '</span>' +
-
-            '</div>' +
-
-            '<div class="result-item">' +
-
-            '<span>Total Splitters:</span>' +
-
-            '<span>' +
-            people +
-            ' People</span>' +
-
-            '</div>' +
-
-            '<div class="result-item result-total">' +
-
-            '<span>Each Person Pays:</span>' +
-
-            '<span>' +
-            money(share) +
-            '</span>' +
-
-            '</div>';
-
-
-        document.getElementById(
-            "split-results"
-        ).style.display =
-            "block";
-
-    }
-);
-
-
-document.getElementById(
-    "saveSplit"
-).addEventListener(
-    "click",
-    function() {
-
-        saveResult(
-            "👥 Bill Splitter",
-            "splitContent"
-        );
-
-    }
-);
-
-
-document.getElementById(
-    "deleteSplit"
-).addEventListener(
-    "click",
-    function() {
-
-        deleteResult(
-            "split-results"
-        );
-
-    }
-);
-
-
-document.getElementById(
-    "shareSplit"
-).addEventListener(
-    "click",
-    function() {
-
-        const bill =
-            parseFloat(
-                document.getElementById(
-                    "totalBill"
-                ).value
-            );
-
-
-        const people =
-            parseInt(
-                document.getElementById(
-                    "peopleCount"
-                ).value,
-                10
-            );
-
-
-        if(
-            !Number.isFinite(bill) ||
-            !Number.isFinite(people) ||
-            people <= 0
-        ) {
-
-            alert(
-                "Calculate the split first."
-            );
-
-            return;
-
-        }
-
-
-        shareResult(
-
-            "👥 Split Bill Result\n\n" +
-
-            "Total Bill: " +
-            money(bill) +
-
-            "\nPeople: " +
-            people +
-
-            "\nEach Person Pays: " +
-            money(
-                bill / people
-            )
-
         );
 
     }
