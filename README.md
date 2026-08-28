@@ -1,2 +1,2 @@
-# Splitbillcalculator
-Free currency converter, receipt scanner, bill splitter and percentage calculator. Supporting 100+ currencies.
+# Splitbilltools
+Free Split Bill Tools for bill splitting, 100+ currency conversion, receipt scanning, travel budgets, group expenses, business costs, and student living tools.
