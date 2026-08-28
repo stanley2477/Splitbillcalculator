@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://splitbillcalculator.sbs/sitemap.xml
+Sitemap: https://splitbilltools.com/sitemap.xml

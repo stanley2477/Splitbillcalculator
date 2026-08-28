@@ -1,4 +1,4 @@
-const CACHE_NAME = "split-bill-calculator-v1";
+const CACHE_NAME = "split-bill-tools-v1";
 
 const FILES_TO_CACHE = [
   "/",

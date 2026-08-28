@@ -1,7 +1,7 @@
 {
-  "name": "Split Bill Calculator",
-  "short_name": "Split Bill",
-  "description": "Free bill splitter, receipt scanner, and currency converter supporting 100+ currencies.",
+  "name": "Split Bill Tools",
+  "short_name": "Split Bill Tools",
+  "description": "Free tools for splitting bills, converting currencies, scanning receipts, managing group and business expenses, planning travel budgets, and calculating student and living costs.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
