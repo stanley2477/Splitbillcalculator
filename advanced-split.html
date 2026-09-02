@@ -572,7 +572,20 @@ footer a {
     }
 
 }
+/* Prevent tap zoom/movement effects on interactive controls */
 
+button,
+input,
+select {
+    touch-action: manipulation;
+}
+
+button:active,
+button:focus,
+input:focus,
+select:focus {
+    transform: none !important;
+}
 </style>
 
 </head>
